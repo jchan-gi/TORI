@@ -1,0 +1,229 @@
+<!doctype html>
+
+<html lang="zh-Hant-hk" >
+
+<head>
+   <meta charset="UTF-8" />
+   <meta name="msvalidate.01" content="BC191E09AA820D62DEE94003696FB793" />
+   <meta name="google-site-verification" content="SIVpqiyvEN1SF2_TRlppoGGpf2-9keHtiM3ekv2-Lww" />
+   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes" />
+   <meta name="Description" content="Written by jchan-gi" />
+   <link rel="alternate" hreflang="zh-Hant-hk" href="https://jchan-gi.github.io/MPF-ANN/index.html" />
+   <link rel="alternate" hreflang="en-hk" href="https://jchan-gi.github.io/MPF-ANN/index.html" />
+   <meta name="keywords" content="MPF, Mandatory Provident Fund, 強積金, 強制性公積金, 人工神經網絡, Long Short Term Memory, Deep Learning, Aritificial Neural Network, Sun Life, SunLife, HSBC, BCT, 滙豐強積金, 永明強積金, 銀聯強積金" />
+   <title>TORI - 基於趨勢及超賣的再配置指引/title>
+   <style>
+
+
+	  html, body {
+	     -webkit-text-size-adjust: 100%;
+	     padding: 0px;
+		 margin: 0px;
+	  }
+
+
+	  div {
+         text-align:center;
+		 margin: 0px;
+		 padding: 0px;
+	  }
+
+      .dropdown {
+	     position: fixed;
+		 display: block;
+		 top: 0px;
+		 left: 0px;
+		 background-color: Aquamarine;
+		 width: 100%;
+		 overflow: auto;
+	  }
+
+	  div.dropdown-content {
+	     font-size: 100%;
+	     display: none;
+		 width: 100%;
+		 background-color: LightCoral;
+		 overflow:auto;
+		 z-index: 0;
+
+	  }
+
+	  .dropdown:hover .dropdown-content {
+         display: block;
+		 z-index: 1;
+      }
+
+	  .dropdown-content:active {
+	     display: none;
+		 z-index: 0;
+	  }
+
+
+	  .footer {
+	     position: fixed;
+		 display: block;
+		 left: 0px;
+		 bottom: 0px;
+		 height: 15%;
+		 width: 100%;
+		 background-color: LightGrey;
+
+	  }
+
+	  .wrapper {
+
+	     min-height: 100%;
+		 height: 100%;
+	     width: 100%;
+		 padding-top: 50px;
+	  }
+
+	  .middle {
+	     font-size: 100%;
+	     position: relative;
+		 float: left;
+		 top: 50%;
+		 left: 50%;
+		 transform: translate(-50%, -50%);
+	  }
+
+	  .content {
+	     height: auto;
+		 width: 100%;
+		 overflow: auto;
+		 z-index: -1;
+	  }
+
+	  iframe {
+         position: absolute;
+		 display: block;
+         top: 7.5%;
+         bottom: 0%;
+         left: 0;
+         right: 0;
+         height: 77.5%;
+         width: 100%;
+		 border: 0px;
+		 margin-bottom: 7.5%;
+		 z-index: -2;
+	  }
+
+	  @media screen and (max-height: 600px){
+	   .dropdown {
+	      font-size: 85%;
+	   }
+		.middle {
+		   font-size: 85%;
+		}
+
+
+	  }
+
+
+	  @media screen and (min-height: 601px) and (max-height: 768px){
+	  	.dropdown {
+		   font-size: 100%;
+		}
+		.middle {
+		   font-size: 100%;
+		}
+	  }
+
+	  @media screen and (min-height: 769px) and (max-height: 1023px) {
+	  	.dropdown {
+		   font-size: 105%;
+		}
+
+		.middle {
+		   font-size: 105%;
+		}
+
+		 .footer {
+		    height: 10%;
+		 }
+
+		 iframe {
+            height: 82.5%;
+		    margin-bottom: 7.5%;
+	     }
+
+	  }
+
+	  @media screen and (min-height: 1024px) {
+	  	.dropdown {
+		   font-size: 175%;
+		}
+
+		.middle {
+		   font-size: 150%;
+		}
+
+		 .footer {
+		    height: 10%;
+		 }
+
+		 iframe {
+            height: 82.5%;
+		    margin-bottom: 7.5%;
+	     }
+
+
+	  }
+
+
+   </style>
+</head>
+
+<body>
+
+
+
+
+<div class="wrapper">
+
+<div class="dropdown"><a href="javascript:void(0);" style="font-weight: bold; display:block;"><p>選擇一個強積金計劃 Select one of the MPF schemes.</p></a>
+<div class="dropdown-content">
+   <p>
+     <a href="./Results/MPF_HSBC_LSTM.html" target="result">HSBC SuperTrust Plus (滙豐強積金智選計劃）</a>
+   </p>
+<!--
+   <p>
+     <a href="./Results/MPF_BCT_LSTM.html" target="result"> BCT （銀聯積金之選）</a>
+   </p>
+   <p>
+      <a href="./Results/MPF_BCT_civil_servant_TCN_v1.pdf" target="result"> BCT (Civil servant pricing) （銀聯積金之選 - 公務員收費）</a>
+   </p>
+   <p>
+      <a href="./Results/MPF_BOCPT_LSTM.html" target="result">  BOCPT Easy Choice （中銀保誠簡易強積金計劃） </a>
+   </p>
+   <p>
+      <a href="./Results/MPF_BOCPT_civil_servant_LSTM.html" target="result"> BOCPT Easy Choice (Civil servant pricing) （中銀保誠簡易強積金計劃 - 公務員收費）</a>
+   </p>
+   <p>
+     <a href="./Results/MPF_SunLife_LSTM.html" target="result">Sun Life Rainbow （永明彩虹強積金計劃）</a>
+   </p>
+   <p>
+      <a href="./Results/MPF_SunLife_civil_servant_LSTM.html" target="result"> Sun Life Rainbow (Civil servant pricing) （永明彩虹強積金計劃 - 公務員收費）</a>
+   </p>
+ -->
+   </div>
+</div>
+
+ <div class="content">
+   <iframe name="result" height="100%" width="100%" src="./Results/MPF_HSBC_LSTM.html"></iframe>
+ </div>
+
+<div class="footer">
+<div class="middle">
+TORI (Trend- & Oversell-based Rebalance Instruction) 基於趨勢及超賣的再配置指引<br />
+Creator: jchan-gi (Jimmy Chan). Repository on <a href="https://github.com/jchan-gi/MPF-Deep-Learning">GitHub</a>. Licensed with BSD 3-clause (Revised).
+</div>
+</div>
+
+
+
+
+</div>
+
+</body>
+</html>
