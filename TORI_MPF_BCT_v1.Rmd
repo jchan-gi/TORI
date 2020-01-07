@@ -40,11 +40,15 @@ professional advice and may not be suitable for anyone except myself.
 6. 本聲明如有歧義，將以英文版本作準。    
 
 
-## 最後更新日期 Last update: 2020/01/06.   
+## 最後更新日期 Last update: 2020/01/07.   
 ### Changelog    
 ### 更新記錄    
 
-2020-01-06 v1    
+2020-01-07 v1.1    
+1. Use top 2 best performing funds instead of 3   
+1. 改為只使用頭2名最好表現的基金    
+
+2020-01-07 v1    
 1. TORI is officially published and backtested with BCT MPF   
 1. 正式推出以銀聯強積金作回測的TORI介紹    
 
@@ -116,23 +120,23 @@ In this example, MPF would have T+2 time delay for obtaining historical price, h
 ### TORI 前移式回測結果     
 
 單一供款 One-off MPF Installment:    
-年率化回報 Annualized Return: ~9.85%     
-算術年均回報 Mean Annual Return: ~9.61%       
-累積回報（等比） Cumulative Return (Geometric): ~500.18%    
-年率化標準誤差 Annualized Standard Deviation: ~8.13% (StdDev(monthly return) * sqrt(12))    
-夏普比率 Sharpe Ratio: 9.85%/8.13% = 1.211          
-索丁諾比率 Sortino Ratio: 0.7695 (MAR = 0%)      
-預期損失 Expected Shortfall: 3.92% loss (0% Risk-free rate, 95% C.I.)       
+年率化回報 Annualized Return: ~10.27%     
+算術年均回報 Mean Annual Return: ~10.17%       
+累積回報（等比） Cumulative Return (Geometric): ~540.35%    
+年率化標準誤差 Annualized Standard Deviation: ~8.41% (StdDev(monthly return) * sqrt(12))    
+夏普比率 Sharpe Ratio: 10.27%/8.41% = 1.2200          
+索丁諾比率 Sortino Ratio: 0.8055 (MAR = 0%)      
+預期損失 Expected Shortfall: 3.84% loss (0% Risk-free rate, 95% C.I.)       
 
 月供投資 Monthly MPF installment (或有誤差 maybe slightly differs):    
 每月供款 Monthly installment amount: 1500    
 總供款 Total contribution: 343500    
-最新結餘 Latest asset value: 943591.2        
-算術年均回報 Mean annual return: 9.34%      
+最新結餘 Latest asset value: 934650.4        
+算術年均回報 Mean annual return: 9.90%      
 內部回報率 Internal Rate of Return (IRR): 9.15%    
-年率化標準誤差 Annualized Standard Deviation: 8.38%    
-夏普比率 Sharpe Ratio: 1.1143          
-索丁諾比率 Sortino Ratio: 0.7824 (MAR = 0%)    
+年率化標準誤差 Annualized Standard Deviation: 8.78%    
+夏普比率 Sharpe Ratio: 1.1275          
+索丁諾比率 Sortino Ratio: 0.8215 (MAR = 0%)    
 
 
 ## 流程 Detailed Workflow
@@ -175,7 +179,7 @@ library("PerformanceAnalytics")
 # Determine the n-m MA BIAS percentage
 nmBIAS_Percent <- 1
 
-top <- 3
+top <- 2
 RSI_Overbuy <- 0.85
 nm <- 1
 MA_long <- 6
