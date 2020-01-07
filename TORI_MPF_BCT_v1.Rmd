@@ -1,0 +1,614 @@
+---
+title: "TORI 於銀聯強積金（積金之選）的回測 -- Backtesting TORI in BCT Pro Choice"
+output: 
+  pdf_document:
+    latex_engine: xelatex
+    df_print: paged
+    keep_tex: TRUE
+    extra_dependencies: xeCJK, fontspec
+header-includes:
+  - \usepackage{fontspec}
+  - \usepackage{xeCJK}
+  - \setmainfont{Helvetica}
+  - \setCJKmainfont{Noto Sans HK}
+---
+# TORI (Trend- & Oversell-based Rebalancing Instructions) in BCT MPF ProChoice MPF    
+# 銀聯強積金積金之選應用TORI進行資產調配    
+
+
+## Disclaimer    
+1. The author (jchan-gi) expressly stated that nothing my repositories and webpages
+constitutes any advices or recommendation on investing or allocating assets on any
+stock or financial products.    
+2. No content in my study have been prepared with respect to specific personal need
+and investment objects of individuals. All materials reveal to the public are applicable
+to the author (jchan-gi) only.
+3. All investors shall obtain kind advices from professional financial consultants before
+making any decisions. Professional financial consultants should recommend products 
+or decisions that suit your needs and objectives.    
+4. The author is not licensed nor professional in the field hence this studies are not 
+professional advice and may not be suitable for anyone except myself.  
+5. You shall not invest on any financial products using the information on this code repository, website or any information made public by jchan-gi alone. You agree you have fully understand and willing to undertake the risks of this script in any circumstances involves in using this script.    
+6. English version shall be used if any discrepencies exists between English and Chinese version.     
+
+## 免責聲明    
+1. 本文作者現此聲明，本人的程式及網頁並非對閤下提供或作出對任何金融產品的投資或資產調配的建議。  
+2. 本文內容沒有針對閣下或其他人的實際個人需要而編撰。所有公開的內容只適用於本文作者。   
+3. 所有投資者應在作出任何決定前，先向專業理財顧問查詢及要求提供意見。只有理財顧問的意見才能符合閣下的實際理財需要及風險胃納。   
+4. 本文作者非專業人士或持牌從業者，因此，本文內容並非專業意見。而且，本文內容極有可能並不合適於除作者以外的任何人。
+5. 在作出任何投資決定前，你不應單靠此程序作出決定。當你作出任何與本程序算法有關的投資決定時，你已完全知悉並願意接受本程序或算法所帶來的風險。    
+6. 本聲明如有歧義，將以英文版本作準。    
+
+
+## 最後更新日期 Last update: 2020/01/06.   
+### Changelog    
+### 更新記錄    
+
+2020-01-06 v1    
+1. TORI is officially published and backtested with BCT MPF   
+1. 正式推出以銀聯強積金作回測的TORI介紹    
+
+
+## WARNING: Please understand nature of TORI in this section before reading further:    
+This script relies on BIAS indicator and RSI indicator for investment rebalancing.   
+Please understand BIAS indicator and RSI indicator before reading further.    
+The script perform walk-forward validation only.   
+A model will be created for exactly next re-balance only based on most updated data for that moment.     
+There is no other validation or assessment on the data.      
+Please be reminded that backtesting and/or walk-forward validation is no way to be accurate in predicting future performance.      
+Using this script may exposed to various risk, including but not limited to overfitting, market, timing, etc.     
+
+## 警告：在應用TORI之前，請先於此節了解TORI的特性   
+TORI根據乖離值及相對強弱指數作投資組合再配置。      
+閱讀下文前，請先了解乖離值及相對強弱指數。    
+此模式只使用了前移式回測(walk-forward validation)。    
+每次資產調配都會基於擁有當時而言的最新資料。    
+然而，請切記過往表現不代表將來表現。    
+使用此代碼將會受到包括但不限於以下的風險所影響：過擬合風險、市場風險、時差風險等。   
+
+
+## Background Introduction
+Mandatory Provident Fund (MPF) is one of the legal pensions in Hongkong.  
+All Employers and some employees are required to pay at least 5% of monthly salary to MPF services provider.  
+MPF providers are required to provide approved funds for employees to invest, 
+while the team could earn management fees.  
+
+However, the average annualized return of MPF is 3.1% only in from 2000-2016 (Mandatory Provident Fund Schemes Authority, 2016).  
+Most Hongkong employees feels they are forced to give their salary to MPF fund manager.  
+Indeed, the reasons of low return may due to inactive management by employees.  
+In this example, we will explore artifical neural network (ANN) to rise the annualized return in MPF-ANN.  
+
+## 背景簡介     
+在香港，強積性公積金(強積金, Mandatory Provident Fund, MPF)是其中一種法定退休金。    
+僱主及部份僱員須扣除5%薪金供強積金營運商。   
+強積金營運商將每月收取管理費，並提供認可基金供僱員作投資儲蓄。   
+但是，強積金的平均回報僅3.1%，因而被批評回報有三份之一被基金經理蠶食。   
+誠言，每位僱員如以主動方式管理強積金，有助提升回報而減少收費的影響。   
+這文記錄了作者以人工類神經網絡方式提升強積金回報的探索(即MPF-ANN)。   
+
+
+## TORI used NMMA BIAS & Relative Strength Index (RSI)
+The author used n-m MA BIAS indicator (NMMA BIAS) to extract trend and RSI for overbuy/oversell status in TORI.    
+This script combine two indicators and consider recent stock returns for the three outcome:   
+1. Tactical Asset Allocation (TAA) using TORI
+2. Strategic Asset Allocation (SAA) using TORI and designated funds
+3. Hedging mode (cash mode)   
+
+## TORI 應用了時差平均線乖離率及相對強    
+作者嘗試以時差平均線乖離率(n-m MA BIAS, NMMA BIAS)及相對強弱指數(RSI)分配投資物。    
+時差平均線乖離率的預測考慮了投資物的趨勢(Trend)。  　 
+相對強弱指數則考慮投資物的超買超賣狀態。    
+本程序結合兩項指標後，再考慮考慮最近三至六個月回報後，程式將自動決定以TORI佈置戰術性資產部署(tactical asset allocation, TAA) 、或是以TORI結果配合債券及現金的策略性資產部署(Strategic asset allocation)、或進入避險模式。    
+
+
+### When to manage my portfolio using TORI?   
+The author collect historical pricing in the last day of every month to calculate NMMA BIAS and RSI in TORI.   
+The same day would be the day of successful rebalance.    
+In this example, MPF would have T+2 time delay for obtaining historical price, hence it is expected to have timing risks in TORI in MPF.    
+
+### 何時使用TORI管理及調配投資組合?   
+作者以每月最後一日取得投資物的歷史價格計算每月回報、NMMA BIAS及相對強弱指數。   
+然後於同日重新配置投資物。    
+在本示例中，強積金大部分均有T+2的時延，因此實際操作將有時延誤差。  
+
+
+### TORI in action: Walk-forwark validation results     
+### TORI 前移式回測結果     
+
+單一供款 One-off MPF Installment:    
+年率化回報 Annualized Return: ~9.85%     
+算術年均回報 Mean Annual Return: ~9.61%       
+累積回報（等比） Cumulative Return (Geometric): ~500.18%    
+年率化標準誤差 Annualized Standard Deviation: ~8.13% (StdDev(monthly return) * sqrt(12))    
+夏普比率 Sharpe Ratio: 9.85%/8.13% = 1.211          
+索丁諾比率 Sortino Ratio: 0.7695 (MAR = 0%)      
+預期損失 Expected Shortfall: 3.92% loss (0% Risk-free rate, 95% C.I.)       
+
+月供投資 Monthly MPF installment (或有誤差 maybe slightly differs):    
+每月供款 Monthly installment amount: 1500    
+總供款 Total contribution: 343500    
+最新結餘 Latest asset value: 943591.2        
+算術年均回報 Mean annual return: 9.34%      
+內部回報率 Internal Rate of Return (IRR): 9.15%    
+年率化標準誤差 Annualized Standard Deviation: 8.38%    
+夏普比率 Sharpe Ratio: 1.1143          
+索丁諾比率 Sortino Ratio: 0.7824 (MAR = 0%)    
+
+
+## 流程 Detailed Workflow
+
+
+### Package Preparation
+1. Install necessary packages
+```{r warning=FALSE, results=FALSE, eval=FALSE}
+r = getOption("repos")
+r["CRAN"] = "https://cran.r-project.org/"
+options(repos = r)
+
+
+install.packages("zoo", type="binary")
+install.packages("xts", type="binary")
+install.packages("fBasics", type="binary")
+install.packages("quantmod", dependencies = TRUE, type="binary")
+install.packages("PerformanceAnalytics", dependencies = TRUE, type="binary")
+install.packages("keras", type="binary")
+
+install.packages("remotes")
+remotes::install_github('rstudio/rmarkdown')
+
+```
+
+2. Now load necessary packages.
+```{r warning=FALSE, results=FALSE}
+library("zoo")
+library("xts")
+library("fBasics")
+library("quantmod")
+library("PerformanceAnalytics")
+```
+
+
+### Load Prices and Calculate Return
+0. Parameters
+```{r warning=FALSE}
+
+# Determine the n-m MA BIAS percentage
+nmBIAS_Percent <- 1
+
+top <- 3
+RSI_Overbuy <- 0.85
+nm <- 1
+MA_long <- 6
+MA_Short <- 2
+RSI_Period <- 18 
+Min_NMMA <- 0.00002
+```
+
+1. Load the price into zoo format
+```{r warning=FALSE}
+MPF.BCT <-
+  as.xts(
+    read.zoo(
+      "~/OneDrive/MPF/BCT/BCT.csv",
+      format = "%d/%m/%Y",
+      header = TRUE,
+      read = read.csv,
+      na.strings = "0"
+    )
+  )
+daily <- index(MPF.BCT)
+
+```
+
+2. Calculate Simple Moving Average (SMA) 
+```{r warning=FALSE}
+MPF.BCT.SMA.hy <- na.fill(apply(MPF.BCT, 2, function(x) SMA(x, n=21*MA_long)), 0)
+MPF.BCT.SMA.hy <- as.xts(MPF.BCT.SMA.hy, order.by = daily)
+MPF.BCT.SMA.mt <- na.fill(apply(MPF.BCT, 2, function(x) SMA(x, n=21*MA_Short)), 0)
+MPF.BCT.SMA.mt <- as.xts(MPF.BCT.SMA.mt, order.by = daily)
+```
+
+3. Calculate Relative Strength Index (RSI)
+```{r warning=FALSE} 
+MPF.BCT.RSI <- na.fill(apply(MPF.BCT, 2, function(x) RSI(x, n=21*RSI_Period)),0)
+MPF.BCT.RSI <- as.xts(MPF.BCT.RSI, order.by = daily)
+```
+
+4. Calculate Returns
+```{r warning=FALSE}
+MPF.BCT.AE <- monthlyReturn(as.xts(MPF.BCT$AE), type = "log")
+MPF.BCT.CA <- monthlyReturn(as.xts(MPF.BCT$CA), type = "log")
+MPF.BCT.CEHK <- monthlyReturn(as.xts(MPF.BCT$CEHK), type = "log")
+MPF.BCT.CT <- monthlyReturn(as.xts(MPF.BCT$CT), type = "log")
+MPF.BCT.EU <- monthlyReturn(as.xts(MPF.BCT$EU), type = "log")
+MPF.BCT.E3 <- monthlyReturn(as.xts(MPF.BCT$E30), type = "log")
+MPF.BCT.E5 <- monthlyReturn(as.xts(MPF.BCT$E50), type = "log")
+MPF.BCT.E7 <- monthlyReturn(as.xts(MPF.BCT$E70), type = "log")
+MPF.BCT.E9 <- monthlyReturn(as.xts(MPF.BCT$E90), type = "log")
+MPF.BCT.FM <- monthlyReturn(as.xts(MPF.BCT$FM), type = "log")
+
+MPF.BCT.GB <- monthlyReturn(as.xts(MPF.BCT$GB), type = "log")
+MPF.BCT.GE <- monthlyReturn(as.xts(MPF.BCT$GE), type = "log")
+MPF.BCT.GT <- monthlyReturn(as.xts(MPF.BCT$GT), type = "log")
+MPF.BCT.HKB <- monthlyReturn(as.xts(MPF.BCT$HKB), type = "log")
+MPF.BCT.HSIT <- monthlyReturn(as.xts(MPF.BCT$HSIT), type = "log")
+MPF.BCT.MPFC <- monthlyReturn(as.xts(MPF.BCT$MPFC), type = "log")
+MPF.BCT.RMBB <- monthlyReturn(as.xts(MPF.BCT$RMBB), type = "log")
+MPF.BCT.SFP <- monthlyReturn(as.xts(MPF.BCT$SFP), type = "log")
+MPF.BCT.SE40 <- monthlyReturn(as.xts(MPF.BCT$SE2040), type = "log")
+
+
+MPF.BCT.returns <-
+  merge(
+    MPF.BCT.AE, MPF.BCT.CA, MPF.BCT.CEHK, MPF.BCT.CT, MPF.BCT.EU, 
+    MPF.BCT.E3, MPF.BCT.E5, MPF.BCT.E7, MPF.BCT.E9, MPF.BCT.FM, 
+    MPF.BCT.GB, MPF.BCT.GE, MPF.BCT.GT, MPF.BCT.HKB, MPF.BCT.HSIT,
+    MPF.BCT.MPFC, MPF.BCT.RMBB, MPF.BCT.SFP, MPF.BCT.SE40
+  )
+
+MPF.BCT.original.cost <-
+  c(
+    0.0182,0.0085,0.0166,0.0115,0.0165,
+    0.0163,0.0163,0.0162,0.0152,0.0136,
+    0.0150,0.0167,0.0100,0.0112,0.0084,
+    0.0094,0.0126,0.0082,0.0150
+  ) / 12
+MPF.BCT.cs.cost <-
+  c(
+    0.0069,0.0062,0.0069,0.0060,0.0069,
+    0.0062,0.0062,0.0062,0.0062,0.0062,
+    0.0055,0.0069,0.0060,0.0055,0.0050,
+    0.0040,0.0055,0.0062,0.0062
+  ) / 12
+
+#for (col in 1:length(MPF.BCT.returns[1, ])) {
+#  MPF.BCT.returns[, col] <-
+#    MPF.BCT.returns[, col] - MPF.BCT.cs.cost[col] + MPF.BCT.original.cost[col]
+# }
+
+
+monthly <- index(MPF.BCT.returns)
+#monthly <- length(monthly)
+MPF.BCT.colnames <- 
+  c(
+    "MPF.BCT.AE","MPF.BCT.CA","MPF.BCT.CEHK","MPF.BCT.CT","MPF.BCT.EU",
+    "MPF.BCT.E3","MPF.BCT.E5","MPF.BCT.E7","MPF.BCT.E9","MPF.BCT.FM",
+    "MPF.BCT.GB","MPF.BCT.GE","MPF.BCT.GT","MPF.BCT.HKB","MPF.BCT.HSIT",
+    "MPF.BCT.MPFC","MPF.BCT.RMBB","MPF.BCT.SFP","MPF.BCT.SE2040"
+  )
+
+colnames(MPF.BCT.returns) <- MPF.BCT.colnames
+  
+rm(
+  MPF.BCT.AE, MPF.BCT.CA, MPF.BCT.CEHK, MPF.BCT.CT, MPF.BCT.EU, 
+  MPF.BCT.E3, MPF.BCT.E5, MPF.BCT.E7, MPF.BCT.E9, MPF.BCT.FM, 
+  MPF.BCT.GB, MPF.BCT.GE, MPF.BCT.GT, MPF.BCT.HKB, MPF.BCT.HSIT,
+  MPF.BCT.MPFC, MPF.BCT.RMBB, MPF.BCT.SFP, MPF.BCT.SE40
+)
+
+```
+
+### Calculate average RSI of the month, and then adjustment factor
+```{r warning=FALSE}
+MPF.BCT.RSI.month <- as.xts(do.call(rbind, lapply(split(as.xts(MPF.BCT.RSI), "months"), function(x) colAvgs(x))), order.by = monthly)
+
+MPF.BCT.RSI.p <- MPF.BCT.returns
+MPF.BCT.RSI.p[,] <- 0
+
+for (col in 1:length(MPF.BCT.RSI.month[1,])) {
+  if (col != 16) {
+    for (row in 1:length(MPF.BCT.RSI.month[,col])) {
+      percentile <- ecdf(as.numeric(MPF.BCT.RSI.month[1:row,col]))
+      if (percentile(MPF.BCT.RSI.month[row,col]) >= (RSI_Overbuy - 1/length(1:row)^(1/2))) {
+        MPF.BCT.RSI.p[row,col] <- 0.2
+      } else {
+        MPF.BCT.RSI.p[row,col] <- 1.2-(percentile(MPF.BCT.RSI.month[row,col])^(3))
+      }
+    }
+  } else {
+    MPF.BCT.RSI.p[,col] <- 1
+  }
+}
+
+MPF.BCT.RSI.sum <- as.xts(rowSums(MPF.BCT.RSI.p), order.by = monthly)
+
+for (row in 1:length(MPF.BCT.RSI.p[,col])) {
+  MPF.BCT.RSI.p[row,] <- apply(MPF.BCT.RSI.p[row,], 2, function(x) (x/MPF.BCT.RSI.sum[row,1])^(1/4))
+}
+MPF.BCT.RSI.sum <- as.xts(rowSums(MPF.BCT.RSI.p), order.by = monthly) 
+
+```
+
+### Allocate MPF for n-m MA BIAS
+```{r warning=FALSE}
+rm(MPF.BCT.BIAS.diff, MPF.BCT.BIAS.diff.qu, MPF.BCT.BIAS.month, MPF.BCT.BIAS.p)
+MPF.BCT.BIAS.diff <- (MPF.BCT.SMA.mt - MPF.BCT.SMA.hy) / MPF.BCT.SMA.hy
+MPF.BCT.BIAS.diff.qu <- MPF.BCT.BIAS.diff - lag(MPF.BCT.BIAS.diff, k=21*nm)
+MPF.BCT.BIAS.diff.qu <- na.fill(MPF.BCT.BIAS.diff.qu, 0)
+
+
+MPF.BCT.BIAS.month <- do.call(rbind, lapply(split(as.xts(MPF.BCT.BIAS.diff.qu), "months"), function(x) colAvgs(x)))
+
+MPF.portf.weight <- MPF.BCT.returns
+MPF.portf.weight[,] <- NA
+#colnames(MPF.portf.weight) <- c("AP", "B", "CA", "CE", "EE", "G", "GB", "HSIT", "HKCE", "MPFC", "NA", "S", "HSHIT", "VCAP", "VCB", "VCE", "VCUS", "GE")
+
+MPF.BCT.stock.return <- as.xts(rowSums(MPF.BCT.BIAS.month), order.by=monthly)
+MPF.BCT.stock.return[] <- NA
+
+MPF.portf.return <- as.xts(rowSums(MPF.BCT.BIAS.month), order.by=monthly)
+MPF.portf.return[] <- NA
+
+hedge <- FALSE
+
+round_percent <- function(x) { 
+  x <- x * 100
+  result <- floor(x)    # Find integer bits
+  remain <- x - result
+  rsum <- sum(result)   # Find out how much we are missing
+  i <- 1
+  if (rsum < 100) {
+    o <- order(remain, decreasing = TRUE)
+    while (rsum < 100) {
+      if (i > length(remain)) i <- 1
+      idx <- o[i]
+      if (result[idx] == 0) {
+        i <- i+1
+        next
+      }
+      result[idx] <- result[idx] + 1
+      rsum <- sum(result)
+      i <- i+1
+    }
+  } 
+  result <- result/100
+  return(result)    
+}
+
+
+
+MPF.BCT.returns.mat <- as.matrix(MPF.BCT.returns)
+MPF.BCT.stock.mean <- 0
+for (row in 1:length(MPF.BCT.BIAS.month[,1])) {
+  MPF.BCT.BIAS.month[row,] <- (MPF.BCT.BIAS.month[row,]) * MPF.BCT.RSI.p[row,]#* VIX.month[row,6] * (MPF.BCT.RSI.p[row,])
+  
+  MPF.BCT.stock.mean <- 0
+  i <- 0
+  for (col in 1:length(MPF.BCT.BIAS.month[1,])) {
+    if (col != 2 &&
+        col != 6 &&
+        col != 7 &&
+        col != 11 && col != 14 && col != 16 && col != 17 && col != 18) {
+      if (!is.na(MPF.BCT.returns.mat[row, col]) &&
+          MPF.BCT.returns.mat[row, col] != 0) {
+        MPF.BCT.stock.mean <- MPF.BCT.stock.mean + MPF.BCT.returns.mat[row, col]
+          i <- i + 1
+        }
+        if (MPF.BCT.BIAS.month[row, col] < 1e-6) {
+          MPF.BCT.BIAS.month[row, col] <- 0
+        }
+    } else {
+      if (MPF.BCT.BIAS.month[row, col] < 0) {
+        MPF.BCT.BIAS.month[row, col] <- 0
+      }
+    }
+  
+    # if (MPF.BCT.BIAS.month[row,col] < Min_NMMA){
+    #   MPF.BCT.BIAS.month[row,col] <- 0
+    # }
+  }
+  
+  MPF.BCT.stock.return[row] <- MPF.BCT.stock.mean / i
+  
+  if (is.nan(MPF.BCT.BIAS.month[row,col])) {
+    MPF.BCT.BIAS.month[row,col] <- 0
+  }
+  
+  # Retain two most increasing fund
+  last <- length(MPF.BCT.BIAS.month[1,]) - top
+  
+  order <- order(MPF.BCT.BIAS.month[row,])[1:last]
+  for (col in order) {
+    MPF.BCT.BIAS.month[row,col] <- 0
+  }
+
+  MPF.BCT.sum <- sum(MPF.BCT.BIAS.month[row,])
+  MPF.BCT.BIAS.p <- MPF.BCT.BIAS.month[row,]
+  MPF.BCT.BIAS.p[] <- 0
+  
+
+  if (row > 8 && MPF.BCT.stock.return[row] <
+      quantile(na.omit(MPF.BCT.stock.return), c(.40)) &&
+      MPF.BCT.stock.return[row - 3] <
+      quantile(na.omit(MPF.BCT.stock.return), c(.50))) {
+    up <- FALSE
+  }
+
+  if (row > 8 && hedge &&
+      MPF.BCT.stock.return[row] >
+        quantile(na.omit(MPF.BCT.stock.return), c(.50))  &&
+      MPF.BCT.stock.return[row - 3] >
+        quantile(na.omit(MPF.BCT.stock.return), c(.40))) {
+    hedge <- FALSE
+    up <- TRUE
+  }
+
+  if (row > 8 &&  (MPF.BCT.stock.return[row] < 0 &&
+                  MPF.BCT.stock.return[row-1] >
+                  quantile(na.omit(MPF.BCT.stock.return), c(.85)))) {
+    hedge <- TRUE
+  }
+  
+  MPF.BCT.sum <- sum(MPF.BCT.BIAS.month[row, ])
+  MPF.BCT.BIAS.p[] <- 0
+  
+  
+  if (row <= 12 || MPF.BCT.sum == MPF.BCT.BIAS.month[row, 16] ||
+      MPF.BCT.sum < 1e-6 || hedge == TRUE) {
+    if (row >= 24) {
+      MPF.BCT.BIAS.p[11] <- 0.3
+      MPF.BCT.BIAS.p[16] <- 0.7
+    } else {
+      MPF.BCT.BIAS.p[16] <- 1
+    }
+  } else if (min(MPF.BCT.stock.return[(row-3):row]) < -0.075) {
+    if (row >= 24) {
+      MPF.BCT.BIAS.p[] <- MPF.BCT.BIAS.month[row, ] / MPF.BCT.sum / 10 * 7
+      MPF.BCT.BIAS.p[16] <- MPF.BCT.BIAS.p[16]+0.18
+      MPF.BCT.BIAS.p[11] <- MPF.BCT.BIAS.p[11]+0.12
+    } else {
+      MPF.BCT.BIAS.p[ ] <- MPF.BCT.BIAS.month[row, ] / MPF.BCT.sum / 10 * 7
+      MPF.BCT.BIAS.p[11] <- MPF.BCT.BIAS.p[11]+0.3
+    }
+  } else {
+    MPF.BCT.BIAS.p[ ] <- MPF.BCT.BIAS.month[row, ] / MPF.BCT.sum
+  }
+  
+  # Change Global Equity fund to World Equity Tracking fund
+  if (MPF.BCT.BIAS.p[12] != 0 && monthly[row] > "2012-08-31") {
+    MPF.BCT.BIAS.p[13] <- MPF.BCT.BIAS.p[13] + MPF.BCT.BIAS.p[12]
+    MPF.BCT.BIAS.p[12] <- 0
+  }
+  
+  # Change Hong Kong & Chinese Equity to portfolio
+  if (MPF.BCT.BIAS.p[3] != 0 && monthly[row] > "2012-08-31") {
+    MPF.BCT.BIAS.p[19] <- MPF.BCT.BIAS.p[19] + (MPF.BCT.BIAS.p[3] / 3)
+    MPF.BCT.BIAS.p[15] <- MPF.BCT.BIAS.p[15] + (MPF.BCT.BIAS.p[3] / 3)
+    MPF.BCT.BIAS.p[4] <- MPF.BCT.BIAS.p[4] + (MPF.BCT.BIAS.p[3] / 3)
+    MPF.BCT.BIAS.p[3] <- 0
+  # Change Hong Kong & Chinese Equity to Fidelity Save Easy 2040 & HSIT
+  } else if (MPF.BCT.BIAS.p[3] != 0 && monthly[row] > "2008-11-30") {
+    MPF.BCT.BIAS.p[19] <- MPF.BCT.BIAS.p[19] + (MPF.BCT.BIAS.p[3] / 2)
+    MPF.BCT.BIAS.p[15] <- MPF.BCT.BIAS.p[15] + (MPF.BCT.BIAS.p[3] / 2)
+    MPF.BCT.BIAS.p[3] <- 0
+  }
+  
+  MPF.portf.weight[row,] <-
+    round_percent(MPF.BCT.BIAS.p) 
+  
+  portf.rebal.fm <-
+    Return.portfolio(
+      na.fill(MPF.BCT.returns, 0),
+      weight = MPF.portf.weight[1:row,],
+      geometric = TRUE,
+      rebalance_on = "months"
+    )
+  
+  MPF.portf.return[row] <-
+    tail(na.omit(portf.rebal.fm), 1)
+  MPF.portf.drawdown <- Drawdowns(MPF.portf.return,
+                                  geometric = TRUE)
+  
+  if (tail(na.omit(MPF.portf.drawdown), 1) < -0.065 && up == FALSE) {
+    hedge = TRUE
+  }
+}
+```
+
+
+### Performance Analysis
+```{r warning=FALSE}
+portf.rebal.fm <- Return.portfolio(
+  MPF.BCT.returns,
+  weight = MPF.portf.weight,
+  geometric = TRUE,
+  rebalance_on = "months"
+)
+
+mean.annual.return <-
+  mean(do.call(rbind, lapply(split(portf.rebal.fm, "years"), function(x)
+    colMeans(x))) * 12)
+
+charts.PerformanceSummary(
+  portf.rebal.fm,
+  methods = "ModifiedES",
+  geometric = TRUE,
+  p = .95,
+  main = "BCT MPF Scheme First Contribution Performance"
+)
+
+Return.cumulative(portf.rebal.fm, geometric=TRUE)
+portf.rebal.fm.sharpe <- Return.annualized(portf.rebal.fm, geometric=TRUE) / (StdDev.annualized(portf.rebal.fm))
+rownames(portf.rebal.fm.sharpe) <- "Sharpe Ratio"
+Return.annualized(portf.rebal.fm, geometric=TRUE)
+mean.annual.return
+portf.rebal.fm.sharpe
+portf.rebal.fm.sharpe.mean <- mean.annual.return / (StdDev.annualized(portf.rebal.fm))
+rownames(portf.rebal.fm.sharpe.mean) <- "Sharpe Ratio (Mean annual return)"
+portf.rebal.fm.sharpe.mean
+StdDev.annualized(portf.rebal.fm)
+
+SortinoRatio(portf.rebal.fm)
+ES(portf.rebal.fm, method="historical")
+tail(MPF.portf.weight, n=6)
+```
+
+### Monthly Installment
+```{r linewidth=159, warning=FALSE}
+MPF.BCT.units <- MPF.BCT.returns
+MPF.BCT.units[, ] <- 0
+
+MPF.monthly.asset <- MPF.BCT.returns
+MPF.monthly.asset[, ] <- 0
+
+MPF.monthly.returns <-
+  as.xts(rowSums(MPF.BCT.returns), order.by = monthly)
+MPF.monthly.returns[] <- 0
+
+MPF.time <- 0:length(MPF.BCT.returns[, 1]) / 12
+MPF.pay <- -1500 + 0 * MPF.time
+
+for (row in 1:length(MPF.BCT.returns[, 1])) {
+  this.price <- as.matrix(MPF.BCT[monthly[row]])
+  MPF.BCT.units[row, ] <- this.price
+  
+  if (row == 1) {
+    last.value <- 1500
+    this.value <- as.numeric((1500 / MPF.BCT[1, 16]) * this.price[16])
+    MPF.monthly.returns[row] <- log(this.value / last.value)
+    MPF.monthly.asset[row,] <-
+      (this.value + 1500) / this.price * MPF.portf.weight[row, ]
+    last.price <- this.price
+  } else {
+    last.value <-
+      as.numeric(sum(na.fill(last.price * MPF.monthly.asset[row - 1, ], 0)))
+    this.value <-
+      as.numeric(sum(na.fill(this.price * MPF.monthly.asset[row - 1, ], 0)))
+    MPF.monthly.returns[row] <- log(this.value / last.value)
+    MPF.monthly.asset[row,] <-
+      (this.value + 1500) / this.price * MPF.portf.weight[row, ]
+    last.price <- this.price
+  }
+}
+
+
+total.asset.value <- sum(MPF.monthly.asset[row, ] * this.price)
+total.contribution <- 1500 * length(MPF.BCT.returns[, 1])
+
+MPF.pay[row + 1] <- total.asset.value
+IRR.f <- function(r)
+  sum(MPF.pay * exp(-r * MPF.time))
+IRR.root <- uniroot(IRR.f, c(0, 1))
+
+
+total.asset.value
+total.contribution
+
+mean.monthly.annual.return <-
+  mean(do.call(rbind, lapply(split(MPF.monthly.returns, "years"), function(x)
+    colMeans(x))) * 12)
+mean.monthly.annual.return
+IRR.root$root
+
+stddev.monthly <- (StdDev(MPF.monthly.returns) * sqrt(12))
+monthly.installment.sharpe.ratio <-
+  mean.monthly.annual.return / stddev.monthly
+rownames(monthly.installment.sharpe.ratio) <-
+  "Sharpe Ratio (mean annual return)"
+
+StdDev.annualized(MPF.monthly.returns)
+monthly.installment.sharpe.ratio
+SortinoRatio(MPF.monthly.returns)
+ES(MPF.monthly.returns, method = "historical")
+
+```
