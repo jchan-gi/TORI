@@ -40,9 +40,15 @@ professional advice and may not be suitable for anyone except myself.
 6. 本聲明如有歧義，將以英文版本作準。    
 
 
-## 最後更新日期 Last update: 2020/01/06.   
+## 最後更新日期 Last update: 2020/01/07.   
 ### Changelog    
 ### 更新記錄    
+
+2020-01-07 v1.1    
+1. Fix minor mistake when chaning to tracking fund   
+2. Maximum 2 instead of 3 is selected.   
+1. 修正轉換為指數基金（自選基金）時的小錯誤   
+2. 只有首2名（而非3名）NMMA BIAS最突出的基金會被選擇    
 
 2020-01-06 v1    
 1. TORI is officially published and backtested with HSBC SuperTrust Plus MPF   
@@ -116,24 +122,23 @@ In this example, MPF would have T+2 time delay for obtaining historical price, h
 ### TORI 前移式回測結果     
 
 單一供款 One-off MPF Installment:    
-年率化回報 Annualized Return: ~11.76%     
-算術年均回報 Mean Annual Return: ~11·71%       
-年率化標準誤差 Annualized Standard Deviation: ~10.57% (StdDev(monthly return) * sqrt(12))    
-夏普比率 Sharpe Ratio: 11.76%/10.57% = 1.128          
-索丁諾比率 Sortino Ratio: 0.6826 (MAR = 0%)      
-預期損失 Expected Shortfall: 5.39% loss (0% Risk-free rate, 95% C.I.)       
+年率化回報 Annualized Return: ~11.86%     
+算術年均回報 Mean Annual Return: ~11.82%       
+累積回報（等比） Cumulative Return (Geometric): ~741.60%    
+年率化標準誤差 Annualized Standard Deviation: ~10.66% (StdDev(monthly return) * sqrt(12))    
+夏普比率 Sharpe Ratio: 11.86%/10.66% = 1.112          
+索丁諾比率 Sortino Ratio: 0.6643 (MAR = 0%)      
+預期損失 Expected Shortfall: 5.71% loss (0% Risk-free rate, 95% C.I.)       
 
 月供投資 Monthly MPF installment (或有誤差 maybe slightly differs):    
 每月供款 Monthly installment amount: 1500    
 總供款 Total contribution: 343500    
-最新結餘 Latest asset value: 1510848    
-算術年均回報 Mean annual return: 11.64%      
-內部回報率 Internal Rate of Return (IRR): 12.93%    
-年率化標準誤差 Annualized Standard Deviation: 10.74%    
-夏普比率 Sharpe Ratio: 1.0834          
-索丁諾比率 Sortino Ratio: 0.6904 (MAR = 0%)    
-預期損失 Expected Shortfall: 5.42% loss (0% Risk-free rate, 95% C.I.)     
-
+最新結餘 Latest asset value: 1533488    
+算術年均回報 Mean annual return (arithmetric): 11.67%      
+內部回報率 Internal Rate of Return (IRR): 13.04%    
+年率化標準誤差 Annualized Standard Deviation: 10.85%    
+夏普比率 Sharpe Ratio: 1.0759          
+索丁諾比率 Sortino Ratio: 0.6649 (MAR = 0%)    
 
 ## 流程 Detailed Workflow
 
@@ -178,7 +183,7 @@ library("PerformanceAnalytics")
 # Determine the n-m MA BIAS percentage
 nmBIAS_Percent <- 1
 
-top <- 3
+top <- 2
 RSI_Overbuy <- 0.85
 nm <- 1
 MA_long <- 6
@@ -457,17 +462,17 @@ for (row in 1:length(MPF.HSBC.BIAS.month[,1])) {
   # Change NA to VCNA after 2019-07-01
     
   if (MPF.HSBC.BIAS.p[1] != 0 && monthly[row] > "2019-07-01") {
-    MPF.HSBC.BIAS.p[14] <- MPF.HSBC.BIAS.p[1]
+    MPF.HSBC.BIAS.p[14] <- MPF.HSBC.BIAS.p[14] + MPF.HSBC.BIAS.p[1]
     MPF.HSBC.BIAS.p[1] <- 0
   }
   
   if (MPF.HSBC.BIAS.p[5] != 0 && monthly[row] > "2019-07-01") {
-    MPF.HSBC.BIAS.p[16] <- MPF.HSBC.BIAS.p[5]
+    MPF.HSBC.BIAS.p[16] <- MPF.HSBC.BIAS.p[16] + MPF.HSBC.BIAS.p[5]
     MPF.HSBC.BIAS.p[5] <- 0
   }
   
   if (MPF.HSBC.BIAS.p[11] != 0 && monthly[row] > "2019-07-01") {
-    MPF.HSBC.BIAS.p[17] <- MPF.HSBC.BIAS.p[11]
+    MPF.HSBC.BIAS.p[17] <- MPF.HSBC.BIAS.p[17] + MPF.HSBC.BIAS.p[11]
     MPF.HSBC.BIAS.p[11] <- 0
   }
   
@@ -517,6 +522,8 @@ charts.PerformanceSummary(
 
 portf.rebal.fm.sharpe <- Return.annualized(portf.rebal.fm, geometric=TRUE) / (StdDev.annualized(portf.rebal.fm))
 rownames(portf.rebal.fm.sharpe) <- "Sharpe Ratio"
+
+Return.cumulative(portf.rebal.fm, geometric = TRUE)
 Return.annualized(portf.rebal.fm, geometric=TRUE)
 mean.annual.return
 portf.rebal.fm.sharpe
