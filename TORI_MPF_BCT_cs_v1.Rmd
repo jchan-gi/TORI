@@ -135,7 +135,7 @@ In this example, MPF would have T+2 time delay for obtaining historical price, h
 月供投資 Monthly MPF installment (或有誤差 maybe slightly differs):    
 每月供款 Monthly installment amount: 1500    
 總供款 Total contribution: 343500    
-最新結餘 Latest asset value: 934650.4        
+最新結餘 Latest asset value: 934620.4        
 算術年均回報 Mean annual return: 9.90%      
 內部回報率 Internal Rate of Return (IRR): 9.15%    
 年率化標準誤差 Annualized Standard Deviation: 8.78%    
@@ -566,25 +566,39 @@ MPF.monthly.returns[] <- 0
 MPF.time <- 0:length(MPF.BCT.returns[, 1]) / 12
 MPF.pay <- -1500 + 0 * MPF.time
 
+
 for (row in 1:length(MPF.BCT.returns[, 1])) {
+#for (row in 1:13) {
   this.price <- as.matrix(MPF.BCT[monthly[row]])
   MPF.BCT.units[row, ] <- this.price
   
   if (row == 1) {
     last.value <- 1500
-    this.value <- as.numeric((1500 / MPF.BCT[1, 16]) * this.price[16])
-    MPF.monthly.returns[row] <- log(this.value / last.value)
+    this.value <- last.value * this.price[16]
+    MPF.monthly.returns[row] <- log(sum(na.fill(this.value,0)) / 1500)
     MPF.monthly.asset[row,] <-
-      (this.value + 1500) / this.price * MPF.portf.weight[row, ]
+      na.fill(((this.value + 1500) / this.price * MPF.portf.weight[row, ]) / this.price,0)
     last.price <- this.price
   } else {
-    last.value <-
-      as.numeric(sum(na.fill(last.price * MPF.monthly.asset[row - 1, ], 0)))
-    this.value <-
-      as.numeric(sum(na.fill(this.price * MPF.monthly.asset[row - 1, ], 0)))
-    MPF.monthly.returns[row] <- log(this.value / last.value) 
-    MPF.monthly.asset[row,] <-
-      (this.value + 1500) / this.price * MPF.portf.weight[row, ]
+    #last.value <-
+    #  as.numeric(sum(na.fill(last.price * MPF.monthly.asset[row - 1, ], 0)))
+    #this.value <-
+    #  as.numeric(sum(na.fill(this.price * MPF.monthly.asset[row - 1, ], 0)))
+    #MPF.monthly.returns[row] <- log(this.value / last.value)
+    
+    last.value <- na.fill(MPF.monthly.asset[row-1,] * last.price,0)
+    this.value <- na.fill(MPF.monthly.asset[row-1,] * this.price,0)
+    MPF.monthly.returns[row] <- log(sum(this.value) / sum(last.value))
+
+    MPF.monthly.asset.old <- this.value / sum(na.fill(this.value,0))
+    MPF.monthly.asset.propose <- as.matrix(MPF.portf.weight[row,]) -
+       as.matrix(MPF.monthly.asset.old)
+    MPF.monthly.unit.change <- MPF.monthly.asset.propose * sum(na.fill(this.value,0)) /this.price
+
+    this.unit <- as.matrix(MPF.monthly.asset[row-1,]) + as.matrix(MPF.monthly.unit.change)
+    this.unit <- as.matrix(this.unit) + (1500 / as.matrix(this.price) * MPF.portf.weight[row,])
+    
+    MPF.monthly.asset[row,] <- na.fill(this.unit,0)
     last.price <- this.price
   }
 }
@@ -618,5 +632,6 @@ StdDev.annualized(MPF.monthly.returns)
 monthly.installment.sharpe.ratio
 SortinoRatio(MPF.monthly.returns)
 ES(MPF.monthly.returns, method = "historical")
+
 
 ```

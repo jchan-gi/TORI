@@ -16,7 +16,11 @@ header-includes:
 # 中銀保誠簡易強積金應用TORI進行資產調配    
 
 
-## Disclaimer    
+## Civil Servant Management fee pricing
+## 公務員收費
+
+
+## Disclaimer  
 1. The author (jchan-gi) expressly stated that nothing my repositories and webpages
 constitutes any advices or recommendation on investing or allocating assets on any
 stock or financial products.    
@@ -40,9 +44,17 @@ professional advice and may not be suitable for anyone except myself.
 6. 本聲明如有歧義，將以英文版本作準。    
 
 
-## 最後更新日期 Last update: 2020/01/07.   
+## 最後更新日期 Last update: 2020/01/11.   
 ### Changelog    
 ### 更新記錄    
+
+2020-01-11 v1.2    
+1. Monthly installment: now only sell units in excess   
+1. 月供投資中，現只出售/買入所需的單位，而非全數賣出買入       
+
+2020-01-10 v1.1    
+1. Correct mistake on result section   
+1. 修正結果一欄的手民之誤    
 
 2020-01-07 v1    
 1. TORI is officially published and backtested with BOCPT MPF   
@@ -116,23 +128,24 @@ In this example, MPF would have T+2 time delay for obtaining historical price, h
 ### TORI 前移式回測結果     
 
 單一供款 One-off MPF Installment:    
-年率化回報 Annualized Return: ~10.27%     
-算術年均回報 Mean Annual Return: ~10.17%       
-累積回報（等比） Cumulative Return (Geometric): ~540.35%    
-年率化標準誤差 Annualized Standard Deviation: ~8.41% (StdDev(monthly return) * sqrt(12))    
-夏普比率 Sharpe Ratio: 10.27%/8.41% = 1.2200          
-索丁諾比率 Sortino Ratio: 0.8055 (MAR = 0%)      
-預期損失 Expected Shortfall: 3.84% loss (0% Risk-free rate, 95% C.I.)       
+年率化回報 Annualized Return: ~9.32%     
+算術年均回報 Mean Annual Return: ~9.40%       
+累積回報（等比） Cumulative Return (Geometric): ~443.72%    
+年率化標準誤差 Annualized Standard Deviation: ~9.68% (StdDev(monthly return) * sqrt(12))    
+夏普比率 Sharpe Ratio: 9.32%/9.68% = 0.9631          
+索丁諾比率 Sortino Ratio: 0.5501 (MAR = 0%)      
+預期損失 Expected Shortfall: 5.48% loss (0% Risk-free rate, 95% C.I.)       
 
 月供投資 Monthly MPF installment (或有誤差 maybe slightly differs):    
 每月供款 Monthly installment amount: 1500    
 總供款 Total contribution: 343500    
-最新結餘 Latest asset value: 934650.4        
-算術年均回報 Mean annual return: 9.90%      
-內部回報率 Internal Rate of Return (IRR): 9.15%    
-年率化標準誤差 Annualized Standard Deviation: 8.78%    
-夏普比率 Sharpe Ratio: 1.1275          
-索丁諾比率 Sortino Ratio: 0.8215 (MAR = 0%)    
+最新結餘 Latest asset value: 991844.4        
+算術年均回報 Mean annual return: 8.57%      
+內部回報率 Internal Rate of Return (IRR): 9.64%    
+年率化標準誤差 Annualized Standard Deviation: 9.65%    
+夏普比率 Sharpe Ratio: 0.8886          
+索丁諾比率 Sortino Ratio: 0.5138 (MAR = 0%)    
+
 
 
 ## 流程 Detailed Workflow
@@ -242,9 +255,9 @@ MPF.BOCPT.original.cost <- c(0.0170, 0.0152, 0.0085, 0.0168, 0.0107, 0.0169, 0.0
 MPF.BOCPT.cs.cost <- MPF.BOCPT.original.cost
 MPF.BOCPT.cs.cost[] <- 0.0080 / 12
 
-# for(col in 1:length(MPF.BOCPT.returns[1,])) {
-#   MPF.BOCPT.returns[,col] <- MPF.BOCPT.returns[,col] - MPF.BOCPT.cs.cost[col] + MPF.BOCPT.original.cost[col]
-# }
+for(col in 1:length(MPF.BOCPT.returns[1,])) {
+  MPF.BOCPT.returns[,col] <- MPF.BOCPT.returns[,col] - MPF.BOCPT.cs.cost[col] + MPF.BOCPT.original.cost[col]
+}
 
 colnames(MPF.BOCPT.returns) <- c("AE", "Bond", "CA", "CE", "ET", "GE", "HKE", "HKT", "JE", "MPFC", "NAT", "SFP", "G", "B", "S")
   
@@ -504,25 +517,39 @@ MPF.monthly.returns[] <- 0
 MPF.time <- 0:length(MPF.BOCPT.returns[, 1]) / 12
 MPF.pay <- -1500 + 0 * MPF.time
 
+
 for (row in 1:length(MPF.BOCPT.returns[, 1])) {
+#for (row in 1:13) {
   this.price <- as.matrix(MPF.BOCPT[monthly[row]])
   MPF.BOCPT.units[row, ] <- this.price
   
   if (row == 1) {
-    last.value <- 1500
-    this.value <- as.numeric((1500 / MPF.BOCPT[1, 10]) * this.price[10])
-    MPF.monthly.returns[row] <- log(this.value / last.value)
+    last.value <- 1500 / 10
+    this.value <- last.value * this.price[10]
+    MPF.monthly.returns[row] <- log(sum(na.fill(this.value,0)) / 1500)
     MPF.monthly.asset[row,] <-
-      (this.value + 1500) / this.price * MPF.portf.weight[row, ]
+      na.fill(((this.value + 1500) / this.price * MPF.portf.weight[row, ]) / this.price,0)
     last.price <- this.price
   } else {
-    last.value <-
-      as.numeric(sum(na.fill(last.price * MPF.monthly.asset[row - 1, ], 0)))
-    this.value <-
-      as.numeric(sum(na.fill(this.price * MPF.monthly.asset[row - 1, ], 0)))
-    MPF.monthly.returns[row] <- log(this.value / last.value)
-    MPF.monthly.asset[row,] <-
-      (this.value + 1500) / this.price * MPF.portf.weight[row, ]
+    #last.value <-
+    #  as.numeric(sum(na.fill(last.price * MPF.monthly.asset[row - 1, ], 0)))
+    #this.value <-
+    #  as.numeric(sum(na.fill(this.price * MPF.monthly.asset[row - 1, ], 0)))
+    #MPF.monthly.returns[row] <- log(this.value / last.value)
+    
+    last.value <- na.fill(MPF.monthly.asset[row-1,] * last.price,0)
+    this.value <- na.fill(MPF.monthly.asset[row-1,] * this.price,0)
+    MPF.monthly.returns[row] <- log(sum(this.value) / sum(last.value))
+
+    MPF.monthly.asset.old <- this.value / sum(na.fill(this.value,0))
+    MPF.monthly.asset.propose <- as.matrix(MPF.portf.weight[row,]) -
+       as.matrix(MPF.monthly.asset.old)
+    MPF.monthly.unit.change <- MPF.monthly.asset.propose * sum(na.fill(this.value,0)) /this.price
+
+    this.unit <- as.matrix(MPF.monthly.asset[row-1,]) + as.matrix(MPF.monthly.unit.change)
+    this.unit <- as.matrix(this.unit) + (1500 / as.matrix(this.price) * MPF.portf.weight[row,])
+    
+    MPF.monthly.asset[row,] <- na.fill(this.unit,0)
     last.price <- this.price
   }
 }
@@ -556,5 +583,6 @@ StdDev.annualized(MPF.monthly.returns)
 monthly.installment.sharpe.ratio
 SortinoRatio(MPF.monthly.returns)
 ES(MPF.monthly.returns, method = "historical")
+
 
 ```

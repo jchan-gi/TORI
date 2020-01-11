@@ -6,11 +6,39 @@
 
 
 <url>
-  <loc>https://jchan-gi.github.io/TORI/index.html</loc>
-  <lastmod>2019-08-16T12:30:00+08:00</lastmod>
+  <loc>https://jchan-gi.github.io/TORI</loc>
+  <lastmod>2020-01-11T03:30:00+08:00</lastmod>
   <priority>1.00</priority>
 </url>
-
-
+<url>
+  <loc>https://jchan-gi.github.io/TORI/index.html</loc>
+  <lastmod>2020-01-11T03:30:00+08:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_BCT_cs_v1.pdf</loc>
+  <lastmod>2020-01-11T03:30:00+08:00</lastmod>
+  <priority>0.60</priority>
+</url>
+<url>
+  <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_BCT_v1.pdf</loc>
+  <lastmod>2020-01-11T03:30:00+08:00</lastmod>
+  <priority>0.60</priority>
+</url>
+<url>
+  <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_BOCPT_cs_v1.pdf</loc>
+  <lastmod>2020-01-11T03:30:00+08:00</lastmod>
+  <priority>0.60</priority>
+</url>
+<url>
+  <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_BOCPT_v1.pdf</loc>
+  <lastmod>2020-01-11T03:30:00+08:00</lastmod>
+  <priority>0.60</priority>
+</url>
+<url>
+  <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_HSBC_v1.pdf</loc>
+  <lastmod>2020-01-11T03:30:00+08:00</lastmod>
+  <priority>0.60</priority>
+</url>
 
 </urlset>
