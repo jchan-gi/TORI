@@ -1,6 +1,30 @@
 # TORI by jchan-gi
- TORI (Trend- & Oversell-based Rebalance Instruction) is a n-m Moving Average BIAS (NMMA BIAS) based tools to improve portfolio performance by monthly rebalance    
- TORI是一個利用時差平均值乖離率(n-m MA BIAS, NMMA BIAS)進行每月再配置以提升投資組合的程式    
+ [TORI](https://jchan-gi.github.io/TORI/) (Trend- & Oversell-based Rebalance Instruction) is a n-m Moving Average BIAS (NMMA BIAS) based tools to improve portfolio performance by monthly rebalance    
+ [TORI](https://jchan-gi.github.io/TORI/)是一個利用時差平均值乖離率(n-m MA BIAS, NMMA BIAS)進行每月再配置以提升投資組合的程式    
+
+
+# Disclaimer    
+1. The author (jchan-gi) expressly stated that nothing my repositories and webpages
+constitutes any advices or recommendation on investing or allocating assets on any
+stock or financial products.    
+2. No content in my study have been prepared with respect to specific personal need
+and investment objects of individuals. All materials reveal to the public are applicable
+to the author (jchan-gi) only.
+3. All investors shall obtain kind advices from professional financial consultants before
+making any decisions. Professional financial consultants should recommend products 
+or decisions that suit your needs and objectives.    
+4. The author is not licensed nor professional in the field hence this studies are not 
+professional advice and may not be suitable for anyone except myself.  
+5. You shall not invest on any financial products using the information on this code repository, website or any information made public by jchan-gi alone. You agree you have fully understand and willing to undertake the risks of this script in any circumstances involves in using this script.    
+6. English version shall be used if any discrepencies exists between English and Chinese version.     
+# 免責聲明    
+1. 本文作者現此聲明，本人的程式及網頁並非對閤下提供或作出對任何金融產品的投資或資產調配的建議。  
+2. 本文內容沒有針對閣下或其他人的實際個人需要而編撰。所有公開的內容只適用於本文作者。   
+3. 所有投資者應在作出任何決定前，先向專業理財顧問查詢及要求提供意見。只有理財顧問的意見才能符合閣下的實際理財需要及風險胃納。   
+4. 本文作者非專業人士或持牌從業者，因此，本文內容並非專業意見。而且，本文內容極有可能並不合適於除作者以外的任何人。
+5. 在作出任何投資決定前，你不應單靠此程序作出決定。當你作出任何與本程序算法有關的投資決定時，你已完全知悉並願意接受本程序或算法所帶來的風險。    
+6. 本聲明如有歧義，將以英文版本作準。    
+
 
 # Introduction     
 # 簡介     
@@ -29,30 +53,39 @@ As long as your system contain the following then you could execute the script.
 2. RStudio    
 
 
-# Disclaimer    
-1. The author (jchan-gi) expressly stated that nothing my repositories and webpages
-constitutes any advices or recommendation on investing or allocating assets on any
-stock or financial products.    
-2. No content in my study have been prepared with respect to specific personal need
-and investment objects of individuals. All materials reveal to the public are applicable
-to the author (jchan-gi) only.
-3. All investors shall obtain kind advices from professional financial consultants before
-making any decisions. Professional financial consultants should recommend products 
-or decisions that suit your needs and objectives.    
-4. The author is not licensed nor professional in the field hence this studies are not 
-professional advice and may not be suitable for anyone except myself.  
-5. You shall not invest on any financial products using the information on this code repository, website or any information made public by jchan-gi alone. You agree you have fully understand and willing to undertake the risks of this script in any circumstances involves in using this script.    
-6. English version shall be used if any discrepencies exists between English and Chinese version.     
-# 免責聲明    
-1. 本文作者現此聲明，本人的程式及網頁並非對閤下提供或作出對任何金融產品的投資或資產調配的建議。  
-2. 本文內容沒有針對閣下或其他人的實際個人需要而編撰。所有公開的內容只適用於本文作者。   
-3. 所有投資者應在作出任何決定前，先向專業理財顧問查詢及要求提供意見。只有理財顧問的意見才能符合閣下的實際理財需要及風險胃納。   
-4. 本文作者非專業人士或持牌從業者，因此，本文內容並非專業意見。而且，本文內容極有可能並不合適於除作者以外的任何人。
-5. 在作出任何投資決定前，你不應單靠此程序作出決定。當你作出任何與本程序算法有關的投資決定時，你已完全知悉並願意接受本程序或算法所帶來的風險。    
-6. 本聲明如有歧義，將以英文版本作準。    
+# Testing of TORI     
+# 測試結果      
+[TORI](https://jchan-gi.github.io/TORI/) was tested against the following funds (Order by convenient only):   
+1. HSBC SuperTrust Plus MPF   
+2. BOCPT Easy Choice MPF   
+3. Sun Life Rainbow MPF   
+4. BCT ProChoice MPF   
+
+[TORI](https://jchan-gi.github.io/TORI/)算法經過以下的基金作出測試（排名不分先後）：   
+1. 滙豐強積金智選計劃   
+2. 中銀保誠簡易強積金計劃   
+3. 永明彩虹強積金計劃   
+4. 銀聯積金之選強積金計劃   
+
 
 
 # License of the source code and repositories
 # 程序庫及程式源始碼的許可證
 * BSD 3-clause (Revised) (See [LICENSE](https://github.com/jchan-gi/TORI/blob/master/LICENSE))
 * 修訂版BSD許可證 (詳見[LICENSE檔案](https://github.com/jchan-gi/TORI/blob/master/LICENSE)，只有英文版本)
+
+# Future update    
+# 更新預告   
+* The following MPF funds would be assessed in Q1 2020:    
+1. AIA Prime Value Choice    
+2. Sun Life MPF Master Trust (Ex. Schroders MPF Master Trust)    
+3. Invesco MPF    
+4. Allianz Global Investors MPF Plan    
+* A portfolio of retail mutual funds in Hong Kong and a portfolio of US ETFs would be assessed in Q2 2020. Please refer to the plain text file in root directory of repository (to be release soon) for the list of mutual funds and ETFs.   
+
+* 應用以下強制性公積金（強積金）計劃評估TORI的結果將於2020年第一季公佈:    
+1. 友邦優選    
+2. 永明集成 (前施羅德集成)    
+3. 景順強積金      
+4. 安聯強積金    
+* 一個由零售共同基金組成的投資組合及一個由美國上市的交易所買賣基金所組成的投資組合將於2020年第二季作出對TORI的評估並公佈結果。基金列表即將公佈！   
