@@ -77,14 +77,14 @@ As long as your system contain the following then you could execute the script.
 # Future update    
 # 更新預告   
 * The following MPF funds would be assessed in Q1 2020:    
-1. AIA Prime Value Choice    
+1. AIA Prime Value Choice(added on 2020/01/14)    
 2. Sun Life MPF Master Trust (Ex. Schroders MPF Master Trust)    
 3. Invesco MPF    
 4. Allianz Global Investors MPF Plan    
 * A portfolio of retail mutual funds in Hong Kong and a portfolio of US ETFs would be assessed in Q2 2020. Please refer to the plain text file in root directory of repository (to be release soon) for the list of mutual funds and ETFs.   
 
 * 應用以下強制性公積金（強積金）計劃評估TORI的結果將於2020年第一季公佈:    
-1. 友邦優選    
+1. 友邦優選(已於2020/01/14加入)    
 2. 永明集成 (前施羅德集成)    
 3. 景順強積金      
 4. 安聯強積金    
