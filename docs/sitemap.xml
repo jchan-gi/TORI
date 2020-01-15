@@ -1,58 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset
-      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-	  xmlns:xhtml="http://www.w3.org/1999/xhtml"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 
 <url>
-  <loc>https://jchan-gi.github.io/TORI</loc>
-  <lastmod>2020-01-14T03:30:00+08:00</lastmod>
+  <loc>https://jchan-gi.github.io/TORI/</loc>
+  <lastmod>2020-01-15T02:30:00+08:00</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
-  <loc>https://jchan-gi.github.io/TORI/index.html</loc>
-  <lastmod>2020-01-14T03:30:00+08:00</lastmod>
+  <loc>https://jchan-gi.github.io/TORI/index.html/</loc>
+  <lastmod>2020-01-15T02:30:00+08:00</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
   <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_SunLife_Rainbow_cs_v1.pdf</loc>
   <lastmod>2020-01-14T03:30:00+08:00</lastmod>
+  <changefreq>monthly</changefreq>
   <priority>0.60</priority>
 </url>
 <url>
   <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_SunLife_Rainbow_v1.pdf</loc>
   <lastmod>2020-01-14T03:30:00+08:00</lastmod>
+  <changefreq>monthly</changefreq>
   <priority>0.60</priority>
 </url>
 <url>
   <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_BCT_cs_v1.pdf</loc>
   <lastmod>2020-01-14T03:30:00+08:00</lastmod>
+  <changefreq>monthly</changefreq>
   <priority>0.60</priority>
 </url>
 <url>
   <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_BCT_v1.pdf</loc>
   <lastmod>2020-01-14T03:30:00+08:00</lastmod>
+  <changefreq>monthly</changefreq>
   <priority>0.60</priority>
 </url>
 <url>
   <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_BOCPT_cs_v1.pdf</loc>
   <lastmod>2020-01-14T03:30:00+08:00</lastmod>
+  <changefreq>monthly</changefreq>
   <priority>0.60</priority>
 </url>
 <url>
   <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_BOCPT_v1.pdf</loc>
   <lastmod>2020-01-14T03:30:00+08:00</lastmod>
+  <changefreq>monthly</changefreq>
   <priority>0.60</priority>
 </url>
 <url>
   <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_HSBC_v1.pdf</loc>
   <lastmod>2020-01-14T03:30:00+08:00</lastmod>
+  <changefreq>monthly</changefreq>
   <priority>0.60</priority>
 </url>
 <url>
   <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_AIA_v1.pdf</loc>
   <lastmod>2020-01-14T03:30:00+08:00</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>0.60</priority>
+</url>
+<url>
+  <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_Schroders_v1.pdf</loc>
+  <lastmod>2020-01-15T02:30:00+08:00</lastmod>
+  <changefreq>monthly</changefreq>
   <priority>0.60</priority>
 </url>
 
