@@ -56,17 +56,20 @@ As long as your system contain the following then you could execute the script.
 # Testing of TORI     
 # 測試結果      
 [TORI](https://jchan-gi.github.io/TORI/) was tested against the following funds (Order by convenient only):   
-1. HSBC SuperTrust Plus MPF   
-2. BOCPT Easy Choice MPF   
-3. Sun Life Rainbow MPF   
-4. BCT ProChoice MPF   
+1. [HSBC SuperTrust Plus MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_HSBC_v1.pdf)   
+2. [BOCPT Easy Choice MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_BOCPT_v1.pdf)    
+3. [Sun Life Rainbow MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_SunLife_Rainbow_v1.pdf)    
+4. [BCT ProChoice MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_BCT_v1.pdf)      
+5. [AIA Prime Value Choice](https://jchan-gi.github.io/TORI/Results/TORI_MPF_AIA_v1.pdf)    
+6. [Sun Life MPF Master Trust (Ex. Schroders MPF Master Trust)](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Schroders_v1.pdf)   
 
 [TORI](https://jchan-gi.github.io/TORI/)算法經過以下的基金作出測試（排名不分先後）：   
-1. 滙豐強積金智選計劃   
-2. 中銀保誠簡易強積金計劃   
-3. 永明彩虹強積金計劃   
-4. 銀聯積金之選強積金計劃   
-
+1. [滙豐強積金智選計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_HSBC_v1.pdf)   
+2. [中銀保誠簡易強積金計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_BOCPT_v1.pdf)   
+3. [永明彩虹強積金計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_SunLife_Rainbow_v1.pdf)    
+4. [銀聯積金之選強積金計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_BCT_v1.pdf)    
+5. [友邦強積金優選計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_AIA_v1.pdf)    
+6. [永明強積金集成信託計劃(前施羅德強積金集成信託計劃)](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Schroders_v1.pdf)        
 
 
 # License of the source code and repositories
@@ -77,15 +80,11 @@ As long as your system contain the following then you could execute the script.
 # Future update    
 # 更新預告   
 * The following MPF funds would be assessed in Q1 2020:    
-1. AIA Prime Value Choice(added on 2020/01/14)    
-2. Sun Life MPF Master Trust (Ex. Schroders MPF Master Trust)    
-3. Invesco MPF    
-4. Allianz Global Investors MPF Plan    
+1. Invesco MPF    
+2. Allianz Global Investors MPF Plan    
 * A portfolio of retail mutual funds in Hong Kong and a portfolio of US ETFs would be assessed in Q2 2020. Please refer to the plain text file in root directory of repository (to be release soon) for the list of mutual funds and ETFs.   
 
 * 應用以下強制性公積金（強積金）計劃評估TORI的結果將於2020年第一季公佈:    
-1. 友邦優選(已於2020/01/14加入)    
-2. 永明集成 (前施羅德集成)    
-3. 景順強積金      
-4. 安聯強積金    
+1. 景順強積金      
+2. 安聯強積金    
 * 一個由零售共同基金組成的投資組合及一個由美國上市的交易所買賣基金所組成的投資組合將於2020年第二季作出對TORI的評估並公佈結果。基金列表即將公佈！   
