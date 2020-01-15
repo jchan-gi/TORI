@@ -84,9 +84,11 @@ As long as your system contain the following then you could execute the script.
 * The following MPF funds would be assessed in Q1 2020:    
 1. Allianz Global Investors MPF Plan    
 2. Fidelity MPF Plan    
-* A portfolio of retail mutual funds in Hong Kong and a portfolio of US ETFs would be assessed in Q2 2020. Please refer to the plain text file in root directory of repository (to be release soon) for the list of mutual funds and ETFs.   
+* A portfolio of retail mutual funds in Hong Kong; and    
+* a portfolio of US ETFs would be assessed in Q2 2020. Please refer to the plain text file in root directory of repository (to be release soon) for the list of mutual funds and ETFs.   
 
 * 應用以下強制性公積金（強積金）計劃評估TORI的結果將於2020年第一季公佈:    
 1. 安聯強積金    
 2. 富達強積金   
-* 一個由零售共同基金組成的投資組合及一個由美國上市的交易所買賣基金所組成的投資組合將於2020年第二季作出對TORI的評估並公佈結果。基金列表即將公佈！   
+* 一個由零售共同基金組成的投資組合及     
+* 一個由美國上市的交易所買賣基金所組成的投資組合將於2020年第二季作出對TORI的評估並公佈結果。基金列表即將公佈！   
