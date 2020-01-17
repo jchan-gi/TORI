@@ -40,9 +40,13 @@ professional advice and may not be suitable for anyone except myself.
 6. 本聲明如有歧義，將以英文版本作準。    
 
 
-## 最後更新日期 Last update: 2020/01/11.   
+## 最後更新日期 Last update: 2020/01/17.   
 ### Changelog    
 ### 更新記錄    
+
+2020-01-17 v1.3    
+1. Minor enhancement on background information.       
+1. 更改背景資料   
 
 2020-01-11 v1.2    
 1. Monthly installment: now only sell units in excess   
@@ -84,7 +88,7 @@ while the team could earn management fees.
 However, the average annualized return of MPF is 3.1% only in from 2000-2016 (Mandatory Provident Fund Schemes Authority, 2016).  
 Most Hongkong employees feels they are forced to give their salary to MPF fund manager.  
 Indeed, the reasons of low return may due to inactive management by employees.  
-In this example, we will explore artifical neural network (ANN) to rise the annualized return in MPF-ANN.  
+In this example, we will explore n-m MA BIAS to rise the annualized return in TORI.  
 
 ## 背景簡介     
 在香港，強積性公積金(強積金, Mandatory Provident Fund, MPF)是其中一種法定退休金。    
@@ -92,7 +96,7 @@ In this example, we will explore artifical neural network (ANN) to rise the annu
 強積金營運商將每月收取管理費，並提供認可基金供僱員作投資儲蓄。   
 但是，強積金的平均回報僅3.1%，因而被批評回報有三份之一被基金經理蠶食。   
 誠言，每位僱員如以主動方式管理強積金，有助提升回報而減少收費的影響。   
-這文記錄了作者以人工類神經網絡方式提升強積金回報的探索(即MPF-ANN)。   
+這文記錄了作者以時差平均線乖離率(n-m MA BIAS)提升強積金回報的探索(即TORI)。   
 
 
 ## TORI used NMMA BIAS & Relative Strength Index (RSI)
