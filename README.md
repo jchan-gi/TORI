@@ -1,3 +1,5 @@
+![TORI logo](/docs/assets/Tori.png)
+
 # TORI by jchan-gi
  [TORI](https://jchan-gi.github.io/TORI/) (Trend- & Oversell-based Rebalance Instruction) is a n-m Moving Average BIAS (NMMA BIAS) based tools to improve portfolio performance by monthly rebalance    
  [TORI](https://jchan-gi.github.io/TORI/)是一個利用時差平均值乖離率(n-m MA BIAS, NMMA BIAS)進行每月再配置以提升投資組合的程式    
