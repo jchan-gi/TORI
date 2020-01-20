@@ -9,8 +9,11 @@ output:
 header-includes:
   - \usepackage{fontspec}
   - \usepackage{xeCJK}
-  - \setmainfont{Helvetica}
+  - \setmainfont{IBM Plex Serif}
+  - \setsansfont{IBM Plex Sans}
+  - \setmonofont{IBM Plex Mono}
   - \setCJKmainfont{Noto Sans HK}
+  - \renewcommand{\familydefault}{\sfdefault}
 ---
 # TORI (Trend- & Oversell-based Rebalancing Instructions) in Sun Life MPF Master Trust Scheme (ex. Schroders MPF Master Trust Scheme)    
 # 永明強積金集成信託計劃（前施羅德強積金集成信託計劃）應用TORI進行資產調配    

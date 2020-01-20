@@ -9,8 +9,11 @@ output:
 header-includes:
   - \usepackage{fontspec}
   - \usepackage{xeCJK}
-  - \setmainfont{Helvetica}
+  - \setmainfont{IBM Plex Serif}
+  - \setsansfont{IBM Plex Sans}
+  - \setmonofont{IBM Plex Mono}
   - \setCJKmainfont{Noto Sans HK}
+  - \renewcommand{\familydefault}{\sfdefault}
 ---
 # TORI (Trend- & Oversell-based Rebalancing Instructions) in BCT MPF ProChoice MPF    
 # 銀聯強積金積金之選應用TORI進行資產調配    
