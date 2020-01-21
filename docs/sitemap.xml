@@ -72,5 +72,11 @@
   <changefreq>monthly</changefreq>
   <priority>0.60</priority>
 </url>
+<url>
+  <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_Fidelity_v1.pdf</loc>
+  <lastmod>2020-01-21T03:15:00+08:00</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>0.60</priority>
+</url>
 
 </urlset>
