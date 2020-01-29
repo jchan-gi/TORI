@@ -1,9 +1,13 @@
-![TORI logo](/docs/assets/Tori.png)
+[![Tori logo](/docs/assets/Tori.png)](https://jchan-gi.github.io/TORI/)     
 
 # TORI by jchan-gi
- [TORI](https://jchan-gi.github.io/TORI/) (Trend- & Oversell-based Rebalance Instruction) is a n-m Moving Average BIAS (NMMA BIAS) based tools to improve portfolio performance by monthly rebalance    
- [TORI](https://jchan-gi.github.io/TORI/)是一個利用時差平均值乖離率(n-m MA BIAS, NMMA BIAS)進行每月再配置以提升投資組合的程式    
+ [Tori](https://jchan-gi.github.io/TORI/) (Trend- & Oversell-based Rebalance Instruction) is a n-m Moving Average BIAS (NMMA BIAS) based tools to improve portfolio performance by monthly rebalance    
+ [Tori](https://jchan-gi.github.io/TORI/)是一個利用時差平均值乖離率(n-m MA BIAS, NMMA BIAS)進行每月再配置以提升投資組合的程式    
 
+# Latest news
+# 最新消息
+Accelerating KAizen at Negative Environment(Akane,あかね) Module have been made public. It could improve return with slight increase of volality. Checkout now!   
+以輕微增加風險以提高回報的Accelerating KAizen at Negative Environment(Akane,あかね)模組現已公開！   
 
 # Disclaimer    
 1. The author (jchan-gi) expressly stated that nothing my repositories and webpages
@@ -31,21 +35,21 @@ professional advice and may not be suitable for anyone except myself.
 # Introduction     
 # 簡介     
 
-TORI can utilize NMMA BIAS to improve [Annualised Return](https://www.investopedia.com/terms/a/annualized-rate.asp), [Internal Rate of Return (IRR)](https://www.investopedia.com/terms/i/irr.asp), [Sharpe Ratio](https://www.investopedia.com/terms/s/sharperatio.asp) and [Conditional Value of Risk (CVaR)](https://en.wikipedia.org/wiki/Expected_shortfall) by monthly rebalancing.    
+Tori can utilize NMMA BIAS to improve [Annualised Return](https://www.investopedia.com/terms/a/annualized-rate.asp), [Internal Rate of Return (IRR)](https://www.investopedia.com/terms/i/irr.asp), [Sharpe Ratio](https://www.investopedia.com/terms/s/sharperatio.asp) and [Conditional Value of Risk (CVaR)](https://en.wikipedia.org/wiki/Expected_shortfall) by monthly rebalancing.    
 
-TORI可以以NMMA BIAS方式進行每月再配置以提升[年率化回報(Annualised Return)](https://www.investopedia.com/terms/a/annualized-rate.asp)、[內部回報率(IRR)](https://www.investopedia.com/terms/i/irr.asp)、[夏普比率(Sharpe Ratio)](https://www.investopedia.com/terms/s/sharperatio.asp)及[CVaR](https://en.wikipedia.org/wiki/Expected_shortfall)的方式！    
+Tori可以以NMMA BIAS方式進行每月再配置以提升[年率化回報(Annualised Return)](https://www.investopedia.com/terms/a/annualized-rate.asp)、[內部回報率(IRR)](https://www.investopedia.com/terms/i/irr.asp)、[夏普比率(Sharpe Ratio)](https://www.investopedia.com/terms/s/sharperatio.asp)及[CVaR](https://en.wikipedia.org/wiki/Expected_shortfall)的方式！    
 
 # n-m MA BIAS    
 # 時差平均值乖離率    
 In 2005, a japanese B.N.F utilized Moving Average BIAS to earn 2 billion yen in intra-day trading...    
-In 2020, TORI could utilize n-m Moving Average BIAS to achieve high performance in long-term investments!    
-The principles TORI is MA BIAS could extract rise and fall with respect to MA line, while n-m intensify the trend of the rise and fall.     
-TORI would further intensify the n-m MA BIAS by considering overbuy/oversell using RSI.    
+In 2020, Tori could utilize n-m Moving Average BIAS to achieve high performance in long-term investments!    
+The principles Tori is MA BIAS could extract rise and fall with respect to MA line, while n-m intensify the trend of the rise and fall.     
+Tori would further intensify the n-m MA BIAS by considering overbuy/oversell using RSI.    
 
 2005年，一名日本網民B．N．F利用平均值乖離率(MA BIAS)執行即日鮮⋯⋯    
-2020年，TORI程式可以運用以時差方式計算的修改版平均值乖離率(n-m MA BIAS, 或NMMA BIAS)進行長線投資！    
-原理係TORI中的MA BIAS可以抽取投資物的比平均值的高低抽取升跌，以時差方式突出趨勢。    
-為了減少超買及加大超賣時的投資，TORI中會再考慮相對強弱指數(RSI)以倍大NMMA BIAS的效果    
+2020年，Tori程式可以運用以時差方式計算的修改版平均值乖離率(n-m MA BIAS, 或NMMA BIAS)進行長線投資！    
+原理係Tori中的MA BIAS可以抽取投資物的比平均值的高低抽取升跌，以時差方式突出趨勢。    
+為了減少超買及加大超賣時的投資，Tori中會再考慮相對強弱指數(RSI)以倍大NMMA BIAS的效果    
 
 # System requirement     
 # 系統要求     
@@ -55,9 +59,9 @@ As long as your system contain the following then you could execute the script.
 2. RStudio    
 
 
-# Testing of TORI     
+# Testing of Tori     
 # 測試結果      
-[TORI](https://jchan-gi.github.io/TORI/) was tested against the following funds (Order by convenient only):   
+[Tori](https://jchan-gi.github.io/TORI/) was tested against the following funds (Order by convenient only):   
 1. [HSBC SuperTrust Plus MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_HSBC_v1.pdf)   
 2. [BOCPT Easy Choice MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_BOCPT_v1.pdf)    
 3. [Sun Life Rainbow MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_SunLife_Rainbow_v1.pdf)    
@@ -66,7 +70,7 @@ As long as your system contain the following then you could execute the script.
 6. [Sun Life MPF Master Trust (Ex. Schroders MPF Master Trust)](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Schroders_v1.pdf)   
 7. [Invesco MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Invesco_v1.pdf)    
 
-[TORI](https://jchan-gi.github.io/TORI/)算法經過以下的基金作出測試（排名不分先後）：   
+[Tori](https://jchan-gi.github.io/TORI/)算法經過以下的基金作出測試（排名不分先後）：   
 1. [滙豐強積金智選計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_HSBC_v1.pdf)   
 2. [中銀保誠簡易強積金計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_BOCPT_v1.pdf)   
 3. [永明彩虹強積金計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_SunLife_Rainbow_v1.pdf)    
@@ -85,12 +89,10 @@ As long as your system contain the following then you could execute the script.
 # 更新預告   
 * The following MPF funds would be assessed in Q1 2020:    
 1. Allianz Global Investors MPF Plan    
-2. Fidelity MPF Plan    
 * A portfolio of retail mutual funds in Hong Kong; and    
 * a portfolio of US ETFs would be assessed in Q2 2020. Please refer to the plain text file in root directory of repository (to be release soon) for the list of mutual funds and ETFs.   
 
-* 應用以下強制性公積金（強積金）計劃評估TORI的結果將於2020年第一季公佈:    
+* 應用以下強制性公積金（強積金）計劃評估Tori的結果將於2020年第一季公佈:    
 1. 安聯強積金    
-2. 富達強積金   
 * 一個由零售共同基金組成的投資組合及     
-* 一個由美國上市的交易所買賣基金所組成的投資組合將於2020年第二季作出對TORI的評估並公佈結果。基金列表即將公佈！   
+* 一個由美國上市的交易所買賣基金所組成的投資組合將於2020年第二季作出對Tori的評估並公佈結果。基金列表即將公佈！   
