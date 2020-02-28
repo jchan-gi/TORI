@@ -307,6 +307,7 @@ MPF.SunLife.stock.return[] <- NA
 MPF.portf.return <- as.xts(rowSums(MPF.SunLife.BIAS.month), order.by=monthly)
 MPF.portf.return[] <- NA
 
+up <- TRUE
 hedge <- FALSE
 
 round_percent <- function(x) { 
@@ -479,13 +480,13 @@ portf.rebal.fm.sharpe <- Return.annualized(portf.rebal.fm, geometric=TRUE) / (St
 rownames(portf.rebal.fm.sharpe) <- "Sharpe Ratio"
 Return.annualized(portf.rebal.fm, geometric=TRUE)
 mean.annual.return
-portf.rebal.fm.sharpe
+
 portf.rebal.fm.sharpe.mean <- mean.annual.return / (StdDev.annualized(portf.rebal.fm))
 rownames(portf.rebal.fm.sharpe.mean) <- "Sharpe Ratio (Mean annual return)"
+SharpeRatio(portf.rebal.fm) * sqrt(12)
 portf.rebal.fm.sharpe.mean
 StdDev.annualized(portf.rebal.fm)
-
-SortinoRatio(portf.rebal.fm)
+SortinoRatio(portf.rebal.fm) * sqrt(12)
 ES(portf.rebal.fm, method="historical")
 tail(MPF.portf.weight, n=6)
 ```

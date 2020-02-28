@@ -207,7 +207,7 @@ Min_NMMA <- 0.00002
 
 1. Load the price into zoo format
 ```{r warning=FALSE}
-MPF.HSBC <- as.xts(read.zoo("~/OneDrive/MPF/HSBC SuperTrust Plus/HSBC_MPF_SuperTrustPlus.csv", format="%d/%m/%Y", header=TRUE, na.strings="0", read = read.csv))
+MPF.HSBC <- as.xts(read.zoo("D:/OneDrive/MPF/HSBC SuperTrust Plus/HSBC_MPF_SuperTrustPlus.csv", format="%d/%m/%Y", header=TRUE, na.strings="0", read = read.csv))
 
 daily <- index(MPF.HSBC)
 ```
@@ -228,7 +228,7 @@ MPF.HSBC.RSI <- as.xts(MPF.HSBC.RSI, order.by = daily)
 
 4. Calculate Returns
 ```{r warning=FALSE}
-MPF.HSBC.AP <- monthlyReturn(as.xts(MPF.HSBC$Asia.Pacific.Equity.Fund), type="log")
+ MPF.HSBC.AP <- monthlyReturn(as.xts(MPF.HSBC$Asia.Pacific.Equity.Fund), type="log")
 MPF.HSBC.B <- monthlyReturn(as.xts(MPF.HSBC$Balanced.Fund), type="log")
 MPF.HSBC.CA <- monthlyReturn(as.xts(MPF.HSBC$Core.Accumulation.Fund), type="log")
 MPF.HSBC.CE <- monthlyReturn(as.xts(MPF.HSBC$China.Equity.Fund), type="log")
@@ -331,6 +331,8 @@ MPF.portf.return <- as.xts(rowSums(MPF.HSBC.BIAS.month),
                            order.by=monthly)
 MPF.portf.return[] <- NA
 
+
+up <- TRUE
 hedge <- FALSE
 
 round_percent <- function(x) { 
@@ -526,16 +528,17 @@ rownames(portf.rebal.fm.sharpe) <- "Sharpe Ratio"
 Return.cumulative(portf.rebal.fm, geometric = TRUE)
 Return.annualized(portf.rebal.fm, geometric=TRUE)
 mean.annual.return
-portf.rebal.fm.sharpe
 portf.rebal.fm.sharpe.mean <- mean.annual.return / 
   (StdDev.annualized(portf.rebal.fm))
 rownames(portf.rebal.fm.sharpe.mean) <- "Sharpe Ratio (Mean annual return)"
+
+SharpeRatio(portf.rebal.fm) * sqrt(12)
 portf.rebal.fm.sharpe.mean
 StdDev.annualized(portf.rebal.fm)
-
-SortinoRatio(portf.rebal.fm)
+SortinoRatio(portf.rebal.fm) * sqrt(12)
 ES(portf.rebal.fm, method="historical")
 tail(MPF.portf.weight, n=6)
+
 ```
 
 ### Monthly Installment
