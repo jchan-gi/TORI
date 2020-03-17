@@ -204,7 +204,7 @@ Min_NMMA <- 0.00002
 
 1. Load the price into zoo format
 ```{r warning=FALSE}
-MPF.HSBC <- as.xts(read.zoo("~/OneDrive/MPF/HSBC SuperTrust Plus/HSBC_MPF_SuperTrustPlus.csv", format="%d/%m/%Y", header=TRUE, na.strings="0", read = read.csv))
+MPF.HSBC <- as.xts(read.zoo("F:/OneDrive/MPF/HSBC SuperTrust Plus/HSBC_MPF_SuperTrustPlus.csv", format="%d/%m/%Y", header=TRUE, na.strings="0", read = read.csv))
 
 daily <- index(MPF.HSBC)
 ```
@@ -254,6 +254,44 @@ MPF.HSBC.returns <- merge(MPF.HSBC.AP, MPF.HSBC.B, MPF.HSBC.CA, MPF.HSBC.CE,
 monthly <- index(MPF.HSBC.returns)
 
 colnames(MPF.HSBC.returns) <- c("AP", "B", "CA", "CE", 
+                                "EE", "GB", "G", "HSIT", 
+                                "HKCE", "MPFC", "NA", "S", 
+                                "HSHIT", "VCAP", "VCB", "VCE", 
+                                "VCUS", "GE")
+
+rm(MPF.HSBC.AP, MPF.HSBC.B, MPF.HSBC.CA, MPF.HSBC.CE, 
+   MPF.HSBC.EE, MPF.HSBC.G, MPF.HSBC.GB, MPF.HSBC.HKCE,
+   MPF.HSBC.HSIT, MPF.HSBC.MPFC, MPF.HSBC.NA, MPF.HSBC.S, 
+   MPF.HSBC.HSHIT, MPF.HSBC.VCAP, MPF.HSBC.VCB, MPF.HSBC.VCE, 
+   MPF.HSBC.VCUS, MPF.HSBC.GE)
+
+MPF.HSBC.AP <- monthlyReturn(as.xts(MPF.HSBC$Asia.Pacific.Equity.Fund), type="arithmetic")
+MPF.HSBC.B <- monthlyReturn(as.xts(MPF.HSBC$Balanced.Fund), type="arithmetic")
+MPF.HSBC.CA <- monthlyReturn(as.xts(MPF.HSBC$Core.Accumulation.Fund), type="arithmetic")
+MPF.HSBC.CE <- monthlyReturn(as.xts(MPF.HSBC$China.Equity.Fund), type="arithmetic")
+MPF.HSBC.EE <- monthlyReturn(as.xts(MPF.HSBC$European.Equity.Fund), type="arithmetic")
+MPF.HSBC.G <- monthlyReturn(as.xts(MPF.HSBC$Growth.Fund), type="arithmetic")
+MPF.HSBC.GB <- monthlyReturn(as.xts(MPF.HSBC$Global.Bond.Fund), type="arithmetic")
+MPF.HSBC.HSIT <- monthlyReturn(as.xts(MPF.HSBC$Hang.Seng.Index.Tracking.Fund), type="arithmetic")
+MPF.HSBC.HKCE <- monthlyReturn(as.xts(MPF.HSBC$Hong.Kong.and.Chinese.Equity.Fund), type="arithmetic")
+MPF.HSBC.MPFC <- monthlyReturn(as.xts(MPF.HSBC$MPF.Conservative.Fund), type="arithmetic")
+MPF.HSBC.NA <- monthlyReturn(as.xts(MPF.HSBC$North.American.Equity.Fund), type="arithmetic")
+MPF.HSBC.S <- monthlyReturn(as.xts(MPF.HSBC$Stable.Fund), type="arithmetic")
+MPF.HSBC.HSHIT <- monthlyReturn(as.xts(MPF.HSBC$HSI.H.Share), type="arithmetic")
+MPF.HSBC.VCAP <- monthlyReturn(as.xts(MPF.HSBC$ValueChoice.Asia.Pacific), type="arithmetic")
+MPF.HSBC.VCB <- monthlyReturn(as.xts(MPF.HSBC$ValueChoice.Balanced), type="arithmetic")
+MPF.HSBC.VCE <- monthlyReturn(as.xts(MPF.HSBC$ValueChoice.European), type="arithmetic")
+MPF.HSBC.VCUS <- monthlyReturn(as.xts(MPF.HSBC$ValueChoice.US.Equity), type="arithmetic")
+MPF.HSBC.GE <- monthlyReturn(as.xts(MPF.HSBC$Global.Equity), type="arithmetic")
+
+MPF.HSBC.simple.returns <- merge(MPF.HSBC.AP, MPF.HSBC.B, MPF.HSBC.CA, MPF.HSBC.CE, 
+                          MPF.HSBC.EE, MPF.HSBC.GB, MPF.HSBC.G, MPF.HSBC.HSIT, 
+                          MPF.HSBC.HKCE, MPF.HSBC.MPFC, MPF.HSBC.NA, MPF.HSBC.S, 
+                          MPF.HSBC.HSHIT, MPF.HSBC.VCAP, MPF.HSBC.VCB, MPF.HSBC.VCE, 
+                          MPF.HSBC.VCUS, MPF.HSBC.GE)
+
+
+colnames(MPF.HSBC.simple.returns) <- c("AP", "B", "CA", "CE", 
                                 "EE", "GB", "G", "HSIT", 
                                 "HKCE", "MPFC", "NA", "S", 
                                 "HSHIT", "VCAP", "VCB", "VCE", 
@@ -477,7 +515,7 @@ for (row in 1:length(MPF.HSBC.BIAS.month[,1])) {
   
   portf.rebal.fm <-
     Return.portfolio(
-      na.fill(MPF.HSBC.returns, 0),
+      na.fill(MPF.HSBC.simple.returns, 0),
       weight = MPF.portf.weight[1:row,],
       geometric = TRUE,
       rebalance_on = "months"
@@ -498,7 +536,7 @@ for (row in 1:length(MPF.HSBC.BIAS.month[,1])) {
 ### Performance Analysis
 ```{r warning=FALSE}
 portf.rebal.fm <- Return.portfolio(
-  MPF.HSBC.returns,
+  MPF.HSBC.simple.returns,
   weight = MPF.portf.weight,
   geometric = TRUE,
   rebalance_on = "months"
@@ -547,11 +585,11 @@ MPF.monthly.returns <-
   as.xts(rowSums(MPF.HSBC.returns), order.by = monthly)
 MPF.monthly.returns[] <- 0
 
-MPF.time <- 0:length(MPF.HSBC.returns[, 1]) / 12
+MPF.time <- 0:length(MPF.HSBC.simple.returns[, 1]) / 12
 MPF.pay <- -1500 + 0 * MPF.time
 
 
-for (row in 1:length(MPF.HSBC.returns[, 1])) {
+for (row in 1:length(MPF.HSBC.simple.returns[, 1])) {
 #for (row in 1:13) {
   this.price <- as.matrix(MPF.HSBC[monthly[row]])
   MPF.HSBC.units[row, ] <- this.price
@@ -559,7 +597,7 @@ for (row in 1:length(MPF.HSBC.returns[, 1])) {
   if (row == 1) {
     last.value <- 1500 / 10
     this.value <- last.value * this.price[10]
-    MPF.monthly.returns[row] <- log(sum(na.fill(this.value,0)) / 1500)
+    MPF.monthly.returns[row] <- sum(na.fill(this.value,0)-1500) / 1500
     MPF.monthly.asset[row,] <-
       na.fill(((this.value + 1500) / this.price * MPF.portf.weight[row, ]) / 
                 this.price,0)
@@ -568,7 +606,7 @@ for (row in 1:length(MPF.HSBC.returns[, 1])) {
     
     last.value <- na.fill(MPF.monthly.asset[row-1,] * last.price,0)
     this.value <- na.fill(MPF.monthly.asset[row-1,] * this.price,0)
-    MPF.monthly.returns[row] <- log(sum(this.value) / sum(last.value))
+    MPF.monthly.returns[row] <- (sum(this.value)-sum(last.value)) / sum(last.value)
 
     MPF.monthly.asset.old <- this.value / sum(na.fill(this.value,0))
     MPF.monthly.asset.propose <- as.matrix(MPF.portf.weight[row,]) -
@@ -588,7 +626,7 @@ for (row in 1:length(MPF.HSBC.returns[, 1])) {
 
 
 total.asset.value <- sum(MPF.monthly.asset[row, ] * this.price)
-total.contribution <- 1500 * length(MPF.HSBC.returns[, 1])
+total.contribution <- 1500 * length(MPF.HSBC.simple.returns[, 1])
 
 MPF.pay[row + 1] <- total.asset.value
 IRR.f <- function(r)
