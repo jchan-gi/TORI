@@ -19,6 +19,7 @@
 	     -webkit-text-size-adjust: 100%;
 	     padding: 0px;
 		 margin: 0px;
+     overflow: hidden;
 	  }
 
 
@@ -35,27 +36,29 @@
 		 left: 0px;
 		 background-color: Aquamarine;
 		 width: 100%;
-		 overflow: auto;
 	  }
 
 	  div.dropdown-content {
-	     font-size: 100%;
-	     display: none;
+      font-size: 100%;
+      position: fixed;
+      display: none;
 		 width: 100%;
+     height: 24%;
 		 background-color: LightCoral;
-		 overflow:auto;
+     overflow-y: auto;
+     overflow-x: hidden;
 		 z-index: 0;
 
 	  }
 
 	  .dropdown:hover .dropdown-content {
          display: block;
-		 z-index: 1;
+         z-index: 1;
       }
 
 	  .dropdown-content:active {
 	     display: none;
-		 z-index: 0;
+       z-index: 0;
 	  }
 
 
@@ -183,6 +186,9 @@
 
 <div class="dropdown"><a href="javascript:void(0);" style="font-weight: bold; display:block;"><p>選擇一個共同基金/ETF/強積金計劃 Select one of the Mutual fund/ETF/MPF schemes.</p></a>
 <div class="dropdown-content">
+  <p>
+    <a href="./Results/AKANE_TORI_MPF_HSBC_v1.pdf" target="result">AKANE module + HSBC SuperTrust Plus MPF (使用Akane模組的滙豐強積金智選計劃）</a>
+  </p>
    <p>
      <a href="./Results/TORI_MPF_HSBC_v1.pdf" target="result">HSBC SuperTrust Plus MPF (滙豐強積金智選計劃）</a>
    </p>
@@ -202,6 +208,9 @@
       <a href="./Results/TORI_MPF_BOCPT_cs_v1.pdf" target="result"> BOCPT Easy Choice MPF (Civil servant pricing)（中銀保誠簡易強積金計劃 - 公務員收費）</a>
    </p>
    <p>
+      <a href="./Results/TORI_MPF_Fidelity_v1.pdf" target="result"> Fidelity MPF Scheme（富達強積金計劃）</a>
+   </p>
+   <p>
       <a href="./Results/TORI_MPF_Invesco_v1.pdf" target="result"> Invesco MPF Scheme（景順強積金計劃）</a>
    </p>
    <p>
@@ -217,7 +226,7 @@
 </div>
 
  <div class="content">
-   <iframe name="result" height="100%" width="100%" src="./Results/TORI_MPF_HSBC_v1.pdf"></iframe>
+   <iframe title="PDF files containing the results" name="result" height="100%" width="100%" src="./Results/TORI_MPF_HSBC_v1.pdf"></iframe>
  </div>
 
 <div class="footer">

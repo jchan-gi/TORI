@@ -8,67 +8,79 @@
   <priority>1.00</priority>
 </url>
 <url>
-  <loc>https://jchan-gi.github.io/TORI/index.html/</loc>
+  <loc>https://jchan-gi.github.io/TORI/index.html</loc>
   <lastmod>2020-01-15T02:30:00+08:00</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
   <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_SunLife_Rainbow_cs_v1.pdf</loc>
-  <lastmod>2020-01-17T00:45:00+08:00</lastmod>
+  <lastmod>2020-01-20T12:00:00+08:00</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.60</priority>
 </url>
 <url>
   <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_SunLife_Rainbow_v1.pdf</loc>
-  <lastmod>2020-01-17T00:45:00+08:00</lastmod>
+  <lastmod>2020-01-20T12:00:00+08:00</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.60</priority>
 </url>
 <url>
   <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_BCT_cs_v1.pdf</loc>
-  <lastmod>2020-01-17T00:45:00+08:00</lastmod>
+  <lastmod>2020-01-20T12:00:00+08:00</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.60</priority>
 </url>
 <url>
   <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_BCT_v1.pdf</loc>
-  <lastmod>2020-01-17T00:45:00+08:00</lastmod>
+  <lastmod>2020-01-20T12:00:00+08:00</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.60</priority>
 </url>
 <url>
   <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_BOCPT_cs_v1.pdf</loc>
-  <lastmod>2020-01-17T00:45:00+08:00</lastmod>
+  <lastmod>2020-01-20T12:00:00+08:00</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.60</priority>
 </url>
 <url>
   <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_BOCPT_v1.pdf</loc>
-  <lastmod>2020-01-17T00:45:00+08:00</lastmod>
+  <lastmod>2020-01-20T12:00:00+08:00</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>0.60</priority>
+</url>
+<url>
+  <loc>https://jchan-gi.github.io/TORI/Results/AKANE_TORI_MPF_HSBC_v1.pdf</loc>
+  <lastmod>2020-01-29T06:25:00+08:00</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.60</priority>
 </url>
 <url>
   <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_HSBC_v1.pdf</loc>
-  <lastmod>2020-01-17T12:45:00+08:00</lastmod>
+  <lastmod>2020-01-20T09:55:00+08:00</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.60</priority>
 </url>
 <url>
   <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_AIA_v1.pdf</loc>
-  <lastmod>2020-01-17T00:45:00+08:00</lastmod>
+  <lastmod>2020-01-20T12:00:00+08:00</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.60</priority>
 </url>
 <url>
   <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_Schroders_v1.pdf</loc>
-  <lastmod>2020-01-17T00:45:00+08:00</lastmod>
+  <lastmod>2020-01-20T12:00:00+08:00</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.60</priority>
 </url>
 <url>
   <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_Invesco_v1.pdf</loc>
-  <lastmod>2020-01-17T00:45:00+08:00</lastmod>
+  <lastmod>2020-01-20T12:00:00+08:00</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>0.60</priority>
+</url>
+<url>
+  <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_Fidelity_v1.pdf</loc>
+  <lastmod>2020-01-21T03:15:00+08:00</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.60</priority>
 </url>

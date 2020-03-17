@@ -9,8 +9,11 @@ output:
 header-includes:
   - \usepackage{fontspec}
   - \usepackage{xeCJK}
-  - \setmainfont{Helvetica}
+  - \setmainfont{IBM Plex Serif}
+  - \setsansfont{IBM Plex Sans}
+  - \setmonofont{IBM Plex Mono}
   - \setCJKmainfont{Noto Sans HK}
+  - \renewcommand{\familydefault}{\sfdefault}
 ---
 # TORI (Trend- & Oversell-based Rebalancing Instructions) in BOCPT Easy Choice MPF    
 # 中銀保誠簡易強積金應用TORI進行資產調配    
@@ -314,6 +317,7 @@ MPF.BOCPT.stock.return[] <- NA
 MPF.portf.return <- as.xts(rowSums(MPF.BOCPT.BIAS.month), order.by=monthly)
 MPF.portf.return[] <- NA
 
+up <- TRUE
 hedge <- FALSE
 
 round_percent <- function(x) { 
@@ -486,13 +490,13 @@ portf.rebal.fm.sharpe <- Return.annualized(portf.rebal.fm, geometric=TRUE) / (St
 rownames(portf.rebal.fm.sharpe) <- "Sharpe Ratio"
 Return.annualized(portf.rebal.fm, geometric=TRUE)
 mean.annual.return
-portf.rebal.fm.sharpe
+
 portf.rebal.fm.sharpe.mean <- mean.annual.return / (StdDev.annualized(portf.rebal.fm))
 rownames(portf.rebal.fm.sharpe.mean) <- "Sharpe Ratio (Mean annual return)"
+SharpeRatio(portf.rebal.fm) * sqrt(12)
 portf.rebal.fm.sharpe.mean
 StdDev.annualized(portf.rebal.fm)
-
-SortinoRatio(portf.rebal.fm)
+SortinoRatio(portf.rebal.fm) * sqrt(12)
 ES(portf.rebal.fm, method="historical")
 tail(MPF.portf.weight, n=6)
 ```
