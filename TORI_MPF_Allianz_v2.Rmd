@@ -403,7 +403,6 @@ MPF.Fidelity.stock.return[] <- NA
 MPF.portf.return <- as.xts(rowSums(MPF.Fidelity.BIAS.month), order.by=monthly)
 MPF.portf.return[] <- NA
 
-up <- TRUE
 hedge <- FALSE
 
 round_percent <- function(x) { 
@@ -534,7 +533,7 @@ for (row in 1:length(MPF.Fidelity.BIAS.month[,1])) {
   
   portf.rebal.fm <-
     Return.portfolio(
-      na.fill(MPF.Fidelity.returns, 0),
+      na.fill(MPF.Fidelity.simple.returns, 0),
       weight = MPF.portf.weight[1:row,],
       geometric = TRUE,
       rebalance_on = "months"
@@ -555,7 +554,7 @@ for (row in 1:length(MPF.Fidelity.BIAS.month[,1])) {
 ### Performance Analysis
 ```{r warning=FALSE}
 portf.rebal.fm <- Return.portfolio(
-  MPF.Fidelity.returns,
+  MPF.Fidelity.simple.returns,
   weight = MPF.portf.weight,
   geometric = TRUE,
   rebalance_on = "months"
@@ -578,12 +577,13 @@ portf.rebal.fm.sharpe <- Return.annualized(portf.rebal.fm, geometric=TRUE) / (St
 rownames(portf.rebal.fm.sharpe) <- "Sharpe Ratio"
 Return.annualized(portf.rebal.fm, geometric=TRUE)
 mean.annual.return
+portf.rebal.fm.sharpe
 portf.rebal.fm.sharpe.mean <- mean.annual.return / (StdDev.annualized(portf.rebal.fm))
 rownames(portf.rebal.fm.sharpe.mean) <- "Sharpe Ratio (Mean annual return)"
-SharpeRatio(portf.rebal.fm) * sqrt(12)
 portf.rebal.fm.sharpe.mean
 StdDev.annualized(portf.rebal.fm)
-SortinoRatio(portf.rebal.fm) * sqrt(12)
+
+SortinoRatio(portf.rebal.fm)
 ES(portf.rebal.fm, method="historical")
 tail(MPF.portf.weight, n=6)
 ```
@@ -612,21 +612,16 @@ for (row in 2:length(MPF.Fidelity.returns[, 1])) {
   if (row == 2) {
     last.value <- 1500 / 10
     this.value <- last.value * this.price[6]
-    MPF.monthly.returns[row] <- log(sum(na.fill(this.value,0)) / 1500)
+    MPF.monthly.returns[row] <- (sum(na.fill(this.value,0)) - 1500) / 1500
     MPF.monthly.asset[row,] <-
       na.fill(((this.value + 1500) / this.price * MPF.portf.weight[row, ]),0)
     
     last.price <- this.price
   } else {
-    last.value <-
-     as.numeric(sum(na.fill(last.price * MPF.monthly.asset[row - 1, ], 0)))
-    this.value <-
-     as.numeric(sum(na.fill(this.price * MPF.monthly.asset[row - 1, ], 0)))
-    MPF.monthly.returns[row] <- log(this.value / last.value)
 
     last.value <- na.fill(MPF.monthly.asset[row-1,] * last.price,0)
     this.value <- na.fill(MPF.monthly.asset[row-1,] * this.price,0)
-    MPF.monthly.returns[row] <- log(sum(this.value) / sum(last.value))
+    MPF.monthly.returns[row] <- (sum(this.value) - sum(last.value)) / sum(last.value)
 
     MPF.monthly.asset.old <- this.value / sum(na.fill(this.value,0))
     MPF.monthly.asset.propose <- as.matrix(MPF.portf.weight[row,]) -
@@ -650,15 +645,14 @@ IRR.f <- function(r)
   sum(MPF.pay * exp(-r * MPF.time))
 IRR.root <- uniroot(IRR.f, c(0, 1))
 
-
-total.asset.value
-total.contribution
+cat("Total asset in the last valuation date: ", total.asset.value, "\n")
+cat("Total contribution starting from 2000/12/01: ", total.contribution, "\n")
 
 mean.monthly.annual.return <-
   mean(do.call(rbind, lapply(split(MPF.monthly.returns, "years"), function(x)
     colMeans(x))) * 12)
-mean.monthly.annual.return
-IRR.root$root
+cat("Mean Annual Return: ", mean.monthly.annual.return, "\n")
+cat("Internal Rate of Return (IRR): ", IRR.root$root, "\n")
 
 stddev.monthly <- (StdDev(MPF.monthly.returns) * sqrt(12))
 monthly.installment.sharpe.ratio <-
@@ -668,7 +662,7 @@ rownames(monthly.installment.sharpe.ratio) <-
 
 StdDev.annualized(MPF.monthly.returns)
 monthly.installment.sharpe.ratio
-SortinoRatio(MPF.monthly.returns)
+SortinoRatio(MPF.monthly.returns) * sqrt(12)
 ES(MPF.monthly.returns, method = "historical")
 
 ```

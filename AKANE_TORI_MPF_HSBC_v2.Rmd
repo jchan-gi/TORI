@@ -15,8 +15,8 @@ header-includes:
   - \setCJKmainfont{Noto Sans HK}
   - \renewcommand{\familydefault}{\sfdefault}
 ---
-
-<p style="text-align: center;">[![Tori logo](./docs/assets/Tori.png "The logo of Tori")](https://github.com/jchan-gi/TORI)</p>       
+<p style="text-align: center;">[![Tori logo](./docs/assets/Tori.png "The logo of Tori")](https://github.com/jchan-gi/TORI)</p>   
+    
 
 # Akane Tori in HSBC SuperTrust Plus MPF    
 # 滙豐強積金應用Akane Tori進行資產調配    
@@ -26,32 +26,31 @@ Accelerating KAizen at Negative Environment + Trend- & Oversell-based Rebalancin
 
 
 ## Disclaimer    
-1. The author (jchan-gi) expressly stated that nothing my repositories and webpages
-constitutes any advices or recommendation on investing or allocating assets on any
-stock or financial products.    
-2. No content in my study have been prepared with respect to specific personal need
-and investment objects of individuals. All materials reveal to the public are applicable
-to the author (jchan-gi) only.
-3. All investors shall obtain kind advices from professional financial consultants before
-making any decisions. Professional financial consultants should recommend products 
-or decisions that suit your needs and objectives.    
-4. The author is not licensed nor professional in the field hence this studies are not 
-professional advice and may not be suitable for anyone except myself.  
-5. You shall not invest on any financial products using the information on this code repository, website or any information made public by jchan-gi alone. You agree you have fully understand and willing to undertake the risks of this script in any circumstances involves in using this script.    
-6. English version shall be used if any discrepencies exists between English and Chinese version.     
+1. The author (jchan-gi) expressly stated that nothing my repositories and webpages constitutes any advices or recommendation on investing or allocating assets on any stock or financial products.    
+2. No content in my study have been prepared with respect to specific personal need and investment objects of individuals. All materials reveal to the public are applicable to the author (jchan-gi) only.   
+3. All results from this repository are simulated from historical data only. It may portray inaccurate information and hence the repository must not applied in production and must used as academic exchange only. The author is not responsible in any loss induced from using this repository.   
+4. All investors shall obtain kind advices from professional financial consultants before making any decisions. Professional financial consultants should recommend products or decisions that suit your needs and objectives.    
+5. The author is not licensed nor professional in the field hence this studies are not professional advice and may not be suitable for anyone except myself.  
+6. You shall not invest on any financial products using the information on this code repository, website or any information made public by jchan-gi alone. You agree you have fully understand and willing to undertake the risks of this script in any circumstances involves in using this script.    
+7. English version shall be used if any discrepencies exists between English and Chinese version.     
 
 ## 免責聲明    
 1. 本文作者現此聲明，本人的程式及網頁並非對閤下提供或作出對任何金融產品的投資或資產調配的建議。  
 2. 本文內容沒有針對閣下或其他人的實際個人需要而編撰。所有公開的內容只適用於本文作者。   
-3. 所有投資者應在作出任何決定前，先向專業理財顧問查詢及要求提供意見。只有理財顧問的意見才能符合閣下的實際理財需要及風險胃納。   
-4. 本文作者非專業人士或持牌從業者，因此，本文內容並非專業意見。而且，本文內容極有可能並不合適於除作者以外的任何人。
-5. 在作出任何投資決定前，你不應單靠此程序作出決定。當你作出任何與本程序算法有關的投資決定時，你已完全知悉並願意接受本程序或算法所帶來的風險。    
-6. 本聲明如有歧義，將以英文版本作準。    
+3. 本文內容根據歷史數據模擬回報率等一切資訊。該等資訊可能非常不準確，本文及程式庫任何內容不應於實際環境使用，及只供學術討論。如因使用本程式庫任何內容而招致損失，作者一概不會負責。   
+4. 所有投資者應在作出任何決定前，先向專業理財顧問查詢及要求提供意見。只有理財顧問的意見才能符合閣下的實際理財需要及風險胃納。   
+5. 本文作者非專業人士或持牌從業者，因此，本文內容並非專業意見。而且，本文內容極有可能並不合適於除作者以外的任何人。    
+6. 在作出任何投資決定前，你不應單靠此程序作出決定。當你作出任何與本程序算法有關的投資決定時，你已完全知悉並願意接受本程序或算法所帶來的風險。    
+7. 本聲明如有歧義，將以英文版本作準。    
 
 
-## 最後更新日期 Last update: 2020/01/29.   
+## 最後更新日期 Last update: 2020/03/18.   
 ### Changelog    
 ### 更新記錄    
+
+2020-03-18 v2   
+1. Separate the return used in calculating AKANE, TORI (log) and return (simple)      
+1. 修正計算回報時使用的方式      
 
 2020-01-29 v1    
 1. Akane Tori is officially published and backtested with HSBC SuperTrust Plus MPF   
@@ -126,23 +125,23 @@ In this example, MPF would have T+2 time delay for obtaining historical price, h
 ### Akane Tori 前移式回測結果     
 
 單一供款 One-off MPF Installment:    
-年率化回報 Annualized Return: ~12.14%     
-算術年均回報 Mean Annual Return: ~12.12%       
-累積回報（等比） Cumulative Return (Geometric): ~782.90%    
-年率化標準誤差 Annualized Standard Deviation: ~11.12% (StdDev(monthly return) * sqrt(12))    
-夏普比率 Sharpe Ratio: 1.0918          
-索丁諾比率 Sortino Ratio: 0.6457 (MAR = 0%)      
-預期損失 Expected Shortfall: 5.77% loss (0% Risk-free rate, 95% C.I.)       
+年率化回報 Annualized Return: ~13.01%     
+算術年均回報 Mean Annual Return: ~12.92%       
+累積回報 Cumulative Return: ~921.71%    
+年率化標準誤差 Annualized Standard Deviation: ~11.41% (StdDev(monthly return) * sqrt(12))    
+夏普比率 Sharpe Ratio: 1.1325          
+索丁諾比率 Sortino Ratio: 2.4607 (MAR = 0%)      
+預期損失 Expected Shortfall: 5.58% loss (0% Risk-free rate, 95% C.I.)       
 
 月供投資 Monthly MPF installment (或有誤差 maybe slightly differs):    
 每月供款 Monthly installment amount: 2301    
 總供款 Total contribution: 526929    
-最新結餘 Latest asset value: 1320398    
-算術年均回報 Mean annual return (arithmetric): 11.80%      
+最新結餘 Latest asset value: 2402496    
+算術年均回報 Mean annual return (arithmetric): 12.46%      
 內部回報率 Internal Rate of Return (IRR): 13.20%    
-年率化標準誤差 Annualized Standard Deviation: 11.11%    
-夏普比率 Sharpe Ratio: 1.0625          
-索丁諾比率 Sortino Ratio: 0.6537 (MAR = 0%)    
+年率化標準誤差 Annualized Standard Deviation: 11.39%    
+夏普比率 Sharpe Ratio: 1.0939          
+索丁諾比率 Sortino Ratio: 2.4583 (MAR = 0%)    
 
 ## 流程 Detailed Workflow
 
@@ -198,7 +197,7 @@ Min_NMMA <- 0.00002
 1. Load the price into zoo format
 ```{r warning=FALSE}
 MPF.HSBC <- as.xts(read.zoo("~/OneDrive/MPF/HSBC SuperTrust Plus/HSBC_MPF_SuperTrustPlus.csv", format="%d/%m/%Y", header=TRUE, na.strings="0", read = read.csv))
-
+MPF.HSBC <- head(MPF.HSBC, -19)
 daily <- index(MPF.HSBC)
 ```
 
@@ -258,6 +257,43 @@ rm(MPF.HSBC.AP, MPF.HSBC.B, MPF.HSBC.CA, MPF.HSBC.CE,
    MPF.HSBC.HSHIT, MPF.HSBC.VCAP, MPF.HSBC.VCB, MPF.HSBC.VCE, 
    MPF.HSBC.VCUS, MPF.HSBC.GE)
 
+MPF.HSBC.AP <- monthlyReturn(as.xts(MPF.HSBC$Asia.Pacific.Equity.Fund), type="arithmetic")
+MPF.HSBC.B <- monthlyReturn(as.xts(MPF.HSBC$Balanced.Fund), type="arithmetic")
+MPF.HSBC.CA <- monthlyReturn(as.xts(MPF.HSBC$Core.Accumulation.Fund), type="arithmetic")
+MPF.HSBC.CE <- monthlyReturn(as.xts(MPF.HSBC$China.Equity.Fund), type="arithmetic")
+MPF.HSBC.EE <- monthlyReturn(as.xts(MPF.HSBC$European.Equity.Fund), type="arithmetic")
+MPF.HSBC.G <- monthlyReturn(as.xts(MPF.HSBC$Growth.Fund), type="arithmetic")
+MPF.HSBC.GB <- monthlyReturn(as.xts(MPF.HSBC$Global.Bond.Fund), type="arithmetic")
+MPF.HSBC.HSIT <- monthlyReturn(as.xts(MPF.HSBC$Hang.Seng.Index.Tracking.Fund), type="arithmetic")
+MPF.HSBC.HKCE <- monthlyReturn(as.xts(MPF.HSBC$Hong.Kong.and.Chinese.Equity.Fund), type="arithmetic")
+MPF.HSBC.MPFC <- monthlyReturn(as.xts(MPF.HSBC$MPF.Conservative.Fund), type="arithmetic")
+MPF.HSBC.NA <- monthlyReturn(as.xts(MPF.HSBC$North.American.Equity.Fund), type="arithmetic")
+MPF.HSBC.S <- monthlyReturn(as.xts(MPF.HSBC$Stable.Fund), type="arithmetic")
+MPF.HSBC.HSHIT <- monthlyReturn(as.xts(MPF.HSBC$HSI.H.Share), type="arithmetic")
+MPF.HSBC.VCAP <- monthlyReturn(as.xts(MPF.HSBC$ValueChoice.Asia.Pacific), type="arithmetic")
+MPF.HSBC.VCB <- monthlyReturn(as.xts(MPF.HSBC$ValueChoice.Balanced), type="arithmetic")
+MPF.HSBC.VCE <- monthlyReturn(as.xts(MPF.HSBC$ValueChoice.European), type="arithmetic")
+MPF.HSBC.VCUS <- monthlyReturn(as.xts(MPF.HSBC$ValueChoice.US.Equity), type="arithmetic")
+MPF.HSBC.GE <- monthlyReturn(as.xts(MPF.HSBC$Global.Equity), type="arithmetic")
+
+MPF.HSBC.simple.returns <- merge(MPF.HSBC.AP, MPF.HSBC.B, MPF.HSBC.CE, MPF.HSBC.CA,
+                          MPF.HSBC.EE, MPF.HSBC.GB, MPF.HSBC.G, MPF.HSBC.HSIT, 
+                          MPF.HSBC.HKCE, MPF.HSBC.MPFC, MPF.HSBC.NA, MPF.HSBC.S, 
+                          MPF.HSBC.HSHIT, MPF.HSBC.VCAP, MPF.HSBC.VCB, MPF.HSBC.VCE, 
+                          MPF.HSBC.VCUS, MPF.HSBC.GE)
+
+
+colnames(MPF.HSBC.simple.returns) <- c("AP", "B", "CE", "CA",
+                                "EE", "GB", "G", "HSIT", 
+                                "HKCE", "MPFC", "NA", "S", 
+                                "HSHIT", "VCAP", "VCB", "VCE", 
+                                "VCUS", "GE")
+
+rm(MPF.HSBC.AP, MPF.HSBC.B, MPF.HSBC.CA, MPF.HSBC.CE, 
+   MPF.HSBC.EE, MPF.HSBC.G, MPF.HSBC.GB, MPF.HSBC.HKCE,
+   MPF.HSBC.HSIT, MPF.HSBC.MPFC, MPF.HSBC.NA, MPF.HSBC.S, 
+   MPF.HSBC.HSHIT, MPF.HSBC.VCAP, MPF.HSBC.VCB, MPF.HSBC.VCE, 
+   MPF.HSBC.VCUS, MPF.HSBC.GE)
 
 ```
 
@@ -339,8 +375,8 @@ MPF.HSBC.stock.mean <- 0
 
 MPF.HSBC.last.sell <- rep(1, length(MPF.HSBC.returns[1,]))
 
-for (col in 1:length(MPF.HSBC.returns[1,])) {
-  NonNAindex <- which(!is.na(MPF.HSBC.returns[,col]))
+for (col in 1:length(MPF.HSBC.simple.returns[1,])) {
+  NonNAindex <- which(!is.na(MPF.HSBC.simple.returns[,col]))
   MPF.HSBC.last.sell[col] <- min(NonNAindex)
 }
 
@@ -356,8 +392,7 @@ for (row in 1:length(MPF.HSBC.returns[,1])) {
 }
 
 MPF.onefive <- exp(log(MPF.break.even)-0.4)
-MPF.twofive <- exp(log(MPF.break.even)-0.2
-                   )
+MPF.twofive <- exp(log(MPF.break.even)-0.2)
 
 
 for (row in 1:length(MPF.HSBC.returns[,1])) {
@@ -615,7 +650,7 @@ for (row in 1:length(MPF.HSBC.BIAS.month[,1])) {
   
   portf.rebal.fm <-
     Return.portfolio(
-      na.fill(MPF.HSBC.returns, 0),
+      na.fill(MPF.HSBC.simple.returns, 0),
       weight = MPF.portf.weight[1:row,],
       geometric = TRUE,
       rebalance_on = "months"
@@ -636,7 +671,7 @@ for (row in 1:length(MPF.HSBC.BIAS.month[,1])) {
 ### Performance Analysis
 ```{r warning=FALSE}
 portf.rebal.fm <- Return.portfolio(
-  MPF.HSBC.returns,
+  MPF.HSBC.simple.returns,
   weight = MPF.portf.weight,
   geometric = TRUE,
   rebalance_on = "months"
@@ -676,21 +711,21 @@ tail(MPF.portf.weight, n=6)
 
 ### Monthly Installment
 ```{r linewidth=159, warning=FALSE}
-MPF.HSBC.units <- MPF.HSBC.returns
+MPF.HSBC.units <- MPF.HSBC.simple.returns
 MPF.HSBC.units[, ] <- 0
 
-MPF.monthly.asset <- MPF.HSBC.returns
+MPF.monthly.asset <- MPF.HSBC.simple.returns
 MPF.monthly.asset[, ] <- 0
 
 MPF.monthly.returns <-
-  as.xts(rowSums(MPF.HSBC.returns), order.by = monthly)
+  as.xts(rowSums(MPF.HSBC.simple.returns), order.by = monthly)
 MPF.monthly.returns[] <- 0
 
-MPF.time <- 0:length(MPF.HSBC.returns[, 1]) / 12
+MPF.time <- 0:length(MPF.HSBC.simple.returns[, 1]) / 12
 MPF.pay <- -2301 + 0 * MPF.time
 
 
-for (row in 1:length(MPF.HSBC.returns[, 1])) {
+for (row in 1:length(MPF.HSBC.simple.returns[, 1])) {
 #for (row in 1:13) {
   this.price <- as.matrix(MPF.HSBC[monthly[row]])
   MPF.HSBC.units[row, ] <- this.price
@@ -698,7 +733,7 @@ for (row in 1:length(MPF.HSBC.returns[, 1])) {
   if (row == 1) {
     last.value <- 2301 / 10
     this.value <- last.value * this.price[10]
-    MPF.monthly.returns[row] <- log(sum(na.fill(this.value,0)) / 2301)
+    MPF.monthly.returns[row] <- (sum(na.fill(this.value,0)) - 2301)/2301
     MPF.monthly.asset[row,] <-
       na.fill(((this.value + 2301) / this.price * MPF.portf.weight[row, ]) / 
                 this.price,0)
@@ -707,7 +742,7 @@ for (row in 1:length(MPF.HSBC.returns[, 1])) {
     
     last.value <- na.fill(MPF.monthly.asset[row-1,] * last.price,0)
     this.value <- na.fill(MPF.monthly.asset[row-1,] * this.price,0)
-    MPF.monthly.returns[row] <- log(sum(this.value) / sum(last.value))
+    MPF.monthly.returns[row] <- (sum(this.value) - sum(last.value)) / sum(last.value)
 
     MPF.monthly.asset.old <- this.value / sum(na.fill(this.value,0))
     MPF.monthly.asset.propose <- as.matrix(MPF.portf.weight[row,]) -
@@ -735,14 +770,14 @@ IRR.f <- function(r)
 IRR.root <- uniroot(IRR.f, c(0, 1))
 
 
-total.asset.value
-total.contribution
+cat("Total asset in the last valuation date: ", total.asset.value, "\n")
+cat("Total contribution starting from 2000/12/01: ", total.contribution, "\n")
 
 mean.monthly.annual.return <-
   mean(do.call(rbind, lapply(split(MPF.monthly.returns, "years"), function(x)
     colMeans(x))) * 12)
-mean.monthly.annual.return
-IRR.root$root
+cat("Mean Annual Return: ", mean.monthly.annual.return, "\n")
+cat("Internal Rate of Return (IRR): ", IRR.root$root, "\n")
 
 stddev.monthly <- (StdDev(MPF.monthly.returns) * sqrt(12))
 monthly.installment.sharpe.ratio <-
@@ -752,7 +787,7 @@ rownames(monthly.installment.sharpe.ratio) <-
 
 StdDev.annualized(MPF.monthly.returns)
 monthly.installment.sharpe.ratio
-SortinoRatio(MPF.monthly.returns)
+SortinoRatio(MPF.monthly.returns) * sqrt(12)
 ES(MPF.monthly.returns, method = "historical")
 
 ```

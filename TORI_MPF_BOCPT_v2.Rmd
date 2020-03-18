@@ -15,53 +15,47 @@ header-includes:
   - \setCJKmainfont{Noto Sans HK}
   - \renewcommand{\familydefault}{\sfdefault}
 ---
+<p style="text-align: center;">[![Tori logo](./docs/assets/Tori.png "The logo of Tori")](https://github.com/jchan-gi/TORI)</p>   
+
+
 # TORI (Trend- & Oversell-based Rebalancing Instructions) in BOCPT Easy Choice MPF    
 # 中銀保誠簡易強積金應用TORI進行資產調配    
 
 
-## Civil Servant Management fee pricing
-## 公務員收費
-
-
-## Disclaimer  
-1. The author (jchan-gi) expressly stated that nothing my repositories and webpages
-constitutes any advices or recommendation on investing or allocating assets on any
-stock or financial products.    
-2. No content in my study have been prepared with respect to specific personal need
-and investment objects of individuals. All materials reveal to the public are applicable
-to the author (jchan-gi) only.
-3. All investors shall obtain kind advices from professional financial consultants before
-making any decisions. Professional financial consultants should recommend products 
-or decisions that suit your needs and objectives.    
-4. The author is not licensed nor professional in the field hence this studies are not 
-professional advice and may not be suitable for anyone except myself.  
-5. You shall not invest on any financial products using the information on this code repository, website or any information made public by jchan-gi alone. You agree you have fully understand and willing to undertake the risks of this script in any circumstances involves in using this script.    
-6. English version shall be used if any discrepencies exists between English and Chinese version.     
+## Disclaimer    
+1. The author (jchan-gi) expressly stated that nothing my repositories and webpages constitutes any advices or recommendation on investing or allocating assets on any stock or financial products.    
+2. No content in my study have been prepared with respect to specific personal need and investment objects of individuals. All materials reveal to the public are applicable to the author (jchan-gi) only.   
+3. All results from this repository are simulated from historical data only. It may portray inaccurate information and hence the repository must not applied in production and must used as academic exchange only. The author is not responsible in any loss induced from using this repository.   
+4. All investors shall obtain kind advices from professional financial consultants before making any decisions. Professional financial consultants should recommend products or decisions that suit your needs and objectives.    
+5. The author is not licensed nor professional in the field hence this studies are not professional advice and may not be suitable for anyone except myself.  
+6. You shall not invest on any financial products using the information on this code repository, website or any information made public by jchan-gi alone. You agree you have fully understand and willing to undertake the risks of this script in any circumstances involves in using this script.    
+7. English version shall be used if any discrepencies exists between English and Chinese version.     
 
 ## 免責聲明    
 1. 本文作者現此聲明，本人的程式及網頁並非對閤下提供或作出對任何金融產品的投資或資產調配的建議。  
 2. 本文內容沒有針對閣下或其他人的實際個人需要而編撰。所有公開的內容只適用於本文作者。   
-3. 所有投資者應在作出任何決定前，先向專業理財顧問查詢及要求提供意見。只有理財顧問的意見才能符合閣下的實際理財需要及風險胃納。   
-4. 本文作者非專業人士或持牌從業者，因此，本文內容並非專業意見。而且，本文內容極有可能並不合適於除作者以外的任何人。
-5. 在作出任何投資決定前，你不應單靠此程序作出決定。當你作出任何與本程序算法有關的投資決定時，你已完全知悉並願意接受本程序或算法所帶來的風險。    
-6. 本聲明如有歧義，將以英文版本作準。    
+3. 本文內容根據歷史數據模擬回報率等一切資訊。該等資訊可能非常不準確，本文及程式庫任何內容不應於實際環境使用，及只供學術討論。如因使用本程式庫任何內容而招致損失，作者一概不會負責。   
+4. 所有投資者應在作出任何決定前，先向專業理財顧問查詢及要求提供意見。只有理財顧問的意見才能符合閣下的實際理財需要及風險胃納。   
+5. 本文作者非專業人士或持牌從業者，因此，本文內容並非專業意見。而且，本文內容極有可能並不合適於除作者以外的任何人。   
+6. 在作出任何投資決定前，你不應單靠此程序作出決定。當你作出任何與本程序算法有關的投資決定時，你已完全知悉並願意接受本程序或算法所帶來的風險。    
+7. 本聲明如有歧義，將以英文版本作準。    
 
 
-## 最後更新日期 Last update: 2020/01/17.   
+## 最後更新日期 Last update: 2020/03/18.   
 ### Changelog    
 ### 更新記錄    
 
-2020-01-17 v1.3    
+2020-03-18 v2    
+1. Separate the return used in calculating AKANE, TORI (log) and return (simple).     
+1. 修正計算回報時使用的方式    
+
+2020-01-17 v1.2    
 1. Minor enhancement on background information.       
 1. 更改背景資料   
 
-2020-01-11 v1.2    
+2020-01-11 v1.1    
 1. Monthly installment: now only sell units in excess   
 1. 月供投資中，現只出售/買入所需的單位，而非全數賣出買入       
-
-2020-01-10 v1.1    
-1. Correct mistake on result section   
-1. 修正結果一欄的手民之誤    
 
 2020-01-07 v1    
 1. TORI is officially published and backtested with BOCPT MPF   
@@ -135,24 +129,23 @@ In this example, MPF would have T+2 time delay for obtaining historical price, h
 ### TORI 前移式回測結果     
 
 單一供款 One-off MPF Installment:    
-年率化回報 Annualized Return: ~9.32%     
-算術年均回報 Mean Annual Return: ~9.40%       
-累積回報（等比） Cumulative Return (Geometric): ~443.72%    
-年率化標準誤差 Annualized Standard Deviation: ~9.68% (StdDev(monthly return) * sqrt(12))    
-夏普比率 Sharpe Ratio: 9.32%/9.68% = 0.9631          
-索丁諾比率 Sortino Ratio: 0.5501 (MAR = 0%)      
-預期損失 Expected Shortfall: 5.48% loss (0% Risk-free rate, 95% C.I.)       
+年率化回報 Annualized Return: ~9.47%     
+算術年均回報 Mean Annual Return: ~9.56%       
+累積回報（等比） Cumulative Return (Geometric): ~390.10%    
+年率化標準誤差 Annualized Standard Deviation: ~9.88% (StdDev(monthly return) * sqrt(12))    
+夏普比率 Sharpe Ratio: 0.9675          
+索丁諾比率 Sortino Ratio: 1.9670 (MAR = 0%)      
+預期損失 Expected Shortfall: 5.38% loss (0% Risk-free rate, 95% C.I.)       
 
 月供投資 Monthly MPF installment (或有誤差 maybe slightly differs):    
-每月供款 Monthly installment amount: 1500    
-總供款 Total contribution: 343500    
-最新結餘 Latest asset value: 991844.4        
-算術年均回報 Mean annual return: 8.57%      
-內部回報率 Internal Rate of Return (IRR): 9.64%    
-年率化標準誤差 Annualized Standard Deviation: 9.65%    
-夏普比率 Sharpe Ratio: 0.8886          
-索丁諾比率 Sortino Ratio: 0.5138 (MAR = 0%)    
-
+每月供款 Monthly installment amount: 2301    
+總供款 Total contribution: 526929    
+最新結餘 Latest asset value: 1554577        
+算術年均回報 Mean annual return: 9.19%      
+內部回報率 Internal Rate of Return (IRR): 9.81%    
+年率化標準誤差 Annualized Standard Deviation: 9.86%    
+夏普比率 Sharpe Ratio: 0.9323          
+索丁諾比率 Sortino Ratio: 1.9647 (MAR = 0%)    
 
 
 ## 流程 Detailed Workflow
@@ -258,15 +251,36 @@ MPF.BOCPT.returns <- merge(MPF.BOCPT.AE, MPF.BOCPT.Bond, MPF.BOCPT.CA, MPF.BOCPT
 
 monthly <- index(MPF.BOCPT.returns)
 
+MPF.BOCPT.AE <- monthlyReturn(as.xts(MPF.BOCPT$AE), type="arithmetic")
+MPF.BOCPT.Bond <- monthlyReturn(as.xts(MPF.BOCPT$Bond), type="arithmetic")
+MPF.BOCPT.CA <- monthlyReturn(as.xts(MPF.BOCPT$CA), type="arithmetic")
+MPF.BOCPT.CE <- monthlyReturn(as.xts(MPF.BOCPT$CE), type="arithmetic")
+MPF.BOCPT.ET <- monthlyReturn(as.xts(MPF.BOCPT$ET), type="arithmetic")
+MPF.BOCPT.GE <- monthlyReturn(as.xts(MPF.BOCPT$GE), type="arithmetic")
+MPF.BOCPT.HKE <- monthlyReturn(as.xts(MPF.BOCPT$HKE), type="arithmetic")
+MPF.BOCPT.HKT <- monthlyReturn(as.xts(MPF.BOCPT$HKT), type="arithmetic")
+MPF.BOCPT.JE <- monthlyReturn(as.xts(MPF.BOCPT$JE), type="arithmetic")
+MPF.BOCPT.MPFC <- monthlyReturn(as.xts(MPF.BOCPT$MPFC), type="arithmetic")
+MPF.BOCPT.NAT <- monthlyReturn(as.xts(MPF.BOCPT$NAT), type="arithmetic")
+MPF.BOCPT.SFP <- monthlyReturn(as.xts(MPF.BOCPT$SFP), type="arithmetic")
+MPF.BOCPT.G <- monthlyReturn(as.xts(MPF.BOCPT$G), type="arithmetic")
+MPF.BOCPT.B <- monthlyReturn(as.xts(MPF.BOCPT$B), type="arithmetic")
+MPF.BOCPT.S <- monthlyReturn(as.xts(MPF.BOCPT$S), type="arithmetic")
+
+
+
+MPF.BOCPT.simple.returns <- merge(MPF.BOCPT.AE, MPF.BOCPT.Bond, MPF.BOCPT.CA, MPF.BOCPT.CE, MPF.BOCPT.ET, MPF.BOCPT.GE, MPF.BOCPT.HKE, MPF.BOCPT.HKT, MPF.BOCPT.JE, MPF.BOCPT.MPFC, MPF.BOCPT.NAT, MPF.BOCPT.SFP, MPF.BOCPT.G, MPF.BOCPT.B, MPF.BOCPT.S)
+
 MPF.BOCPT.original.cost <- c(0.0170, 0.0152, 0.0085, 0.0168, 0.0107, 0.0169, 0.0169, 0.0105, 0.0168, 0.0082, 0.0105,0.0085, 0.0170, 0.0169, 0.0170) / 12
 MPF.BOCPT.cs.cost <- MPF.BOCPT.original.cost
 MPF.BOCPT.cs.cost[] <- 0.0080 / 12
 
-for(col in 1:length(MPF.BOCPT.returns[1,])) {
-  MPF.BOCPT.returns[,col] <- MPF.BOCPT.returns[,col] - MPF.BOCPT.cs.cost[col] + MPF.BOCPT.original.cost[col]
-}
+# for(col in 1:length(MPF.BOCPT.returns[1,])) {
+#   MPF.BOCPT.returns[,col] <- MPF.BOCPT.returns[,col] - MPF.BOCPT.cs.cost[col] + MPF.BOCPT.original.cost[col]
+# }
 
 colnames(MPF.BOCPT.returns) <- c("AE", "Bond", "CA", "CE", "ET", "GE", "HKE", "HKT", "JE", "MPFC", "NAT", "SFP", "G", "B", "S")
+colnames(MPF.BOCPT.simple.returns) <- c("AE", "Bond", "CA", "CE", "ET", "GE", "HKE", "HKT", "JE", "MPFC", "NAT", "SFP", "G", "B", "S")
   
 rm(
   MPF.BOCPT.AE, MPF.BOCPT.Bond, MPF.BOCPT.CA, MPF.BOCPT.CE, MPF.BOCPT.ET, 
@@ -403,17 +417,17 @@ for (row in 1:length(MPF.BOCPT.BIAS.month[,1])) {
   
 
   if (row > 8 && MPF.BOCPT.stock.return[row] <
-      quantile(na.omit(MPF.BOCPT.stock.return), c(.40)) &&
+      quantile(na.omit(MPF.BOCPT.stock.return), c(.35)) &&
       MPF.BOCPT.stock.return[row - 3] <
-      quantile(na.omit(MPF.BOCPT.stock.return), c(.50))) {
+      quantile(na.omit(MPF.BOCPT.stock.return), c(.45))) {
     up <- FALSE
   }
 
   if (row > 8 && hedge &&
       MPF.BOCPT.stock.return[row] >
-        quantile(na.omit(MPF.BOCPT.stock.return), c(.50))  &&
+        quantile(na.omit(MPF.BOCPT.stock.return), c(.45))  &&
       MPF.BOCPT.stock.return[row - 3] >
-        quantile(na.omit(MPF.BOCPT.stock.return), c(.40))) {
+        quantile(na.omit(MPF.BOCPT.stock.return), c(.35))) {
     hedge <- FALSE
     up <- TRUE
   }
@@ -455,7 +469,7 @@ for (row in 1:length(MPF.BOCPT.BIAS.month[,1])) {
   
   portf.rebal.fm <-
     Return.portfolio(
-      na.fill(MPF.BOCPT.returns, 0),
+      na.fill(MPF.BOCPT.simple.returns, 0),
       weight = MPF.portf.weight[1:row,],
       geometric = TRUE,
       rebalance_on = "months"
@@ -476,7 +490,7 @@ for (row in 1:length(MPF.BOCPT.BIAS.month[,1])) {
 ### Performance Analysis
 ```{r warning=FALSE}
 portf.rebal.fm <- Return.portfolio(
-  MPF.BOCPT.returns,
+  MPF.BOCPT.simple.returns,
   weight = MPF.portf.weight,
   geometric = TRUE,
   rebalance_on = "months"
@@ -523,7 +537,7 @@ MPF.monthly.returns <-
 MPF.monthly.returns[] <- 0
 
 MPF.time <- 0:length(MPF.BOCPT.returns[, 1]) / 12
-MPF.pay <- -1500 + 0 * MPF.time
+MPF.pay <- -2301 + 0 * MPF.time
 
 
 for (row in 1:length(MPF.BOCPT.returns[, 1])) {
@@ -532,22 +546,17 @@ for (row in 1:length(MPF.BOCPT.returns[, 1])) {
   MPF.BOCPT.units[row, ] <- this.price
   
   if (row == 1) {
-    last.value <- 1500 / 10
+    last.value <- 2301 / 10
     this.value <- last.value * this.price[10]
-    MPF.monthly.returns[row] <- log(sum(na.fill(this.value,0)) / 1500)
+    MPF.monthly.returns[row] <- (sum(na.fill(this.value,0)) - 2301) / 2301
     MPF.monthly.asset[row,] <-
-      na.fill(((this.value + 1500) / this.price * MPF.portf.weight[row, ]) / this.price,0)
+      na.fill(((this.value + 2301) / this.price * MPF.portf.weight[row, ]) / this.price,0)
     last.price <- this.price
   } else {
-    #last.value <-
-    #  as.numeric(sum(na.fill(last.price * MPF.monthly.asset[row - 1, ], 0)))
-    #this.value <-
-    #  as.numeric(sum(na.fill(this.price * MPF.monthly.asset[row - 1, ], 0)))
-    #MPF.monthly.returns[row] <- log(this.value / last.value)
     
     last.value <- na.fill(MPF.monthly.asset[row-1,] * last.price,0)
     this.value <- na.fill(MPF.monthly.asset[row-1,] * this.price,0)
-    MPF.monthly.returns[row] <- log(sum(this.value) / sum(last.value))
+    MPF.monthly.returns[row] <- (sum(this.value) - sum(last.value)) / sum(last.value)
 
     MPF.monthly.asset.old <- this.value / sum(na.fill(this.value,0))
     MPF.monthly.asset.propose <- as.matrix(MPF.portf.weight[row,]) -
@@ -555,8 +564,8 @@ for (row in 1:length(MPF.BOCPT.returns[, 1])) {
     MPF.monthly.unit.change <- MPF.monthly.asset.propose * sum(na.fill(this.value,0)) /this.price
 
     this.unit <- as.matrix(MPF.monthly.asset[row-1,]) + as.matrix(MPF.monthly.unit.change)
-    this.unit <- as.matrix(this.unit) + (1500 / as.matrix(this.price) * MPF.portf.weight[row,])
-    
+    this.unit <- as.matrix(this.unit) + (2301 / as.matrix(this.price) * MPF.portf.weight[row,])
+
     MPF.monthly.asset[row,] <- na.fill(this.unit,0)
     last.price <- this.price
   }
@@ -564,22 +573,21 @@ for (row in 1:length(MPF.BOCPT.returns[, 1])) {
 
 
 total.asset.value <- sum(MPF.monthly.asset[row, ] * this.price)
-total.contribution <- 1500 * length(MPF.BOCPT.returns[, 1])
+total.contribution <- 2301 * length(MPF.BOCPT.returns[, 1])
 
 MPF.pay[row + 1] <- total.asset.value
 IRR.f <- function(r)
   sum(MPF.pay * exp(-r * MPF.time))
 IRR.root <- uniroot(IRR.f, c(0, 1))
 
-
-total.asset.value
-total.contribution
+cat("Total asset in the last valuation date: ", total.asset.value, "\n")
+cat("Total contribution starting from 2000/12/01: ", total.contribution, "\n")
 
 mean.monthly.annual.return <-
   mean(do.call(rbind, lapply(split(MPF.monthly.returns, "years"), function(x)
     colMeans(x))) * 12)
-mean.monthly.annual.return
-IRR.root$root
+cat("Mean Annual Return: ", mean.monthly.annual.return, "\n")
+cat("Internal Rate of Return (IRR): ", IRR.root$root, "\n")
 
 stddev.monthly <- (StdDev(MPF.monthly.returns) * sqrt(12))
 monthly.installment.sharpe.ratio <-
@@ -589,8 +597,7 @@ rownames(monthly.installment.sharpe.ratio) <-
 
 StdDev.annualized(MPF.monthly.returns)
 monthly.installment.sharpe.ratio
-SortinoRatio(MPF.monthly.returns)
+SortinoRatio(MPF.monthly.returns) * sqrt(12)
 ES(MPF.monthly.returns, method = "historical")
-
-
+```
 ```

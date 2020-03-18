@@ -10,26 +10,22 @@ Accelerating KAizen at Negative Environment(Akane,あかね) Module have been ma
 以輕微增加風險以提高回報的Accelerating KAizen at Negative Environment(Akane,あかね)模組現已公開！   
 
 # Disclaimer    
-1. The author (jchan-gi) expressly stated that nothing my repositories and webpages
-constitutes any advices or recommendation on investing or allocating assets on any
-stock or financial products.    
-2. No content in my study have been prepared with respect to specific personal need
-and investment objects of individuals. All materials reveal to the public are applicable
-to the author (jchan-gi) only.
-3. All investors shall obtain kind advices from professional financial consultants before
-making any decisions. Professional financial consultants should recommend products 
-or decisions that suit your needs and objectives.    
-4. The author is not licensed nor professional in the field hence this studies are not 
-professional advice and may not be suitable for anyone except myself.  
-5. You shall not invest on any financial products using the information on this code repository, website or any information made public by jchan-gi alone. You agree you have fully understand and willing to undertake the risks of this script in any circumstances involves in using this script.    
-6. English version shall be used if any discrepencies exists between English and Chinese version.     
+1. The author (jchan-gi) expressly stated that nothing my repositories and webpages constitutes any advices or recommendation on investing or allocating assets on any stock or financial products.    
+2. No content in my study have been prepared with respect to specific personal need and investment objects of individuals. All materials reveal to the public are applicable to the author (jchan-gi) only.   
+3. All results from this repository are simulated from historical data only. It may portray inaccurate information and hence the repository must not applied in production and must used as academic exchange only. The author is not responsible in any loss induced from using this repository.   
+4. All investors shall obtain kind advices from professional financial consultants before making any decisions. Professional financial consultants should recommend products or decisions that suit your needs and objectives.    
+5. The author is not licensed nor professional in the field hence this studies are not professional advice and may not be suitable for anyone except myself.    
+6. You shall not invest on any financial products using the information on this code repository, website or any information made public by jchan-gi alone. You agree you have fully understand and willing to undertake the risks of this script in any circumstances involves in using this script.    
+7. English version shall be used if any discrepencies exists between English and Chinese version.     
+
 # 免責聲明    
 1. 本文作者現此聲明，本人的程式及網頁並非對閤下提供或作出對任何金融產品的投資或資產調配的建議。  
 2. 本文內容沒有針對閣下或其他人的實際個人需要而編撰。所有公開的內容只適用於本文作者。   
-3. 所有投資者應在作出任何決定前，先向專業理財顧問查詢及要求提供意見。只有理財顧問的意見才能符合閣下的實際理財需要及風險胃納。   
-4. 本文作者非專業人士或持牌從業者，因此，本文內容並非專業意見。而且，本文內容極有可能並不合適於除作者以外的任何人。
-5. 在作出任何投資決定前，你不應單靠此程序作出決定。當你作出任何與本程序算法有關的投資決定時，你已完全知悉並願意接受本程序或算法所帶來的風險。    
-6. 本聲明如有歧義，將以英文版本作準。    
+3. 本文內容根據歷史數據模擬回報率等一切資訊。該等資訊可能非常不準確，本文及程式庫任何內容不應於實際環境使用，及只供學術討論。如因使用本程式庫任何內容而招致損失，作者一概不會負責。   
+4. 所有投資者應在作出任何決定前，先向專業理財顧問查詢及要求提供意見。只有理財顧問的意見才能符合閣下的實際理財需要及風險胃納。   
+5. 本文作者非專業人士或持牌從業者，因此，本文內容並非專業意見。而且，本文內容極有可能並不合適於除作者以外的任何人。   
+6. 在作出任何投資決定前，你不應單靠此程序作出決定。當你作出任何與本程序算法有關的投資決定時，你已完全知悉並願意接受本程序或算法所帶來的風險。    
+7. 本聲明如有歧義，將以英文版本作準。     
 
 
 # Introduction     
@@ -62,22 +58,22 @@ As long as your system contain the following then you could execute the script.
 # Testing of Tori     
 # 測試結果      
 [Tori](https://jchan-gi.github.io/TORI/) was tested against the following funds (Order by convenient only):   
-1. [HSBC SuperTrust Plus MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_HSBC_v1.pdf)   
-2. [BOCPT Easy Choice MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_BOCPT_v1.pdf)    
-3. [Sun Life Rainbow MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_SunLife_Rainbow_v1.pdf)    
-4. [BCT ProChoice MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_BCT_v1.pdf)      
-5. [AIA Prime Value Choice](https://jchan-gi.github.io/TORI/Results/TORI_MPF_AIA_v1.pdf)    
-6. [Sun Life MPF Master Trust (Ex. Schroders MPF Master Trust)](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Schroders_v1.pdf)   
-7. [Invesco MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Invesco_v1.pdf)    
+1. [HSBC SuperTrust Plus MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_HSBC_v2.pdf)   
+2. [BOCPT Easy Choice MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_BOCPT_v2.pdf)    
+3. [Sun Life Rainbow MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_SunLife_Rainbow_v2.pdf)    
+4. [BCT ProChoice MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_BCT_v2.pdf)      
+5. [AIA Prime Value Choice](https://jchan-gi.github.io/TORI/Results/TORI_MPF_AIA_v2.pdf)    
+6. [Sun Life MPF Master Trust (Ex. Schroders MPF Master Trust)](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Schroders_v2.pdf)   
+7. [Invesco MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Invesco_v2.pdf)    
 
-[Tori](https://jchan-gi.github.io/TORI/)算法經過以下的基金作出測試（排名不分先後）：   
-1. [滙豐強積金智選計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_HSBC_v1.pdf)   
-2. [中銀保誠簡易強積金計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_BOCPT_v1.pdf)   
-3. [永明彩虹強積金計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_SunLife_Rainbow_v1.pdf)    
-4. [銀聯積金之選強積金計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_BCT_v1.pdf)    
-5. [友邦強積金優選計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_AIA_v1.pdf)    
-6. [永明強積金集成信託計劃(前施羅德強積金集成信託計劃)](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Schroders_v1.pdf)        
-7. [景順強積金](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Invesco_v1.pdf)      
+[Tori](https://jchan-gi.github.io/TORI/)再配置指引經過以下的基金作出測試（排名不分先後）：   
+1. [滙豐強積金智選計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_HSBC_v2.pdf)   
+2. [中銀保誠簡易強積金計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_BOCPT_v2.pdf)   
+3. [永明彩虹強積金計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_SunLife_Rainbow_v2.pdf)    
+4. [銀聯積金之選強積金計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_BCT_v2.pdf)    
+5. [友邦強積金優選計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_AIA_v2.pdf)    
+6. [永明強積金集成信託計劃(前施羅德強積金集成信託計劃)](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Schroders_v2.pdf)        
+7. [景順強積金](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Invesco_v2.pdf)      
 
 
 # License of the source code and repositories
@@ -92,7 +88,8 @@ As long as your system contain the following then you could execute the script.
 * A portfolio of retail mutual funds in Hong Kong; and    
 * a portfolio of US ETFs would be assessed in Q2 2020. Please refer to the plain text file in root directory of repository (to be release soon) for the list of mutual funds and ETFs.   
 
-* 應用以下強制性公積金（強積金）計劃評估Tori的結果將於2020年第一季公佈:    
+* 應用以下強制性公積金（強積金）計劃評估Tori的結果將於2020年3月底前公佈:    
 1. 安聯強積金    
 * 一個由零售共同基金組成的投資組合及     
 * 一個由美國上市的交易所買賣基金所組成的投資組合將於2020年第二季作出對Tori的評估並公佈結果。基金列表即將公佈！   
+* 為加快計算速度，現暫定於今年完結前將關鍵部份改以C++方式編寫。
