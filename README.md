@@ -5,7 +5,10 @@
  [Tori](https://jchan-gi.github.io/TORI/)是一個利用時差平均值乖離率(n-m MA BIAS, NMMA BIAS)進行每月再配置以提升投資組合的程式    
 
 # Latest news
-# 最新消息
+# 最新消息   
+Result of Allianz MPF have been published.    
+安聯強積金結果現已公佈。    
+
 Accelerating KAizen at Negative Environment(Akane,あかね) Module have been made public. It could improve return with slight increase of volality. Checkout now!   
 以輕微增加風險以提高回報的Accelerating KAizen at Negative Environment(Akane,あかね)模組現已公開！   
 
@@ -65,6 +68,7 @@ As long as your system contain the following then you could execute the script.
 5. [AIA Prime Value Choice](https://jchan-gi.github.io/TORI/Results/TORI_MPF_AIA_v2.pdf)    
 6. [Sun Life MPF Master Trust (Ex. Schroders MPF Master Trust)](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Schroders_v2.pdf)   
 7. [Invesco MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Invesco_v2.pdf)    
+8. [Allianz MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Invesco_v2.pdf)       
 
 [Tori](https://jchan-gi.github.io/TORI/)再配置指引經過以下的基金作出測試（排名不分先後）：   
 1. [滙豐強積金智選計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_HSBC_v2.pdf)   
@@ -73,7 +77,8 @@ As long as your system contain the following then you could execute the script.
 4. [銀聯積金之選強積金計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_BCT_v2.pdf)    
 5. [友邦強積金優選計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_AIA_v2.pdf)    
 6. [永明強積金集成信託計劃(前施羅德強積金集成信託計劃)](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Schroders_v2.pdf)        
-7. [景順強積金](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Invesco_v2.pdf)      
+7. [景順強積金](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Invesco_v2.pdf)   
+8. [安聯強積金](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Allianz_v2.pdf)   
 
 
 # License of the source code and repositories
@@ -88,8 +93,7 @@ As long as your system contain the following then you could execute the script.
 * A portfolio of retail mutual funds in Hong Kong; and    
 * a portfolio of US ETFs would be assessed in Q2 2020. Please refer to the plain text file in root directory of repository (to be release soon) for the list of mutual funds and ETFs.   
 
-* 應用以下強制性公積金（強積金）計劃評估Tori的結果將於2020年3月底前公佈:    
-1. 安聯強積金    
-* 一個由零售共同基金組成的投資組合及     
-* 一個由美國上市的交易所買賣基金所組成的投資組合將於2020年第二季作出對Tori的評估並公佈結果。基金列表即將公佈！   
-* 為加快計算速度，現暫定於今年完結前將關鍵部份改以C++方式編寫。
+* 應用以下強制性公積金（強積金）計劃評估Tori的結果將於2020年6月底前公佈:    
+1. 一個由零售共同基金組成的投資組合及     
+2. 一個由美國上市的交易所買賣基金所組成的投資組合。基金列表即將公佈！   
+* 為加快計算速度，現暫定於今年完結前將關鍵部份改以C++方式編寫。     

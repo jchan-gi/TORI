@@ -4,7 +4,7 @@
 
 <url>
   <loc>https://jchan-gi.github.io/TORI/</loc>
-  <lastmod>2020-03-18T10:30:00+08:00</lastmod>
+  <lastmod>2020-03-20T08:45:00+08:00</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
@@ -76,6 +76,12 @@
 <url>
   <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_Fidelity_v2.pdf</loc>
   <lastmod>2020-03-18T10:30:00+08:00</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>0.60</priority>
+</url>
+<url>
+  <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_Allianz_v2.pdf</loc>
+  <lastmod>2020-03-20T08:45:00+08:00</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.60</priority>
 </url>
