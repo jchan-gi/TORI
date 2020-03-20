@@ -61,24 +61,24 @@ As long as your system contain the following then you could execute the script.
 # Testing of Tori     
 # 測試結果      
 [Tori](https://jchan-gi.github.io/TORI/) was tested against the following funds (Order by convenient only):   
-1. [HSBC SuperTrust Plus MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_HSBC_v2.pdf)   
-2. [BOCPT Easy Choice MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_BOCPT_v2.pdf)    
-3. [Sun Life Rainbow MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_SunLife_Rainbow_v2.pdf)    
-4. [BCT ProChoice MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_BCT_v2.pdf)      
-5. [AIA Prime Value Choice](https://jchan-gi.github.io/TORI/Results/TORI_MPF_AIA_v2.pdf)    
-6. [Sun Life MPF Master Trust (Ex. Schroders MPF Master Trust)](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Schroders_v2.pdf)   
-7. [Invesco MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Invesco_v2.pdf)    
-8. [Allianz MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Invesco_v2.pdf)       
+1. [HSBC SuperTrust Plus MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_HSBC.pdf)   
+2. [BOCPT Easy Choice MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_BOCPT.pdf)    
+3. [Sun Life Rainbow MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_SunLife_Rainbow.pdf)    
+4. [BCT ProChoice MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_BCT.pdf)      
+5. [AIA Prime Value Choice](https://jchan-gi.github.io/TORI/Results/TORI_MPF_AIA.pdf)    
+6. [Sun Life MPF Master Trust (Ex. Schroders MPF Master Trust)](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Schroders.pdf)   
+7. [Invesco MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Invesco.pdf)    
+8. [Allianz MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Invesco.pdf)       
 
 [Tori](https://jchan-gi.github.io/TORI/)再配置指引經過以下的基金作出測試（排名不分先後）：   
-1. [滙豐強積金智選計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_HSBC_v2.pdf)   
-2. [中銀保誠簡易強積金計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_BOCPT_v2.pdf)   
-3. [永明彩虹強積金計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_SunLife_Rainbow_v2.pdf)    
-4. [銀聯積金之選強積金計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_BCT_v2.pdf)    
-5. [友邦強積金優選計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_AIA_v2.pdf)    
-6. [永明強積金集成信託計劃(前施羅德強積金集成信託計劃)](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Schroders_v2.pdf)        
-7. [景順強積金](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Invesco_v2.pdf)   
-8. [安聯強積金](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Allianz_v2.pdf)   
+1. [滙豐強積金智選計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_HSBC.pdf)   
+2. [中銀保誠簡易強積金計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_BOCPT.pdf)   
+3. [永明彩虹強積金計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_SunLife_Rainbow.pdf)    
+4. [銀聯積金之選強積金計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_BCT.pdf)    
+5. [友邦強積金優選計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_AIA.pdf)    
+6. [永明強積金集成信託計劃(前施羅德強積金集成信託計劃)](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Schroders.pdf)        
+7. [景順強積金](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Invesco.pdf)   
+8. [安聯強積金](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Allianz.pdf)   
 
 
 # License of the source code and repositories
