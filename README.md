@@ -88,12 +88,12 @@ As long as your system contain the following then you could execute the script.
 
 # Future update    
 # 更新預告   
-* The following MPF funds would be assessed in Q1 2020:    
-1. Allianz Global Investors MPF Plan    
-* A portfolio of retail mutual funds in Hong Kong; and    
-* a portfolio of US ETFs would be assessed in Q2 2020. Please refer to the plain text file in root directory of repository (to be release soon) for the list of mutual funds and ETFs.   
+* The result of the following would be released before 2020/06.   
+1. A portfolio of retail mutual funds in Hong Kong; and    
+2. a portfolio of US ETFs would be assessed in Q2 2020. Please refer to the plain text file in root directory of repository (to be release soon) for the list of mutual funds and ETFs.   
+* The critical part would be rewritten in C++ before the end of 2020.
 
-* 應用以下強制性公積金（強積金）計劃評估Tori的結果將於2020年6月底前公佈:    
+* 以下評估Tori的結果將於2020年6月底前公佈:    
 1. 一個由零售共同基金組成的投資組合及     
 2. 一個由美國上市的交易所買賣基金所組成的投資組合。基金列表即將公佈！   
 * 為加快計算速度，現暫定於今年完結前將關鍵部份改以C++方式編寫。     
