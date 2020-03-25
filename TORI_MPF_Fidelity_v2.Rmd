@@ -41,9 +41,25 @@ header-includes:
 7. 本聲明如有歧義，將以英文版本作準。    
 
 
-## 最後更新日期 Last update: 2020/03/18.   
+## 最後更新日期 Last update: 2020/03/25.   
 ### Changelog    
 ### 更新記錄    
+
+2020-03-25 v2.1.1    
+1. Adding Golden Butterfly Portfolio as a benchmark portfolio.     
+1. 增加Golden Butterfly Portfolio作為基準指標。  
+
+2020-03-25 v2.1    
+1. Further diversify the hedge mode with Sixty-Fifth Plus Fund.      
+2. Performance indicator calculation on first installment revised extensively, includes:    
+* Adding SPY (SPDR S&P 500 ETF), QQQ (Invesco QQQ Trust), and HSI (Hang Seng Index) as a benchmark.   
+* Captial Asset Pricing Model CAPM and Information Ration results are available. (The author disapprove the use of CAPM, the results of CAPM are for reference only)   
+* Charting with benchmark are accomplished through tidyquant and ggplot now.         
+1. 使用65歲後基金進一步分散避險狀態下的風險。   
+2. 計算第一期投資的回報已作出重大修改，包括：    
+加入SPY,QQQ及恒生指數作基準   
+以三項基準計算資本資產定價模型CAPM及資訊比率Information Ratio的比較。（作者不認同CAPM是有效的評估方法。數值僅供參考。）   
+圖表改以tidyquant + ggplot展示，並加入與基準的比較。      
 
 2020-03-18 v2    
 1. Separate the return used in calculating AKANE, TORI (log) and return (simple).     
@@ -121,23 +137,27 @@ In this example, MPF would have T+2 time delay for obtaining historical price, h
 ### TORI 前移式回測結果     
 
 單一供款 One-off MPF Installment:    
-年率化回報 Annualized Return: ~9.04%     
-算術年均回報 Mean Annual Return: ~9.09%       
-累積回報（等比） Cumulative Return (Geometric): ~417.50%    
-年率化標準誤差 Annualized Standard Deviation: ~9.21% (StdDev(monthly return) * sqrt(12))    
-夏普比率 Sharpe Ratio: 0.9868          
-索丁諾比率 Sortino Ratio: 2.141 (MAR = 0%)      
-預期損失 Expected Shortfall: 4.59 % loss (0% Risk-free rate, 95% C.I.)       
+年率化回報 Annualized Return: ~9.25%     
+算術年均回報 Mean Annual Return: ~9.30%       
+累積回報（等比） Cumulative Return (Geometric): ~437.10%    
+年率化標準誤差 Annualized Standard Deviation: ~9.28%    
+夏普比率 Sharpe Ratio: 0.9964          
+索丁諾比率 Sortino Ratio: 2.1562 (MAR = 0%)      
+資訊比率 Information Ratio: 0.1674 (SPY), 0.3440 (HSI), 0.1572 (Golden Butterfly)    
+Jensen's Alpha: 0.0757 (SPY), 0.0815 (HSI), 0.1048 (Golden Butterfly)    
+Beta: 0.2541 (SPY), 0.2611 (HSI), -0.0466 (Golden Butterfly)     
+關聯系數 Correlation Coefficient: 0.3934 (SPY), 0.5728 (HSI), -0.0366 (Golden Butterfly)    
+預期損失 Expected Shortfall: 2.01 % loss (0% Risk-free rate, 95% C.I.)       
 
 月供投資 Monthly MPF installment (或有誤差 maybe slightly differs):    
 每月供款 Monthly installment amount: 2301    
 總供款 Total contribution: 526929    
-最新結餘 Latest asset value: 1459498        
-算術年均回報 Mean annual return: 8.66%      
-內部回報率 Internal Rate of Return (IRR): 9.29%    
-年率化標準誤差 Annualized Standard Deviation: 9.19%    
-夏普比率 Sharpe Ratio: 0.9414          
-索丁諾比率 Sortino Ratio: 2.1407 (MAR = 0%)    
+最新結餘 Latest asset value: 1509887        
+算術年均回報 Mean annual return: 8.85%      
+內部回報率 Internal Rate of Return (IRR): 9.58%    
+年率化標準誤差 Annualized Standard Deviation: 9.26%    
+夏普比率 Sharpe Ratio: 0.9552          
+索丁諾比率 Sortino Ratio: 2.1559 (MAR = 0%)    
 
 
 ## 流程 Detailed Workflow
@@ -155,10 +175,10 @@ install.packages("xts", type="binary")
 install.packages("fBasics", type="binary")
 install.packages("quantmod", dependencies = TRUE, type="binary")
 install.packages("PerformanceAnalytics", dependencies = TRUE, type="binary")
-install.packages("openxlsx", type="binary")
-
-install.packages("remotes")
-remotes::install_github('rstudio/rmarkdown')
+install.packages("tidyverse", dependencies = TRUE, type="binary")
+install.packages("tibbletime", dependencies = TRUE, type="binary")
+install.packages("tidyquant", dependencies = TRUE, type="binary")
+install.packages("reshape", type="binary")
 
 ```
 
@@ -166,7 +186,14 @@ remotes::install_github('rstudio/rmarkdown')
 ```{r warning=FALSE, results=FALSE}
 library("zoo")
 library("xts")
+
 library("fBasics")
+library("tidyverse")
+library("timetk")
+library("tibbletime")
+
+library("reshape")
+library("tidyquant")
 library("quantmod")
 library("PerformanceAnalytics")
 library("openxlsx")
@@ -193,123 +220,182 @@ Min_NMMA <- 0.00002
 ```{r warning=FALSE}
 options("openxlsx.dateFormat" = "d/m/yyyy")
 
-MPF.Fidelity.SFP <- read.xlsx("~/OneDrive/MPF/Fidelity/202001/SFP.xlsx")
-MPF.Fidelity.SFP[,1] <- convertToDate(MPF.Fidelity.SFP[,1])
-MPF.Fidelity.SFP <- MPF.Fidelity.SFP[11:length(MPF.Fidelity.SFP[,1]),]
-rownames(MPF.Fidelity.SFP) <- MPF.Fidelity.SFP[,1]
+MPF.Fidelity.SFP <-
+  read.xlsx("~/OneDrive/MPF/Fidelity/202001/SFP.xlsx")
+MPF.Fidelity.SFP[, 1] <- convertToDate(MPF.Fidelity.SFP[, 1])
+MPF.Fidelity.SFP <-
+  MPF.Fidelity.SFP[11:length(MPF.Fidelity.SFP[, 1]), ]
+rownames(MPF.Fidelity.SFP) <- MPF.Fidelity.SFP[, 1]
 colnames(MPF.Fidelity.SFP) <- c("Date", "HKD")
-MPF.Fidelity.SFP <- as.xts(read.zoo(MPF.Fidelity.SFP, format="%Y-%m-%d"))
+MPF.Fidelity.SFP <-
+  as.xts(read.zoo(MPF.Fidelity.SFP, format = "%Y-%m-%d"))
 
-MPF.Fidelity.CA <- read.xlsx("~/OneDrive/MPF/Fidelity/202001/CA.xlsx")
-MPF.Fidelity.CA[,1] <- convertToDate(MPF.Fidelity.CA[,1])
-MPF.Fidelity.CA <- MPF.Fidelity.CA[11:length(MPF.Fidelity.CA[,1]),]
-rownames(MPF.Fidelity.CA) <- MPF.Fidelity.CA[,1]
+MPF.Fidelity.CA <-
+  read.xlsx("~/OneDrive/MPF/Fidelity/202001/CA.xlsx")
+MPF.Fidelity.CA[, 1] <- convertToDate(MPF.Fidelity.CA[, 1])
+MPF.Fidelity.CA <- MPF.Fidelity.CA[11:length(MPF.Fidelity.CA[, 1]), ]
+rownames(MPF.Fidelity.CA) <- MPF.Fidelity.CA[, 1]
 colnames(MPF.Fidelity.CA) <- c("Date", "HKD")
-MPF.Fidelity.CA <- as.xts(read.zoo(MPF.Fidelity.CA, format="%Y-%m-%d"))
+MPF.Fidelity.CA <-
+  as.xts(read.zoo(MPF.Fidelity.CA, format = "%Y-%m-%d"))
 
-MPF.Fidelity.AP <- read.xlsx("~/OneDrive/MPF/Fidelity/202001/AP.xlsx")
-MPF.Fidelity.AP[,1] <- convertToDate(MPF.Fidelity.AP[,1])
-MPF.Fidelity.AP <- MPF.Fidelity.AP[11:length(MPF.Fidelity.AP[,1]),]
-rownames(MPF.Fidelity.AP) <- MPF.Fidelity.AP[,1]
+MPF.Fidelity.AP <-
+  read.xlsx("~/OneDrive/MPF/Fidelity/202001/AP.xlsx")
+MPF.Fidelity.AP[, 1] <- convertToDate(MPF.Fidelity.AP[, 1])
+MPF.Fidelity.AP <- MPF.Fidelity.AP[11:length(MPF.Fidelity.AP[, 1]), ]
+rownames(MPF.Fidelity.AP) <- MPF.Fidelity.AP[, 1]
 colnames(MPF.Fidelity.AP) <- c("Date", "HKD")
-MPF.Fidelity.AP <- as.xts(read.zoo(MPF.Fidelity.AP, format="%Y-%m-%d"))
+MPF.Fidelity.AP <-
+  as.xts(read.zoo(MPF.Fidelity.AP, format = "%Y-%m-%d"))
 
 MPF.Fidelity.B <- read.xlsx("~/OneDrive/MPF/Fidelity/202001/B.xlsx")
-MPF.Fidelity.B[,1] <- convertToDate(MPF.Fidelity.B[,1])
-MPF.Fidelity.B <- MPF.Fidelity.B[11:length(MPF.Fidelity.B[,1]),]
-rownames(MPF.Fidelity.B) <- MPF.Fidelity.B[,1]
+MPF.Fidelity.B[, 1] <- convertToDate(MPF.Fidelity.B[, 1])
+MPF.Fidelity.B <- MPF.Fidelity.B[11:length(MPF.Fidelity.B[, 1]), ]
+rownames(MPF.Fidelity.B) <- MPF.Fidelity.B[, 1]
 colnames(MPF.Fidelity.B) <- c("Date", "HKD")
-MPF.Fidelity.B <- as.xts(read.zoo(MPF.Fidelity.B, format="%Y-%m-%d"))
+MPF.Fidelity.B <-
+  as.xts(read.zoo(MPF.Fidelity.B, format = "%Y-%m-%d"))
 
 MPF.Fidelity.S <- read.xlsx("~/OneDrive/MPF/Fidelity/202001/S.xlsx")
-MPF.Fidelity.S[,1] <- convertToDate(MPF.Fidelity.S[,1])
-MPF.Fidelity.S <- MPF.Fidelity.S[11:length(MPF.Fidelity.S[,1]),]
-rownames(MPF.Fidelity.S) <- MPF.Fidelity.S[,1]
+MPF.Fidelity.S[, 1] <- convertToDate(MPF.Fidelity.S[, 1])
+MPF.Fidelity.S <- MPF.Fidelity.S[11:length(MPF.Fidelity.S[, 1]), ]
+rownames(MPF.Fidelity.S) <- MPF.Fidelity.S[, 1]
 colnames(MPF.Fidelity.S) <- c("Date", "HKD")
-MPF.Fidelity.S <- as.xts(read.zoo(MPF.Fidelity.S, format="%Y-%m-%d"))
+MPF.Fidelity.S <-
+  as.xts(read.zoo(MPF.Fidelity.S, format = "%Y-%m-%d"))
 
-MPF.Fidelity.MPFC <- read.xlsx("~/OneDrive/MPF/Fidelity/202001/MPFC.xlsx")
-MPF.Fidelity.MPFC[,1] <- convertToDate(MPF.Fidelity.MPFC[,1])
-MPF.Fidelity.MPFC <- MPF.Fidelity.MPFC[11:length(MPF.Fidelity.MPFC[,1]),]
-rownames(MPF.Fidelity.MPFC) <- MPF.Fidelity.MPFC[,1]
+MPF.Fidelity.MPFC <-
+  read.xlsx("~/OneDrive/MPF/Fidelity/202001/MPFC.xlsx")
+MPF.Fidelity.MPFC[, 1] <- convertToDate(MPF.Fidelity.MPFC[, 1])
+MPF.Fidelity.MPFC <-
+  MPF.Fidelity.MPFC[11:length(MPF.Fidelity.MPFC[, 1]), ]
+rownames(MPF.Fidelity.MPFC) <- MPF.Fidelity.MPFC[, 1]
 colnames(MPF.Fidelity.MPFC) <- c("Date", "HKD")
-MPF.Fidelity.MPFC <- as.xts(read.zoo(MPF.Fidelity.MPFC, format="%Y-%m-%d"))
+MPF.Fidelity.MPFC <-
+  as.xts(read.zoo(MPF.Fidelity.MPFC, format = "%Y-%m-%d"))
 
-MPF.Fidelity.GE <- read.xlsx("~/OneDrive/MPF/Fidelity/202001/GE.xlsx")
-MPF.Fidelity.GE[,1] <- convertToDate(MPF.Fidelity.GE[,1])
-MPF.Fidelity.GE <- MPF.Fidelity.GE[11:length(MPF.Fidelity.GE[,1]),]
-rownames(MPF.Fidelity.GE) <- MPF.Fidelity.GE[,1]
+MPF.Fidelity.GE <-
+  read.xlsx("~/OneDrive/MPF/Fidelity/202001/GE.xlsx")
+MPF.Fidelity.GE[, 1] <- convertToDate(MPF.Fidelity.GE[, 1])
+MPF.Fidelity.GE <- MPF.Fidelity.GE[11:length(MPF.Fidelity.GE[, 1]), ]
+rownames(MPF.Fidelity.GE) <- MPF.Fidelity.GE[, 1]
 colnames(MPF.Fidelity.GE) <- c("Date", "HKD")
-MPF.Fidelity.GE <- as.xts(read.zoo(MPF.Fidelity.GE, format="%Y-%m-%d"))
+MPF.Fidelity.GE <-
+  as.xts(read.zoo(MPF.Fidelity.GE, format = "%Y-%m-%d"))
 
 MPF.Fidelity.G <- read.xlsx("~/OneDrive/MPF/Fidelity/202001/G.xlsx")
-MPF.Fidelity.G[,1] <- convertToDate(MPF.Fidelity.G[,1])
-MPF.Fidelity.G <- MPF.Fidelity.G[11:length(MPF.Fidelity.G[,1]),]
-rownames(MPF.Fidelity.G) <- MPF.Fidelity.G[,1]
+MPF.Fidelity.G[, 1] <- convertToDate(MPF.Fidelity.G[, 1])
+MPF.Fidelity.G <- MPF.Fidelity.G[11:length(MPF.Fidelity.G[, 1]), ]
+rownames(MPF.Fidelity.G) <- MPF.Fidelity.G[, 1]
 colnames(MPF.Fidelity.G) <- c("Date", "HKD")
-MPF.Fidelity.G <- as.xts(read.zoo(MPF.Fidelity.G, format="%Y-%m-%d"))
+MPF.Fidelity.G <-
+  as.xts(read.zoo(MPF.Fidelity.G, format = "%Y-%m-%d"))
 
-MPF.Fidelity.HKB <- read.xlsx("~/OneDrive/MPF/Fidelity/202001/HKB.xlsx")
-MPF.Fidelity.HKB[,1] <- convertToDate(MPF.Fidelity.HKB[,1])
-MPF.Fidelity.HKB <- MPF.Fidelity.HKB[11:length(MPF.Fidelity.HKB[,1]),]
-rownames(MPF.Fidelity.HKB) <- MPF.Fidelity.HKB[,1]
+MPF.Fidelity.HKB <-
+  read.xlsx("~/OneDrive/MPF/Fidelity/202001/HKB.xlsx")
+MPF.Fidelity.HKB[, 1] <- convertToDate(MPF.Fidelity.HKB[, 1])
+MPF.Fidelity.HKB <-
+  MPF.Fidelity.HKB[11:length(MPF.Fidelity.HKB[, 1]), ]
+rownames(MPF.Fidelity.HKB) <- MPF.Fidelity.HKB[, 1]
 colnames(MPF.Fidelity.HKB) <- c("Date", "HKD")
-MPF.Fidelity.HKB <- as.xts(read.zoo(MPF.Fidelity.HKB, format="%Y-%m-%d"))
+MPF.Fidelity.HKB <-
+  as.xts(read.zoo(MPF.Fidelity.HKB, format = "%Y-%m-%d"))
 
-MPF.Fidelity.HKE <- read.xlsx("~/OneDrive/MPF/Fidelity/202001/HKE.xlsx")
-MPF.Fidelity.HKE[,1] <- convertToDate(MPF.Fidelity.HKE[,1])
-MPF.Fidelity.HKE <- MPF.Fidelity.HKE[11:length(MPF.Fidelity.HKE[,1]),]
-rownames(MPF.Fidelity.HKE) <- MPF.Fidelity.HKE[,1]
+MPF.Fidelity.HKE <-
+  read.xlsx("~/OneDrive/MPF/Fidelity/202001/HKE.xlsx")
+MPF.Fidelity.HKE[, 1] <- convertToDate(MPF.Fidelity.HKE[, 1])
+MPF.Fidelity.HKE <-
+  MPF.Fidelity.HKE[11:length(MPF.Fidelity.HKE[, 1]), ]
+rownames(MPF.Fidelity.HKE) <- MPF.Fidelity.HKE[, 1]
 colnames(MPF.Fidelity.HKE) <- c("Date", "HKD")
-MPF.Fidelity.HKE <- as.xts(read.zoo(MPF.Fidelity.HKE, format="%Y-%m-%d"))
+MPF.Fidelity.HKE <-
+  as.xts(read.zoo(MPF.Fidelity.HKE, format = "%Y-%m-%d"))
 
-MPF.Fidelity.RMBB <- na.omit(read.xlsx("~/OneDrive/MPF/Fidelity/202001/RMBB.xlsx"))
-MPF.Fidelity.RMBB[,1] <- convertToDate(MPF.Fidelity.RMBB[,1])
-MPF.Fidelity.RMBB <- MPF.Fidelity.RMBB[11:length(MPF.Fidelity.RMBB[,1]),]
-rownames(MPF.Fidelity.RMBB) <- MPF.Fidelity.RMBB[,1]
+MPF.Fidelity.RMBB <-
+  na.omit(read.xlsx("~/OneDrive/MPF/Fidelity/202001/RMBB.xlsx"))
+MPF.Fidelity.RMBB[, 1] <- convertToDate(MPF.Fidelity.RMBB[, 1])
+MPF.Fidelity.RMBB <-
+  MPF.Fidelity.RMBB[11:length(MPF.Fidelity.RMBB[, 1]), ]
+rownames(MPF.Fidelity.RMBB) <- MPF.Fidelity.RMBB[, 1]
 colnames(MPF.Fidelity.RMBB) <- c("Date", "HKD")
-MPF.Fidelity.RMBB <- as.xts(read.zoo(MPF.Fidelity.RMBB, format="%Y-%m-%d"))
+MPF.Fidelity.RMBB <-
+  as.xts(read.zoo(MPF.Fidelity.RMBB, format = "%Y-%m-%d"))
 
-MPF.Fidelity.SG <- read.xlsx("~/OneDrive/MPF/Fidelity/202001/SG.xlsx")
-MPF.Fidelity.SG[,1] <- convertToDate(MPF.Fidelity.SG[,1])
-MPF.Fidelity.SG <- MPF.Fidelity.SG[11:length(MPF.Fidelity.SG[,1]),]
-rownames(MPF.Fidelity.SG) <- MPF.Fidelity.SG[,1]
+MPF.Fidelity.SG <-
+  read.xlsx("~/OneDrive/MPF/Fidelity/202001/SG.xlsx")
+MPF.Fidelity.SG[, 1] <- convertToDate(MPF.Fidelity.SG[, 1])
+MPF.Fidelity.SG <- MPF.Fidelity.SG[11:length(MPF.Fidelity.SG[, 1]), ]
+rownames(MPF.Fidelity.SG) <- MPF.Fidelity.SG[, 1]
 colnames(MPF.Fidelity.SG) <- c("Date", "HKD")
-MPF.Fidelity.SG <- as.xts(read.zoo(MPF.Fidelity.SG, format="%Y-%m-%d"))
+MPF.Fidelity.SG <-
+  as.xts(read.zoo(MPF.Fidelity.SG, format = "%Y-%m-%d"))
 
-MPF.Fidelity.HSI <- read.xlsx("~/OneDrive/MPF/Fidelity/202001/HSI.xlsx")
-MPF.Fidelity.HSI[,1] <- convertToDate(MPF.Fidelity.HSI[,1])
-MPF.Fidelity.HSI <- MPF.Fidelity.HSI[11:length(MPF.Fidelity.HSI[,1]),]
-rownames(MPF.Fidelity.HSI) <- MPF.Fidelity.HSI[,1]
+MPF.Fidelity.HSI <-
+  read.xlsx("~/OneDrive/MPF/Fidelity/202001/HSI.xlsx")
+MPF.Fidelity.HSI[, 1] <- convertToDate(MPF.Fidelity.HSI[, 1])
+MPF.Fidelity.HSI <-
+  MPF.Fidelity.HSI[11:length(MPF.Fidelity.HSI[, 1]), ]
+rownames(MPF.Fidelity.HSI) <- MPF.Fidelity.HSI[, 1]
 colnames(MPF.Fidelity.HSI) <- c("Date", "HKD")
-MPF.Fidelity.HSI <- as.xts(read.zoo(MPF.Fidelity.HSI, format="%Y-%m-%d"))
+MPF.Fidelity.HSI <-
+  as.xts(read.zoo(MPF.Fidelity.HSI, format = "%Y-%m-%d"))
 
-MPF.Fidelity.GB <- read.xlsx("~/OneDrive/MPF/Fidelity/202001/GB.xlsx")
-MPF.Fidelity.GB[,1] <- convertToDate(MPF.Fidelity.GB[,1])
-MPF.Fidelity.GB <- MPF.Fidelity.GB[11:length(MPF.Fidelity.GB[,1]),]
-rownames(MPF.Fidelity.GB) <- MPF.Fidelity.GB[,1]
+MPF.Fidelity.GB <-
+  read.xlsx("~/OneDrive/MPF/Fidelity/202001/GB.xlsx")
+MPF.Fidelity.GB[, 1] <- convertToDate(MPF.Fidelity.GB[, 1])
+MPF.Fidelity.GB <- MPF.Fidelity.GB[11:length(MPF.Fidelity.GB[, 1]), ]
+rownames(MPF.Fidelity.GB) <- MPF.Fidelity.GB[, 1]
 colnames(MPF.Fidelity.GB) <- c("Date", "HKD")
-MPF.Fidelity.GB <- as.xts(read.zoo(MPF.Fidelity.GB, format="%Y-%m-%d"))
+MPF.Fidelity.GB <-
+  as.xts(read.zoo(MPF.Fidelity.GB, format = "%Y-%m-%d"))
 
-MPF.Fidelity.Save2040 <- read.xlsx("~/OneDrive/MPF/Fidelity/202001/Save2040.xlsx")
-MPF.Fidelity.Save2040[,1] <- convertToDate(MPF.Fidelity.Save2040[,1])
-MPF.Fidelity.Save2040 <- MPF.Fidelity.Save2040[11:length(MPF.Fidelity.Save2040[,1]),]
-rownames(MPF.Fidelity.Save2040) <- MPF.Fidelity.Save2040[,1]
+MPF.Fidelity.Save2040 <-
+  read.xlsx("~/OneDrive/MPF/Fidelity/202001/Save2040.xlsx")
+MPF.Fidelity.Save2040[, 1] <-
+  convertToDate(MPF.Fidelity.Save2040[, 1])
+MPF.Fidelity.Save2040 <-
+  MPF.Fidelity.Save2040[11:length(MPF.Fidelity.Save2040[, 1]), ]
+rownames(MPF.Fidelity.Save2040) <- MPF.Fidelity.Save2040[, 1]
 colnames(MPF.Fidelity.Save2040) <- c("Date", "HKD")
-MPF.Fidelity.Save2040 <- as.xts(read.zoo(MPF.Fidelity.Save2040, format="%Y-%m-%d"))
+MPF.Fidelity.Save2040 <-
+  as.xts(read.zoo(MPF.Fidelity.Save2040, format = "%Y-%m-%d"))
 
-MPF.Fidelity <- na.locf(merge(MPF.Fidelity.SFP, MPF.Fidelity.CA, MPF.Fidelity.AP, MPF.Fidelity.B, MPF.Fidelity.S, MPF.Fidelity.MPFC, MPF.Fidelity.GE, MPF.Fidelity.G, MPF.Fidelity.HKB, MPF.Fidelity.HKE, MPF.Fidelity.RMBB, MPF.Fidelity.SG, MPF.Fidelity.HSI, MPF.Fidelity.GB, MPF.Fidelity.Save2040))
+MPF.Fidelity <-
+  na.locf(
+    merge(
+      MPF.Fidelity.SFP,
+      MPF.Fidelity.CA,
+      MPF.Fidelity.AP,
+      MPF.Fidelity.B,
+      MPF.Fidelity.S,
+      MPF.Fidelity.MPFC,
+      MPF.Fidelity.GE,
+      MPF.Fidelity.G,
+      MPF.Fidelity.HKB,
+      MPF.Fidelity.HKE,
+      MPF.Fidelity.RMBB,
+      MPF.Fidelity.SG,
+      MPF.Fidelity.HSI,
+      MPF.Fidelity.GB,
+      MPF.Fidelity.Save2040
+    )
+  )
 daily <- index(MPF.Fidelity)
-MPF.Fidelity <- as.xts(sapply(MPF.Fidelity, as.numeric), order.by = daily)
-                      
+MPF.Fidelity <-
+  as.xts(sapply(MPF.Fidelity, as.numeric), order.by = daily)
+
 
 ```
 
 2. Calculate Simple Moving Average (SMA) 
 ```{r warning=FALSE}
-MPF.Fidelity.SMA.hy <- na.fill(apply(MPF.Fidelity, 2, function(x) SMA(x, n=21*MA_long)), 0)
+MPF.Fidelity.SMA.hy <-
+  na.fill(apply(MPF.Fidelity, 2, function(x)
+    SMA(x, n = 21 * MA_long)), 0)
 MPF.Fidelity.SMA.hy <- as.xts(MPF.Fidelity.SMA.hy, order.by = daily)
-MPF.Fidelity.SMA.mt <- na.fill(apply(MPF.Fidelity, 2, function(x) SMA(x, n=21*MA_Short)), 0)
+MPF.Fidelity.SMA.mt <-
+  na.fill(apply(MPF.Fidelity, 2, function(x)
+    SMA(x, n = 21 * MA_Short)), 0)
 MPF.Fidelity.SMA.mt <- as.xts(MPF.Fidelity.SMA.mt, order.by = daily)
 ```
 
@@ -321,118 +407,225 @@ MPF.Fidelity.RSI <- as.xts(MPF.Fidelity.RSI, order.by = daily)
 
 4. Calculate Returns
 ```{r warning=FALSE}
+MPF.Fidelity.SFP <- monthlyReturn(MPF.Fidelity[, 1], type = "log")
+MPF.Fidelity.CA <- monthlyReturn(MPF.Fidelity[, 2], type = "log")
+MPF.Fidelity.AP <- monthlyReturn(MPF.Fidelity[, 3], type = "log")
+MPF.Fidelity.B <- monthlyReturn(MPF.Fidelity[, 4], type = "log")
+MPF.Fidelity.S <- monthlyReturn(MPF.Fidelity[, 5], type = "log")
+MPF.Fidelity.MPFC <- monthlyReturn(MPF.Fidelity[, 6], type = "log")
+MPF.Fidelity.GE <- monthlyReturn(MPF.Fidelity[, 7], type = "log")
+MPF.Fidelity.G <- monthlyReturn(MPF.Fidelity[, 8], type = "log")
+MPF.Fidelity.HKB <- monthlyReturn(MPF.Fidelity[, 9], type = "log")
+MPF.Fidelity.HKE <- monthlyReturn(MPF.Fidelity[, 10], type = "log")
+MPF.Fidelity.RMBB <- monthlyReturn(MPF.Fidelity[, 11], type = "log")
+MPF.Fidelity.SG <- monthlyReturn(MPF.Fidelity[, 12], type = "log")
+MPF.Fidelity.HSI <- monthlyReturn(MPF.Fidelity[, 13], type = "log")
+MPF.Fidelity.GB <- monthlyReturn(MPF.Fidelity[, 14], type = "log")
+MPF.Fidelity.Save2040 <-
+  monthlyReturn(MPF.Fidelity[, 15], type = "log")
 
-MPF.Fidelity.SFP <- monthlyReturn(MPF.Fidelity[,1], type="log")
-MPF.Fidelity.CA <- monthlyReturn(MPF.Fidelity[,2], type="log")
-MPF.Fidelity.AP <- monthlyReturn(MPF.Fidelity[,3], type="log")
-MPF.Fidelity.B <- monthlyReturn(MPF.Fidelity[,4], type="log")
-MPF.Fidelity.S <- monthlyReturn(MPF.Fidelity[,5], type="log")
-MPF.Fidelity.MPFC <- monthlyReturn(MPF.Fidelity[,6], type="log")
-MPF.Fidelity.GE <- monthlyReturn(MPF.Fidelity[,7], type="log")
-MPF.Fidelity.G <- monthlyReturn(MPF.Fidelity[,8], type="log")
-MPF.Fidelity.HKB <- monthlyReturn(MPF.Fidelity[,9], type="log")
-MPF.Fidelity.HKE <- monthlyReturn(MPF.Fidelity[,10], type="log")
-MPF.Fidelity.RMBB <- monthlyReturn(MPF.Fidelity[,11], type="log")
-MPF.Fidelity.SG <- monthlyReturn(MPF.Fidelity[,12], type="log")
-MPF.Fidelity.HSI <- monthlyReturn(MPF.Fidelity[,13], type="log")
-MPF.Fidelity.GB <- monthlyReturn(MPF.Fidelity[,14], type="log")
-MPF.Fidelity.Save2040 <- monthlyReturn(MPF.Fidelity[,15], type="log")
-
-MPF.Fidelity.returns <- merge(MPF.Fidelity.SFP, MPF.Fidelity.CA,MPF.Fidelity.AP,MPF.Fidelity.B,
-                              MPF.Fidelity.S,MPF.Fidelity.MPFC,MPF.Fidelity.GE,MPF.Fidelity.G,
-                              MPF.Fidelity.HKB,MPF.Fidelity.HKE,MPF.Fidelity.RMBB,MPF.Fidelity.SG,
-                              MPF.Fidelity.HSI,MPF.Fidelity.GB,MPF.Fidelity.Save2040)
+MPF.Fidelity.returns <-
+  merge(
+    MPF.Fidelity.SFP,
+    MPF.Fidelity.CA,
+    MPF.Fidelity.AP,
+    MPF.Fidelity.B,
+    MPF.Fidelity.S,
+    MPF.Fidelity.MPFC,
+    MPF.Fidelity.GE,
+    MPF.Fidelity.G,
+    MPF.Fidelity.HKB,
+    MPF.Fidelity.HKE,
+    MPF.Fidelity.RMBB,
+    MPF.Fidelity.SG,
+    MPF.Fidelity.HSI,
+    MPF.Fidelity.GB,
+    MPF.Fidelity.Save2040
+  )
 MPF.Fidelity.returns[MPF.Fidelity.returns == Inf] = 0
 
-MPF.Fidelity.SFP <- monthlyReturn(MPF.Fidelity[,1], type="arithmetic")
-MPF.Fidelity.CA <- monthlyReturn(MPF.Fidelity[,2], type="arithmetic")
-MPF.Fidelity.AP <- monthlyReturn(MPF.Fidelity[,3], type="arithmetic")
-MPF.Fidelity.B <- monthlyReturn(MPF.Fidelity[,4], type="arithmetic")
-MPF.Fidelity.S <- monthlyReturn(MPF.Fidelity[,5], type="arithmetic")
-MPF.Fidelity.MPFC <- monthlyReturn(MPF.Fidelity[,6], type="arithmetic")
-MPF.Fidelity.GE <- monthlyReturn(MPF.Fidelity[,7], type="arithmetic")
-MPF.Fidelity.G <- monthlyReturn(MPF.Fidelity[,8], type="arithmetic")
-MPF.Fidelity.HKB <- monthlyReturn(MPF.Fidelity[,9], type="arithmetic")
-MPF.Fidelity.HKE <- monthlyReturn(MPF.Fidelity[,10], type="arithmetic")
-MPF.Fidelity.RMBB <- monthlyReturn(MPF.Fidelity[,11], type="arithmetic")
-MPF.Fidelity.SG <- monthlyReturn(MPF.Fidelity[,12], type="arithmetic")
-MPF.Fidelity.HSI <- monthlyReturn(MPF.Fidelity[,13], type="arithmetic")
-MPF.Fidelity.GB <- monthlyReturn(MPF.Fidelity[,14], type="arithmetic")
-MPF.Fidelity.Save2040 <- monthlyReturn(MPF.Fidelity[,15], type="arithmetic")
+MPF.Fidelity.SFP <-
+  monthlyReturn(MPF.Fidelity[, 1], type = "arithmetic")
+MPF.Fidelity.CA <-
+  monthlyReturn(MPF.Fidelity[, 2], type = "arithmetic")
+MPF.Fidelity.AP <-
+  monthlyReturn(MPF.Fidelity[, 3], type = "arithmetic")
+MPF.Fidelity.B <- monthlyReturn(MPF.Fidelity[, 4], type = "arithmetic")
+MPF.Fidelity.S <- monthlyReturn(MPF.Fidelity[, 5], type = "arithmetic")
+MPF.Fidelity.MPFC <-
+  monthlyReturn(MPF.Fidelity[, 6], type = "arithmetic")
+MPF.Fidelity.GE <-
+  monthlyReturn(MPF.Fidelity[, 7], type = "arithmetic")
+MPF.Fidelity.G <- monthlyReturn(MPF.Fidelity[, 8], type = "arithmetic")
+MPF.Fidelity.HKB <-
+  monthlyReturn(MPF.Fidelity[, 9], type = "arithmetic")
+MPF.Fidelity.HKE <-
+  monthlyReturn(MPF.Fidelity[, 10], type = "arithmetic")
+MPF.Fidelity.RMBB <-
+  monthlyReturn(MPF.Fidelity[, 11], type = "arithmetic")
+MPF.Fidelity.SG <-
+  monthlyReturn(MPF.Fidelity[, 12], type = "arithmetic")
+MPF.Fidelity.HSI <-
+  monthlyReturn(MPF.Fidelity[, 13], type = "arithmetic")
+MPF.Fidelity.GB <-
+  monthlyReturn(MPF.Fidelity[, 14], type = "arithmetic")
+MPF.Fidelity.Save2040 <-
+  monthlyReturn(MPF.Fidelity[, 15], type = "arithmetic")
 
-MPF.Fidelity.simple.returns <- merge(MPF.Fidelity.SFP, MPF.Fidelity.CA,MPF.Fidelity.AP,MPF.Fidelity.B,
-                              MPF.Fidelity.S,MPF.Fidelity.MPFC,MPF.Fidelity.GE,MPF.Fidelity.G,
-                              MPF.Fidelity.HKB,MPF.Fidelity.HKE,MPF.Fidelity.RMBB,MPF.Fidelity.SG,
-                              MPF.Fidelity.HSI,MPF.Fidelity.GB,MPF.Fidelity.Save2040)
+MPF.Fidelity.simple.returns <-
+  merge(
+    MPF.Fidelity.SFP,
+    MPF.Fidelity.CA,
+    MPF.Fidelity.AP,
+    MPF.Fidelity.B,
+    MPF.Fidelity.S,
+    MPF.Fidelity.MPFC,
+    MPF.Fidelity.GE,
+    MPF.Fidelity.G,
+    MPF.Fidelity.HKB,
+    MPF.Fidelity.HKE,
+    MPF.Fidelity.RMBB,
+    MPF.Fidelity.SG,
+    MPF.Fidelity.HSI,
+    MPF.Fidelity.GB,
+    MPF.Fidelity.Save2040
+  )
 MPF.Fidelity.simple.returns[MPF.Fidelity.simple.returns == Inf] = 0
 
 monthly <- index(MPF.Fidelity.returns)
 
-colnames(MPF.Fidelity.returns) <- c('SFP','CA','AP','B','S','MPFC','GE','G',"HKB",'HKE','RMBB','SG','HSI','GB','Save2040')
-colnames(MPF.Fidelity.simple.returns) <- c('SFP','CA','AP','B','S','MPFC','GE','G',"HKB",'HKE','RMBB','SG','HSI','GB','Save2040')
+colnames(MPF.Fidelity.returns) <-
+  c(
+    'SFP',
+    'CA',
+    'AP',
+    'B',
+    'S',
+    'MPFC',
+    'GE',
+    'G',
+    "HKB",
+    'HKE',
+    'RMBB',
+    'SG',
+    'HSI',
+    'GB',
+    'Save2040'
+  )
+colnames(MPF.Fidelity.simple.returns) <-
+  c(
+    'SFP',
+    'CA',
+    'AP',
+    'B',
+    'S',
+    'MPFC',
+    'GE',
+    'G',
+    "HKB",
+    'HKE',
+    'RMBB',
+    'SG',
+    'HSI',
+    'GB',
+    'Save2040'
+  )
 
 
-rm(MPF.Fidelity.SFP, MPF.Fidelity.CA,MPF.Fidelity.AP,MPF.Fidelity.B,
-                              MPF.Fidelity.S,MPF.Fidelity.MPFC,MPF.Fidelity.GE,MPF.Fidelity.G,
-                              MPF.Fidelity.HKB,MPF.Fidelity.HKE,MPF.Fidelity.RMBB,MPF.Fidelity.SG,
-                              MPF.Fidelity.HSI,MPF.Fidelity.GB,MPF.Fidelity.Save2040)
+rm(
+  MPF.Fidelity.SFP,
+  MPF.Fidelity.CA,
+  MPF.Fidelity.AP,
+  MPF.Fidelity.B,
+  MPF.Fidelity.S,
+  MPF.Fidelity.MPFC,
+  MPF.Fidelity.GE,
+  MPF.Fidelity.G,
+  MPF.Fidelity.HKB,
+  MPF.Fidelity.HKE,
+  MPF.Fidelity.RMBB,
+  MPF.Fidelity.SG,
+  MPF.Fidelity.HSI,
+  MPF.Fidelity.GB,
+  MPF.Fidelity.Save2040
+)
 ```
 
 ### Calculate average RSI of the month, and then adjustment factor
 ```{r warning=FALSE}
-MPF.Fidelity.RSI.month <- as.xts(do.call(rbind, lapply(split(as.xts(MPF.Fidelity.RSI), "months"), function(x) colAvgs(x))), order.by = monthly)
+MPF.Fidelity.RSI.month <-
+  as.xts(do.call(rbind, lapply(split(as.xts(MPF.Fidelity.RSI), "months"), function(x)
+    colAvgs(x))), order.by = monthly)
 
 MPF.Fidelity.RSI.p <- MPF.Fidelity.returns
-MPF.Fidelity.RSI.p[,] <- 0
+MPF.Fidelity.RSI.p[, ] <- 0
 
-for (col in 1:length(MPF.Fidelity.RSI.month[1,])) {
+for (col in 1:length(MPF.Fidelity.RSI.month[1, ])) {
   if (col != 6) {
-    for (row in 1:length(MPF.Fidelity.RSI.month[,col])) {
-      percentile <- ecdf(as.numeric(MPF.Fidelity.RSI.month[1:row,col]))
-      if (percentile(MPF.Fidelity.RSI.month[row,col]) >= (RSI_Overbuy - 1/length(1:row)^(1/2))) {
-        MPF.Fidelity.RSI.p[row,col] <- 0.2
+    for (row in 1:length(MPF.Fidelity.RSI.month[, col])) {
+      percentile <- ecdf(as.numeric(MPF.Fidelity.RSI.month[1:row, col]))
+      if (percentile(MPF.Fidelity.RSI.month[row, col]) >= (RSI_Overbuy - 1 /
+                                                           length(1:row) ^ (1 / 2))) {
+        MPF.Fidelity.RSI.p[row, col] <- 0.2
       } else {
-        MPF.Fidelity.RSI.p[row,col] <- 1.2-(percentile(MPF.Fidelity.RSI.month[row,col])^(3))
+        MPF.Fidelity.RSI.p[row, col] <-
+          1.2 - (percentile(MPF.Fidelity.RSI.month[row, col]) ^ (3))
       }
     }
   } else {
-    MPF.Fidelity.RSI.p[,col] <- 1
+    MPF.Fidelity.RSI.p[, col] <- 1
   }
 }
 
-MPF.Fidelity.RSI.sum <- as.xts(rowSums(MPF.Fidelity.RSI.p), order.by = monthly)
+MPF.Fidelity.RSI.sum <-
+  as.xts(rowSums(MPF.Fidelity.RSI.p), order.by = monthly)
 
-for (row in 1:length(MPF.Fidelity.RSI.p[,col])) {
-  MPF.Fidelity.RSI.p[row,] <- apply(MPF.Fidelity.RSI.p[row,], 2, function(x) (x/MPF.Fidelity.RSI.sum[row,1])^(1/4))
+for (row in 1:length(MPF.Fidelity.RSI.p[, col])) {
+  MPF.Fidelity.RSI.p[row, ] <-
+    apply(MPF.Fidelity.RSI.p[row, ], 2, function(x)
+      (x / MPF.Fidelity.RSI.sum[row, 1]) ^ (1 / 4))
 }
-MPF.Fidelity.RSI.sum <- as.xts(rowSums(MPF.Fidelity.RSI.p), order.by = monthly) 
+MPF.Fidelity.RSI.sum <-
+  as.xts(rowSums(MPF.Fidelity.RSI.p), order.by = monthly) 
 
 ```
 
 ### Allocate MPF for n-m MA BIAS
 ```{r warning=FALSE}
-rm(MPF.Fidelity.BIAS.diff, MPF.Fidelity.BIAS.diff.qu, MPF.Fidelity.BIAS.month, MPF.Fidelity.BIAS.p)
-MPF.Fidelity.BIAS.diff <- (MPF.Fidelity.SMA.mt - MPF.Fidelity.SMA.hy) / MPF.Fidelity.SMA.hy
-MPF.Fidelity.BIAS.diff.qu <- MPF.Fidelity.BIAS.diff - lag(MPF.Fidelity.BIAS.diff, k=21*nm)
+rm(
+  MPF.Fidelity.BIAS.diff,
+  MPF.Fidelity.BIAS.diff.qu,
+  MPF.Fidelity.BIAS.month,
+  MPF.Fidelity.BIAS.p
+)
+MPF.Fidelity.BIAS.diff <-
+  (MPF.Fidelity.SMA.mt - MPF.Fidelity.SMA.hy) / MPF.Fidelity.SMA.hy
+MPF.Fidelity.BIAS.diff.qu <-
+  MPF.Fidelity.BIAS.diff - stats::lag(MPF.Fidelity.BIAS.diff, k = 21 * nm)
 MPF.Fidelity.BIAS.diff.qu <- na.fill(MPF.Fidelity.BIAS.diff.qu, 0)
 
 
-MPF.Fidelity.BIAS.month <- do.call(rbind, lapply(split(as.xts(MPF.Fidelity.BIAS.diff.qu), "months"), function(x) colAvgs(x)))
+MPF.Fidelity.BIAS.month <-
+  do.call(rbind, lapply(split(
+    as.xts(MPF.Fidelity.BIAS.diff.qu), "months"
+  ), function(x)
+    colAvgs(x)))
 
 MPF.portf.weight <- MPF.Fidelity.returns
-MPF.portf.weight[,] <- NA
-#colnames(MPF.portf.weight) <- c('SFP','CA','AP','B','S','MPFC','GE','G',"HKB",'HKE','RMBB','SG','HSI','GB','Save2040')
+MPF.portf.weight[, ] <- NA
 
-MPF.Fidelity.stock.return <- as.xts(rowSums(MPF.Fidelity.BIAS.month), order.by=monthly)
+MPF.Fidelity.stock.return <-
+  as.xts(rowSums(MPF.Fidelity.BIAS.month), order.by = monthly)
 MPF.Fidelity.stock.return[] <- NA
 
-MPF.portf.return <- as.xts(rowSums(MPF.Fidelity.BIAS.month), order.by=monthly)
+MPF.portf.return <-
+  as.xts(rowSums(MPF.Fidelity.BIAS.month), order.by = monthly)
 MPF.portf.return[] <- NA
 
 up <- TRUE
 hedge <- FALSE
 
-round_percent <- function(x) { 
+round_percent <- function(x) {
   x <- x * 100
   result <- floor(x)    # Find integer bits
   remain <- x - result
@@ -441,46 +634,50 @@ round_percent <- function(x) {
   if (rsum < 100) {
     o <- order(remain, decreasing = TRUE)
     while (rsum < 100) {
-      if (i > length(remain)) i <- 1
+      if (i > length(remain))
+        i <- 1
       idx <- o[i]
       if (result[idx] == 0) {
-        i <- i+1
+        i <- i + 1
         next
       }
       result[idx] <- result[idx] + 1
       rsum <- sum(result)
-      i <- i+1
+      i <- i + 1
     }
-  } 
-  result <- result/100
-  return(result)    
+  }
+  result <- result / 100
+  return(result)
 }
 
 
 
 MPF.Fidelity.returns.mat <- as.matrix(MPF.Fidelity.returns)
 MPF.Fidelity.stock.mean <- 0
-for (row in 1:length(MPF.Fidelity.BIAS.month[,1])) {
-  MPF.Fidelity.BIAS.month[row,] <- (MPF.Fidelity.BIAS.month[row,]) * MPF.Fidelity.RSI.p[row,]#* VIX.month[row,6] * (MPF.Fidelity.RSI.p[row,])
-  #colnames(MPF.portf.weight) <- c('SFP','CA','AP','B','S','MPFC','GE','G',"HKB",'HKE','RMBB','SG','HSI','GB','Save2040')
+for (row in 1:length(MPF.Fidelity.BIAS.month[, 1])) {
+  MPF.Fidelity.BIAS.month[row, ] <-
+    (MPF.Fidelity.BIAS.month[row, ]) * MPF.Fidelity.RSI.p[row, ]
   MPF.Fidelity.stock.mean <- 0
   i <- 0
-  for (col in 1:length(MPF.Fidelity.BIAS.month[1,])) {
-    if (col != 1 && col != 5 && col != 6 && col != 9 && col != 11 && col != 12 && col != 14) {
+  for (col in 1:length(MPF.Fidelity.BIAS.month[1, ])) {
+    if (col != 1 &&
+        col != 5 &&
+        col != 6 && col != 9 && col != 11 && col != 12 && col != 14) {
       if (!is.na(MPF.Fidelity.returns.mat[row, col]) &&
           MPF.Fidelity.returns.mat[row, col] != 0) {
-        MPF.Fidelity.stock.mean <- MPF.Fidelity.stock.mean + MPF.Fidelity.returns.mat[row, col]
-          i <- i + 1
-        }
-        if (MPF.Fidelity.BIAS.month[row, col] < 1e-6) {
-          MPF.Fidelity.BIAS.month[row, col] <- 0
-        }
+        MPF.Fidelity.stock.mean <-
+          MPF.Fidelity.stock.mean + MPF.Fidelity.returns.mat[row, col]
+        i <- i + 1
+      }
+      if (MPF.Fidelity.BIAS.month[row, col] < 1e-6) {
+        MPF.Fidelity.BIAS.month[row, col] <- 0
+      }
     } else {
       if (MPF.Fidelity.BIAS.month[row, col] < 0) {
         MPF.Fidelity.BIAS.month[row, col] <- 0
       }
     }
-  
+    
     # if (MPF.Fidelity.BIAS.month[row,col] < Min_NMMA){
     #   MPF.Fidelity.BIAS.month[row,col] <- 0
     # }
@@ -488,80 +685,96 @@ for (row in 1:length(MPF.Fidelity.BIAS.month[,1])) {
   
   MPF.Fidelity.stock.return[row] <- MPF.Fidelity.stock.mean / i
   
-  if (is.nan(MPF.Fidelity.BIAS.month[row,col])) {
-    MPF.Fidelity.BIAS.month[row,col] <- 0
+  if (is.nan(MPF.Fidelity.BIAS.month[row, col])) {
+    MPF.Fidelity.BIAS.month[row, col] <- 0
   }
   
   # Retain two most increasing fund
-  last <- length(MPF.Fidelity.BIAS.month[1,]) - top
+  last <- length(MPF.Fidelity.BIAS.month[1, ]) - top
   
-  order <- order(MPF.Fidelity.BIAS.month[row,])[1:last]
+  order <- order(MPF.Fidelity.BIAS.month[row, ])[1:last]
   for (col in order) {
-    MPF.Fidelity.BIAS.month[row,col] <- 0
+    MPF.Fidelity.BIAS.month[row, col] <- 0
   }
-
-  MPF.Fidelity.sum <- sum(MPF.Fidelity.BIAS.month[row,])
-  MPF.Fidelity.BIAS.p <- MPF.Fidelity.BIAS.month[row,]
+  
+  MPF.Fidelity.sum <- sum(MPF.Fidelity.BIAS.month[row, ])
+  MPF.Fidelity.BIAS.p <- MPF.Fidelity.BIAS.month[row, ]
   MPF.Fidelity.BIAS.p[] <- 0
   
-
+  
   if (row > 8 && MPF.Fidelity.stock.return[row] <
       quantile(na.omit(MPF.Fidelity.stock.return), c(.35)) &&
       MPF.Fidelity.stock.return[row - 3] <
       quantile(na.omit(MPF.Fidelity.stock.return), c(.45))) {
     up <- FALSE
   }
-
+  
   if (row > 8 && hedge &&
       MPF.Fidelity.stock.return[row] >
-        quantile(na.omit(MPF.Fidelity.stock.return), c(.45))  &&
+      quantile(na.omit(MPF.Fidelity.stock.return), c(.45))  &&
       MPF.Fidelity.stock.return[row - 3] >
-        quantile(na.omit(MPF.Fidelity.stock.return), c(.35))) {
+      quantile(na.omit(MPF.Fidelity.stock.return), c(.35))) {
     hedge <- FALSE
     up <- TRUE
   }
-
-  if (row > 8 &&  (MPF.Fidelity.stock.return[row] < 0 &&
-                  MPF.Fidelity.stock.return[row-1] >
-                  quantile(na.omit(MPF.Fidelity.stock.return), c(.85)))) {
+  
+  if (row > 8 &&  (
+    MPF.Fidelity.stock.return[row] < 0 &&
+    MPF.Fidelity.stock.return[row - 1] >
+    quantile(na.omit(MPF.Fidelity.stock.return), c(.85))
+  )) {
     hedge <- TRUE
   }
   
-  MPF.Fidelity.sum <- sum(MPF.Fidelity.BIAS.month[row, ])
+  MPF.Fidelity.sum <- sum(MPF.Fidelity.BIAS.month[row,])
   MPF.Fidelity.BIAS.p[] <- 0
   
   
-  if (row <= 12 || MPF.Fidelity.sum == MPF.Fidelity.BIAS.month[row,6] ||
+  if (row <= 12 ||
+      MPF.Fidelity.sum == MPF.Fidelity.BIAS.month[row, 6] ||
       MPF.Fidelity.sum < 1e-6 || hedge == TRUE) {
-    if (row >= 34) {
-      MPF.Fidelity.BIAS.p[6] <- 0.7
+    if (row >= 198) {
+      MPF.Fidelity.BIAS.p[1] <- 0.4
+      MPF.Fidelity.BIAS.p[6] <- 0.3
       MPF.Fidelity.BIAS.p[14] <- 0.3
+    } else if (row >= 34) {
+      MPF.Fidelity.BIAS.p[6] <- 0.5
+      MPF.Fidelity.BIAS.p[14] <- 0.5
     } else {
       MPF.Fidelity.BIAS.p[6] <- 1
     }
-  } else if (min(MPF.Fidelity.stock.return[(row-3):row]) < -0.08) {
-    if (row >= 34) {
-      MPF.Fidelity.BIAS.p[] <- MPF.Fidelity.BIAS.month[row, ] / MPF.Fidelity.sum / 10 * 7
-      MPF.Fidelity.BIAS.p[14] <- MPF.Fidelity.BIAS.p[14]+0.12
-      MPF.Fidelity.BIAS.p[6] <- MPF.Fidelity.BIAS.p[6]+0.18
+  } else if (min(MPF.Fidelity.stock.return[(row - 3):row]) < -0.08) {
+    if (row >= 198) {
+      MPF.Fidelity.BIAS.p[] <-
+        MPF.Fidelity.BIAS.month[row,] / MPF.Fidelity.sum / 10 * 7
+      MPF.Fidelity.BIAS.p[14] <- MPF.Fidelity.BIAS.p[14] + 0.1
+      MPF.Fidelity.BIAS.p[6] <- MPF.Fidelity.BIAS.p[6] + 0.08
+      MPF.Fidelity.BIAS.p[1] <- MPF.Fidelity.BIAS.p[1] + 0.12
+    } else if (row >= 34) {
+      MPF.Fidelity.BIAS.p[] <-
+        MPF.Fidelity.BIAS.month[row,] / MPF.Fidelity.sum / 10 * 7
+      MPF.Fidelity.BIAS.p[14] <- MPF.Fidelity.BIAS.p[14] + 0.18
+      MPF.Fidelity.BIAS.p[6] <- MPF.Fidelity.BIAS.p[6] + 0.12
     } else {
-      MPF.Fidelity.BIAS.p[ ] <- MPF.Fidelity.BIAS.month[row, ] / MPF.Fidelity.sum / 10 * 7
-      MPF.Fidelity.BIAS.p[6] <- MPF.Fidelity.BIAS.p[6]+0.3
+      MPF.Fidelity.BIAS.p[] <-
+        MPF.Fidelity.BIAS.month[row,] / MPF.Fidelity.sum / 10 * 7
+      MPF.Fidelity.BIAS.p[6] <- MPF.Fidelity.BIAS.p[6] + 0.3
     }
   } else {
-    MPF.Fidelity.BIAS.p[ ] <- MPF.Fidelity.BIAS.month[row, ] / MPF.Fidelity.sum
+    MPF.Fidelity.BIAS.p[] <-
+      MPF.Fidelity.BIAS.month[row,] / MPF.Fidelity.sum
   }
   
   
   
-
-  MPF.portf.weight[row,] <-
-    round_percent(MPF.Fidelity.BIAS.p) 
+  
+  MPF.portf.weight[row, ] <-
+    round_percent(MPF.Fidelity.BIAS.p)
   
   portf.rebal.fm <-
     Return.portfolio(
       na.fill(MPF.Fidelity.simple.returns, 0),
-      weight = MPF.portf.weight[1:row,],
+      weight = MPF.portf.weight[1:row, ],
       geometric = TRUE,
       rebalance_on = "months"
     )
@@ -571,7 +784,8 @@ for (row in 1:length(MPF.Fidelity.BIAS.month[,1])) {
   MPF.portf.drawdown <- Drawdowns(MPF.portf.return,
                                   geometric = TRUE)
   
-  if (tail(na.omit(MPF.portf.drawdown), 1) < -0.065 && up == FALSE) {
+  if (tail(na.omit(MPF.portf.drawdown), 1) < -0.065 &&
+      up == FALSE) {
     hedge = TRUE
   }
 }
@@ -587,40 +801,357 @@ portf.rebal.fm <- Return.portfolio(
   rebalance_on = "months"
 )
 
+etfs <- c('SPY', 'QQQ', '^HSI')
+golden.butterfly <- c('VTI', 'IWM', 'SHY', 'TLT', 'GLD')
+
+weights <- c(1, 0, 0,
+             0, 1, 0,
+             0, 0, 1)
+
+weights.table <-  tibble(etfs) %>%
+  tq_repeat_df(n = 3) %>%
+  bind_cols(tibble(weights)) %>%
+  group_by(portfolio)
+
+etf.dat <- c(etfs) %>%
+  map_df(
+    function(i)
+      i %>%
+      tq_get(
+        "stock.prices",
+        from = "2001-01-01" %>%
+          as.Date,
+        to = "2019-12-31" %>%
+          as.Date
+      )
+  ) %>% group_by(symbol)  %>%
+  tq_transmute(
+    select     = adjusted,
+    mutate_fun = periodReturn,
+    period     = "monthly",
+    col_rename = "Rb"
+  )
+
+GoldBut.dat <- c(golden.butterfly) %>%
+  map_df(
+    function(i)
+      i %>%
+      tq_get(
+        "stock.prices",
+        from = "2004-11-01" %>%
+          as.Date,
+        to = "2019-12-31" %>%
+          as.Date
+      )
+  ) %>% group_by(symbol)  %>%
+  tq_transmute(
+    select     = adjusted,
+    mutate_fun = periodReturn,
+    period     = "monthly",
+    col_rename = "Rb"
+  )
+
+
+etf.by.column <- spread(etf.dat, symbol, Rb)
+SPY.etf <-
+  na.omit(select(etf.by.column, 'date', 'SPY')) %>% mutate(symb = 'SPY')
+QQQ.etf <-
+  na.omit(select(etf.by.column, 'date', 'QQQ')) %>% mutate(symb = 'QQQ')
+HSI.etf <-
+  na.omit(select(etf.by.column, 'date', '^HSI')) %>% mutate(symb = 'HSI')
+
+SPY.return.monthly <- SPY.etf %>%
+  tq_portfolio(assets_col  = symb,
+               returns_col = SPY,
+               col_rename  = "Rb.SPY")
+QQQ.return.monthly <- QQQ.etf %>%
+  tq_portfolio(assets_col  = symb,
+               returns_col = QQQ,
+               col_rename  = "Rb.QQQ")
+HSI.return.monthly <- HSI.etf %>%
+  tq_portfolio(assets_col  = symb,
+               returns_col = `^HSI`,
+               col_rename  = "Rb.HSI")
+GoldBut.return.monthly <- GoldBut.dat %>%
+  tq_portfolio(
+    assets_col = symbol,
+    returns_col = Rb,
+    col_rename = "Rb.GoldBut",
+    rebalance_on = "years"
+  )
+
+portf.rebal.fm.dollar <- Return.portfolio(
+  MPF.Fidelity.simple.returns,
+  weight = MPF.portf.weight,
+  geometric = TRUE,
+  rebalance_on = "months"
+)
+
+portf.rebal.fm.dollar.cpy <- Return.portfolio(
+  MPF.Fidelity.simple.returns,
+  weight = MPF.portf.weight,
+  geometric = TRUE,
+  rebalance_on = "months",
+  wealth.index = TRUE
+)
+
+portf.rebal.fm.dollar.gb <- Return.portfolio(
+  tail(MPF.Fidelity.simple.returns,-48),
+  weight = tail(MPF.portf.weight,-48),
+  geometric = TRUE,
+  rebalance_on = "months"
+)
+
+portf.rebal.fm.dollar.gb.cpy <- Return.portfolio(
+  tail(MPF.Fidelity.simple.returns, -48),
+  weight = tail(MPF.portf.weight, -48),
+  geometric = TRUE,
+  rebalance_on = "months",
+  wealth.index = TRUE
+)
+
+xts2df <- function(x) {
+  data.frame(date = index(x), coredata(x))
+}
+
+colnames(portf.rebal.fm.dollar) <- "Ra"
+
+
+portf.rebal.fm.dollar.tb <-
+  tbl_df(melt(xts2df(portf.rebal.fm.dollar), id = "date"))
+portf.rebal.fm.dollar.tb <- portf.rebal.fm.dollar.tb[, -2]
+colnames(portf.rebal.fm.dollar.tb) <- c("date", "Ra")
+portf.rebal.fm.dollar.gb.tb <-
+  tbl_df(melt(xts2df(portf.rebal.fm.dollar.gb), id = "date"))
+portf.rebal.fm.dollar.gb.tb <- portf.rebal.fm.dollar.gb.tb[, -2]
+colnames(portf.rebal.fm.dollar.gb.tb) <- c("date", "Ra")
+
+portf.rebal.fm.dollar.tb[, 1] <- SPY.etf[, 1]
+RaSPY.multiple.portfolio <- left_join(portf.rebal.fm.dollar.tb,
+                                      SPY.return.monthly, by = "date")
+portf.rebal.fm.dollar.tb[, 1] <- QQQ.etf[, 1]
+RaQQQ.multiple.portfolio <- left_join(portf.rebal.fm.dollar.tb,
+                                      QQQ.return.monthly, by = "date")
+portf.rebal.fm.dollar.gb.tb[, 1] <- GoldBut.dat[, 2]
+RaGoldBut.multiple.portfolio <-
+  left_join(portf.rebal.fm.dollar.gb.tb,
+            GoldBut.return.monthly, by = "date")
+portf.rebal.fm.dollar.tb[, 1] <- HSI.etf[, 1]
+RaHSI.multiple.portfolio <- left_join(portf.rebal.fm.dollar.tb,
+                                      HSI.return.monthly, by = "date")
+
+
+print("Annualised return of SPY:")
+TORI.SPY <- RaSPY.multiple.portfolio %>%
+  tq_performance(Rb.SPY, NULL, performance_fun = table.AnnualizedReturns)
+print(TORI.SPY)
+
+print("Annualised return of QQQ:")
+TORI.QQQ <- RaQQQ.multiple.portfolio %>%
+  tq_performance(Rb.QQQ, NULL, performance_fun = table.AnnualizedReturns)
+print(TORI.QQQ)
+
+print("Annualised return of Golden Butterfly:")
+TORI.GoldBut <- RaGoldBut.multiple.portfolio %>%
+  tq_performance(Rb.GoldBut, NULL, performance_fun = table.AnnualizedReturns)
+print(TORI.GoldBut)
+
+print("Annualised return of HSI:")
+TORI.HSI <- RaHSI.multiple.portfolio %>%
+  tq_performance(Rb.HSI, NULL, performance_fun = table.AnnualizedReturns)
+print(TORI.HSI)
+
+print("CAPM Information against SPY:")
+TORI.SPY <- RaSPY.multiple.portfolio %>%
+  tq_performance(Ra, Rb.SPY, performance_fun = table.CAPM)
+print(TORI.SPY)
+
+print("CAPM Information against QQQ:")
+TORI.QQQ <- RaQQQ.multiple.portfolio %>%
+  tq_performance(Ra, Rb.QQQ, performance_fun = table.CAPM)
+print(TORI.QQQ)
+
+print("CAPM Information against GoldBut:")
+TORI.GoldBut <- RaGoldBut.multiple.portfolio %>%
+  tq_performance(Ra, Rb.GoldBut, performance_fun = table.CAPM)
+print(TORI.GoldBut)
+
+print("CAPM Information against HSI:")
+TORI.HSI <- RaHSI.multiple.portfolio %>%
+  tq_performance(Ra, Rb.HSI, performance_fun = table.CAPM)
+print(TORI.HSI)
+
+
+print("Information Ratio against SPY:")
+TORI.SPY <- RaSPY.multiple.portfolio %>%
+  tq_performance(Ra, Rb.SPY, performance_fun = table.InformationRatio)
+print(TORI.SPY)
+
+print("Information Ratio against QQQ:")
+TORI.QQQ <- RaQQQ.multiple.portfolio %>%
+  tq_performance(Ra, Rb.QQQ, performance_fun = table.InformationRatio)
+print(TORI.QQQ)
+
+print("Information Ratio against GoldBut:")
+TORI.GoldBut <- RaGoldBut.multiple.portfolio %>%
+  tq_performance(Ra, Rb.GoldBut, performance_fun = table.InformationRatio)
+print(TORI.GoldBut)
+
+print("Information Ratio against HSI:")
+TORI.HSI <- RaHSI.multiple.portfolio %>%
+  tq_performance(Ra, Rb.HSI, performance_fun = table.InformationRatio)
+print(TORI.HSI)
+
+SPY.dollar.monthly <- SPY.etf %>%
+  tq_portfolio(
+    assets_col  = symb,
+    returns_col = SPY,
+    col_rename  = "Rb.SPY",
+    wealth.index = TRUE
+  ) %>%
+  mutate(Rb.SPY = Rb.SPY * 2301)
+QQQ.dollar.monthly <- QQQ.etf %>%
+  tq_portfolio(
+    assets_col  = symb,
+    returns_col = QQQ,
+    col_rename  = "Rb.QQQ",
+    wealth.index = TRUE
+  ) %>%
+  mutate(Rb.QQQ = Rb.QQQ * 2301)
+GoldBut.dollar.monthly <- GoldBut.dat %>%
+  tq_portfolio(
+    assets_col = symbol,
+    returns_col = Rb,
+    col_rename = "Rb.GoldBut",
+    rebalance_on = "years",
+    wealth.index = TRUE
+  ) %>%
+  mutate(Rb.GoldBut = Rb.GoldBut * 2301)
+HSI.dollar.monthly <- HSI.etf %>%
+  tq_portfolio(
+    assets_col  = symb,
+    returns_col = `^HSI`,
+    col_rename  = "Rb.HSI",
+    wealth.index = TRUE
+  ) %>%
+  mutate(Rb.HSI = Rb.HSI * 2301)
+
+
+portf.rebal.fm.dollar.tb.cpy <-
+  tbl_df(melt(
+    xts2df(portf.rebal.fm.dollar.cpy),
+    id = "date",
+    variable_name = "Ra"
+  ))
+portf.rebal.fm.dollar.tb.cpy <- portf.rebal.fm.dollar.tb.cpy[, -2]
+colnames(portf.rebal.fm.dollar.tb.cpy) <- c("date", "Ra")
+portf.rebal.fm.dollar.tb.cpy[, 1] <- HSI.etf[, 1]
+portf.dollar.monthly <- portf.rebal.fm.dollar.tb.cpy %>%
+  mutate(Ra = Ra * 2301)
+
+portf.rebal.fm.dollar.gb.tb.cpy <-
+  tbl_df(melt(
+    xts2df(portf.rebal.fm.dollar.gb.cpy),
+    id = "date",
+    variable_name = "Ra"
+  ))
+portf.rebal.fm.dollar.gb.tb.cpy <-
+  portf.rebal.fm.dollar.gb.tb.cpy[, -2]
+colnames(portf.rebal.fm.dollar.gb.tb.cpy) <- c("date", "Ra")
+portf.rebal.fm.dollar.gb.tb.cpy[, 1] <- GoldBut.dat[, 2]
+portf.dollar.monthly.gb <- portf.rebal.fm.dollar.gb.tb.cpy %>%
+  mutate(Ra = Ra * 2301)
+
+
+
+ggplot() +
+  scale_color_manual(
+    labels = c("SPY", "QQQ", "HSI", "TORI @ Fidelity"),
+    values = c(1, 2, 3, "pink3")
+  ) +
+  geom_line(aes(x = date, y = Rb.SPY, color = as.factor(1)),
+            SPY.dollar.monthly,
+            size = 0.8) +
+  geom_line(aes(x = date, y = Rb.QQQ, color = as.factor(2)),
+            QQQ.dollar.monthly,
+            size = 0.8) +
+  geom_line(aes(x = date, y = Rb.HSI, color = as.factor(3)),
+            HSI.dollar.monthly,
+            size = 0.8) +
+  geom_line(aes(x = date, y = Ra, color = "pink3"), portf.dollar.monthly, 
+            size =1.8) +
+  labs(
+    title = "TORI @ Fidelity versus SPY, QQQ, and Hang Seng Index",
+    subtitle = "How TORI @ Fidelity outperform common index fund",
+    x = "",
+    y = "Portfolio Value",
+    color = "Portfolio or Index ETFs"
+  ) +
+  theme_tq() +
+  scale_y_continuous(labels = scales::dollar)
+
+ggplot() +
+  scale_color_manual(labels = c("Golden Butterfly", "TORI @ Fidelity"),
+                     values = c(4, "pink3")) +
+  geom_line(aes(x = date, y = Rb.GoldBut, color = as.factor(3)),
+            GoldBut.dollar.monthly,
+            size = 0.8) +
+  geom_line(aes(x = date, y = Ra, color = "pink3"),
+            portf.dollar.monthly.gb,
+            size = 1.8) +
+  labs(
+    title = "TORI @ Fidelity versus Golden Butterfly Portfolio",
+    subtitle = "How TORI @ Fidelity outperform golden butterfly portfolio",
+    x = "",
+    y = "Portfolio Value",
+    color = "Portfolio"
+  ) +
+  theme_tq() +
+  scale_y_continuous(labels = scales::dollar)
+
+
+
+
+cat("Cumulative return: ",
+    Return.cumulative(portf.rebal.fm, geometric = TRUE),
+    "\n")
+portf.rebal.fm.sharpe <-
+  Return.annualized(portf.rebal.fm, geometric = TRUE) /
+  (StdDev.annualized(portf.rebal.fm))
+rownames(portf.rebal.fm.sharpe) <- "Sharpe Ratio"
+cat("Annualised return: ",
+    Return.annualized(portf.rebal.fm, geometric = TRUE),
+    "\n")
+
 mean.annual.return <-
   mean(do.call(rbind, lapply(split(portf.rebal.fm, "years"), function(x)
     colMeans(x))) * 12)
+cat("Mean annual return (for ref. only): ", mean.annual.return, "\n")
+portf.rebal.fm.sharpe.mean <-
+  mean.annual.return / (StdDev.annualized(portf.rebal.fm))
+rownames(portf.rebal.fm.sharpe.mean) <-
+  "Sharpe Ratio (Mean annual return)"
 
-charts.PerformanceSummary(
-  portf.rebal.fm,
-  methods = "ModifiedES",
-  geometric = TRUE,
-  p = .95,
-  main = "Fidelity MPF Scheme First Contribution Performance"
+SharpeRatio(portf.rebal.fm, annualize = TRUE, method = "modified")
+cat("Annualised Standard Deviation: ",
+    StdDev.annualized(portf.rebal.fm),
+    "\n")
+cat("Sortino Ratio: ", SortinoRatio(portf.rebal.fm) * sqrt(12), "\n")
+cat(
+  "Coditional Value of Risk (CVaR, Expected Shortfall ES",
+  ES(portf.rebal.fm, method = "modified"),
+  "\n"
 )
-
-Return.cumulative(portf.rebal.fm, geometric=TRUE)
-portf.rebal.fm.sharpe <- Return.annualized(portf.rebal.fm, geometric=TRUE) / (StdDev.annualized(portf.rebal.fm))
-rownames(portf.rebal.fm.sharpe) <- "Sharpe Ratio"
-Return.annualized(portf.rebal.fm, geometric=TRUE)
-mean.annual.return
-portf.rebal.fm.sharpe.mean <- mean.annual.return / (StdDev.annualized(portf.rebal.fm))
-rownames(portf.rebal.fm.sharpe.mean) <- "Sharpe Ratio (Mean annual return)"
-SharpeRatio(portf.rebal.fm) * sqrt(12)
-portf.rebal.fm.sharpe.mean
-StdDev.annualized(portf.rebal.fm)
-SortinoRatio(portf.rebal.fm) * sqrt(12)
-ES(portf.rebal.fm, method="historical")
-tail(MPF.portf.weight, n=6)
+tail(MPF.portf.weight, n = 6)
 ```
 
 ### Monthly Installment
 ```{r linewidth=159, warning=FALSE}
 MPF.Fidelity.units <- MPF.Fidelity.returns
-MPF.Fidelity.units[, ] <- 0
+MPF.Fidelity.units[,] <- 0
 
 MPF.monthly.asset <- MPF.Fidelity.returns
-MPF.monthly.asset[, ] <- 0
+MPF.monthly.asset[,] <- 0
 
 MPF.monthly.returns <-
   as.xts(rowSums(MPF.Fidelity.returns), order.by = monthly)
@@ -631,44 +1162,49 @@ MPF.pay <- -2301 + 0 * MPF.time
 
 
 for (row in 2:length(MPF.Fidelity.returns[, 1])) {
-#for (row in 1:13) {
+  #for (row in 1:13) {
   this.price <- as.matrix(MPF.Fidelity[monthly[row]])
-  MPF.Fidelity.units[row, ] <- this.price
+  MPF.Fidelity.units[row,] <- this.price
   
   if (row == 2) {
     last.value <- 2301 / 10
     this.value <- last.value * this.price[6]
-    MPF.monthly.returns[row] <- (sum(na.fill(this.value,0)) - 2301) / 2301
-    MPF.monthly.asset[row,] <-
-      na.fill(((this.value + 2301) / this.price * MPF.portf.weight[row, ]),0)
+    MPF.monthly.returns[row] <-
+      (sum(na.fill(this.value, 0)) - 2301) / 2301
+    MPF.monthly.asset[row, ] <-
+      na.fill(((this.value + 2301) / this.price * MPF.portf.weight[row,]), 0)
     
     last.price <- this.price
   } else {
     last.value <-
-     as.numeric(sum(na.fill(last.price * MPF.monthly.asset[row - 1, ], 0)))
+      as.numeric(sum(na.fill(last.price * MPF.monthly.asset[row - 1,], 0)))
     this.value <-
-     as.numeric(sum(na.fill(this.price * MPF.monthly.asset[row - 1, ], 0)))
+      as.numeric(sum(na.fill(this.price * MPF.monthly.asset[row - 1,], 0)))
     MPF.monthly.returns[row] <- log(this.value / last.value)
-
-    last.value <- na.fill(MPF.monthly.asset[row-1,] * last.price,0)
-    this.value <- na.fill(MPF.monthly.asset[row-1,] * this.price,0)
-    MPF.monthly.returns[row] <- (sum(this.value) - sum(last.value)) / sum(last.value)
-
-    MPF.monthly.asset.old <- this.value / sum(na.fill(this.value,0))
-    MPF.monthly.asset.propose <- as.matrix(MPF.portf.weight[row,]) -
-       as.matrix(MPF.monthly.asset.old)
-    MPF.monthly.unit.change <- MPF.monthly.asset.propose * sum(na.fill(this.value,0)) /this.price
-
-    this.unit <- as.matrix(MPF.monthly.asset[row-1,]) + as.matrix(MPF.monthly.unit.change)
-    this.unit <- as.matrix(this.unit) + (2301 / as.matrix(this.price) * MPF.portf.weight[row,])
-
-    MPF.monthly.asset[row,] <- na.fill(this.unit,0)
+    
+    last.value <- na.fill(MPF.monthly.asset[row - 1, ] * last.price, 0)
+    this.value <- na.fill(MPF.monthly.asset[row - 1, ] * this.price, 0)
+    MPF.monthly.returns[row] <-
+      (sum(this.value) - sum(last.value)) / sum(last.value)
+    
+    MPF.monthly.asset.old <- this.value / sum(na.fill(this.value, 0))
+    MPF.monthly.asset.propose <- as.matrix(MPF.portf.weight[row, ]) -
+      as.matrix(MPF.monthly.asset.old)
+    MPF.monthly.unit.change <-
+      MPF.monthly.asset.propose * sum(na.fill(this.value, 0)) / this.price
+    
+    this.unit <-
+      as.matrix(MPF.monthly.asset[row - 1, ]) + as.matrix(MPF.monthly.unit.change)
+    this.unit <-
+      as.matrix(this.unit) + (2301 / as.matrix(this.price) * MPF.portf.weight[row, ])
+    
+    MPF.monthly.asset[row, ] <- na.fill(this.unit, 0)
     last.price <- this.price
   }
 }
 
 
-total.asset.value <- sum(MPF.monthly.asset[row, ] * this.price)
+total.asset.value <- sum(MPF.monthly.asset[row,] * this.price)
 total.contribution <- 2301 * length(MPF.Fidelity.returns[, 1])
 
 MPF.pay[row + 1] <- total.asset.value
@@ -678,7 +1214,9 @@ IRR.root <- uniroot(IRR.f, c(0, 1))
 
 
 cat("Total asset in the last valuation date: ", total.asset.value, "\n")
-cat("Total contribution starting from 2000/12/01: ", total.contribution, "\n")
+cat("Total contribution starting from 2000/12/01: ",
+    total.contribution,
+    "\n")
 
 mean.monthly.annual.return <-
   mean(do.call(rbind, lapply(split(MPF.monthly.returns, "years"), function(x)
