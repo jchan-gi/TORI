@@ -475,7 +475,7 @@ MPF.Invesco.returns.mat <- as.matrix(MPF.Invesco.returns)
 MPF.Invesco.stock.mean <- 0
 for (row in 1:length(MPF.Invesco.BIAS.month[, 1])) {
   MPF.Invesco.BIAS.month[row, ] <-
-    (MPF.Invesco.BIAS.month[row, ]) * MPF.Invesco.RSI.p[row, ]#* VIX.month[row,6] * (MPF.Invesco.RSI.p[row,])
+    (MPF.Invesco.BIAS.month[row, ]) * MPF.Invesco.RSI.p[row, ]
   
   MPF.Invesco.stock.mean <- 0
   i <- 0
@@ -498,9 +498,6 @@ for (row in 1:length(MPF.Invesco.BIAS.month[, 1])) {
       }
     }
     
-    # if (MPF.Invesco.BIAS.month[row,col] < Min_NMMA){
-    #   MPF.Invesco.BIAS.month[row,col] <- 0
-    # }
   }
   
   MPF.Invesco.stock.return[row] <- MPF.Invesco.stock.mean / i

@@ -185,10 +185,10 @@ install.packages("xts", type="binary")
 install.packages("fBasics", type="binary")
 install.packages("quantmod", dependencies = TRUE, type="binary")
 install.packages("PerformanceAnalytics", dependencies = TRUE, type="binary")
-install.packages("keras", type="binary")
-
-install.packages("remotes")
-remotes::install_github('rstudio/rmarkdown')
+install.packages("tidyverse", dependencies = TRUE, type="binary")
+install.packages("tibbletime", dependencies = TRUE, type="binary")
+install.packages("tidyquant", dependencies = TRUE, type="binary")
+install.packages("reshape", type="binary")
 
 ```
 
@@ -203,9 +203,9 @@ library("timetk")
 library("tibbletime")
 
 library("reshape")
+library("tidyquant")
 library("quantmod")
 library("PerformanceAnalytics")
-library("tidyquant")
 ```
 
 

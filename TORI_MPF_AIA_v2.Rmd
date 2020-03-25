@@ -205,7 +205,7 @@ knit_hooks$set(output = function(x, options) {
 ```
 
 2. Now load necessary packages.
-```{r linewidth=40,  warning=FALSE, results=FALSE}
+```{r warning=FALSE, results=FALSE}
 library("zoo")
 library("xts")
 
@@ -215,9 +215,9 @@ library("timetk")
 library("tibbletime")
 
 library("reshape")
+library("tidyquant")
 library("quantmod")
 library("PerformanceAnalytics")
-library("tidyquant")
 ```
 
 ### Load Prices and Calculate Return
