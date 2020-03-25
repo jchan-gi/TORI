@@ -268,151 +268,297 @@ MPF.AIA.RSI <- as.xts(MPF.AIA.RSI, order.by = daily)
 
 4. Calculate Returns
 ```{r warning=FALSE}
-MPF.AIA.AB <- monthlyReturn(as.xts(MPF.AIA$AB), type="log")
-MPF.AIA.AE <- monthlyReturn(as.xts(MPF.AIA$AE), type="log")
-MPF.AIA.B <- monthlyReturn(as.xts(MPF.AIA$B), type="log")
-MPF.AIA.CA <- monthlyReturn(as.xts(MPF.AIA$CA), type="log")
-MPF.AIA.EAT <- monthlyReturn(as.xts(MPF.AIA$EAT), type="log")
-MPF.AIA.EE <- monthlyReturn(as.xts(MPF.AIA$EE), type="log")
-MPF.AIA.FB <- monthlyReturn(as.xts(MPF.AIA$FB), type="log")
-MPF.AIA.FG <- monthlyReturn(as.xts(MPF.AIA$FG), type="log")
-MPF.AIA.FS <- monthlyReturn(as.xts(MPF.AIA$FS), type="log")
-MPF.AIA.G <- monthlyReturn(as.xts(MPF.AIA$G), type="log")
-MPF.AIA.GB <- monthlyReturn(as.xts(MPF.AIA$GB), type="log")
-MPF.AIA.GCE <- monthlyReturn(as.xts(MPF.AIA$GCE), type="log")
-MPF.AIA.GCP <- monthlyReturn(as.xts(MPF.AIA$GCP), type="log")
-MPF.AIA.GCT <- monthlyReturn(as.xts(MPF.AIA$GCT), type="log")
-MPF.AIA.GF <- monthlyReturn(as.xts(MPF.AIA$GF), type="log")
-MPF.AIA.GT <- monthlyReturn(as.xts(MPF.AIA$GT), type="log")
-MPF.AIA.HKE <- monthlyReturn(as.xts(MPF.AIA$HKE), type="log")
-MPF.AIA.JE <- monthlyReturn(as.xts(MPF.AIA$JE), type="log")
-MPF.AIA.MPFC <- monthlyReturn(as.xts(MPF.AIA$MPFC), type="log")
-MPF.AIA.NAE <- monthlyReturn(as.xts(MPF.AIA$NAE), type="log")
-MPF.AIA.NAT <- monthlyReturn(as.xts(MPF.AIA$NAT), type="log")
-MPF.AIA.P <- monthlyReturn(as.xts(MPF.AIA$P), type="log")
-MPF.AIA.S <- monthlyReturn(as.xts(MPF.AIA$S), type="log")
-MPF.AIA.SFP <- monthlyReturn(as.xts(MPF.AIA$SFP), type="log")
+MPF.AIA.AB <- monthlyReturn(as.xts(MPF.AIA$AB), type = "log")
+MPF.AIA.AE <- monthlyReturn(as.xts(MPF.AIA$AE), type = "log")
+MPF.AIA.B <- monthlyReturn(as.xts(MPF.AIA$B), type = "log")
+MPF.AIA.CA <- monthlyReturn(as.xts(MPF.AIA$CA), type = "log")
+MPF.AIA.EAT <- monthlyReturn(as.xts(MPF.AIA$EAT), type = "log")
+MPF.AIA.EE <- monthlyReturn(as.xts(MPF.AIA$EE), type = "log")
+MPF.AIA.FB <- monthlyReturn(as.xts(MPF.AIA$FB), type = "log")
+MPF.AIA.FG <- monthlyReturn(as.xts(MPF.AIA$FG), type = "log")
+MPF.AIA.FS <- monthlyReturn(as.xts(MPF.AIA$FS), type = "log")
+MPF.AIA.G <- monthlyReturn(as.xts(MPF.AIA$G), type = "log")
+MPF.AIA.GB <- monthlyReturn(as.xts(MPF.AIA$GB), type = "log")
+MPF.AIA.GCE <- monthlyReturn(as.xts(MPF.AIA$GCE), type = "log")
+MPF.AIA.GCP <- monthlyReturn(as.xts(MPF.AIA$GCP), type = "log")
+MPF.AIA.GCT <- monthlyReturn(as.xts(MPF.AIA$GCT), type = "log")
+MPF.AIA.GF <- monthlyReturn(as.xts(MPF.AIA$GF), type = "log")
+MPF.AIA.GT <- monthlyReturn(as.xts(MPF.AIA$GT), type = "log")
+MPF.AIA.HKE <- monthlyReturn(as.xts(MPF.AIA$HKE), type = "log")
+MPF.AIA.JE <- monthlyReturn(as.xts(MPF.AIA$JE), type = "log")
+MPF.AIA.MPFC <- monthlyReturn(as.xts(MPF.AIA$MPFC), type = "log")
+MPF.AIA.NAE <- monthlyReturn(as.xts(MPF.AIA$NAE), type = "log")
+MPF.AIA.NAT <- monthlyReturn(as.xts(MPF.AIA$NAT), type = "log")
+MPF.AIA.P <- monthlyReturn(as.xts(MPF.AIA$P), type = "log")
+MPF.AIA.S <- monthlyReturn(as.xts(MPF.AIA$S), type = "log")
+MPF.AIA.SFP <- monthlyReturn(as.xts(MPF.AIA$SFP), type = "log")
 
-MPF.AIA.returns <- merge(MPF.AIA.AB, MPF.AIA.AE, MPF.AIA.B, MPF.AIA.CA, MPF.AIA.EAT,
-                         MPF.AIA.EE, MPF.AIA.FB, MPF.AIA.FG, MPF.AIA.FS, MPF.AIA.G,
-                         MPF.AIA.GB, MPF.AIA.GCE, MPF.AIA.GCP, MPF.AIA.GCT, MPF.AIA.GF,
-                         MPF.AIA.GT, MPF.AIA.HKE, MPF.AIA.JE, MPF.AIA.MPFC, MPF.AIA.NAE,
-                         MPF.AIA.NAT, MPF.AIA.P, MPF.AIA.S, MPF.AIA.SFP)
+MPF.AIA.returns <-
+  merge(
+    MPF.AIA.AB,
+    MPF.AIA.AE,
+    MPF.AIA.B,
+    MPF.AIA.CA,
+    MPF.AIA.EAT,
+    MPF.AIA.EE,
+    MPF.AIA.FB,
+    MPF.AIA.FG,
+    MPF.AIA.FS,
+    MPF.AIA.G,
+    MPF.AIA.GB,
+    MPF.AIA.GCE,
+    MPF.AIA.GCP,
+    MPF.AIA.GCT,
+    MPF.AIA.GF,
+    MPF.AIA.GT,
+    MPF.AIA.HKE,
+    MPF.AIA.JE,
+    MPF.AIA.MPFC,
+    MPF.AIA.NAE,
+    MPF.AIA.NAT,
+    MPF.AIA.P,
+    MPF.AIA.S,
+    MPF.AIA.SFP
+  )
 
 monthly <- index(MPF.AIA.returns)
-colnames(MPF.AIA.returns) <- c("AB", "AE", "B", "CA", "EAT",
-                         "EE", "FB", "FG", "FS", "G",
-                         "GB", "GCE", "GCP", "GCT", "GF",
-                         "GT", "HKE", "JE", "MPFC", "NAE",
-                         "NAT", "P", "S", "SFP")
+colnames(MPF.AIA.returns) <- c(
+  "AB",
+  "AE",
+  "B",
+  "CA",
+  "EAT",
+  "EE",
+  "FB",
+  "FG",
+  "FS",
+  "G",
+  "GB",
+  "GCE",
+  "GCP",
+  "GCT",
+  "GF",
+  "GT",
+  "HKE",
+  "JE",
+  "MPFC",
+  "NAE",
+  "NAT",
+  "P",
+  "S",
+  "SFP"
+)
 
 
-rm(MPF.AIA.AB, MPF.AIA.AE, MPF.AIA.B, MPF.AIA.CA, MPF.AIA.EAT,
-   MPF.AIA.EE, MPF.AIA.FB, MPF.AIA.FG, MPF.AIA.FS, MPF.AIA.G,
-   MPF.AIA.GB, MPF.AIA.GCE, MPF.AIA.GCP, MPF.AIA.GCT, MPF.AIA.GF,
-   MPF.AIA.GT, MPF.AIA.HKE, MPF.AIA.JE, MPF.AIA.MPFC, MPF.AIA.NAE,
-   MPF.AIA.NAT, MPF.AIA.P, MPF.AIA.S, MPF.AIA.SFP)
+rm(
+  MPF.AIA.AB,
+  MPF.AIA.AE,
+  MPF.AIA.B,
+  MPF.AIA.CA,
+  MPF.AIA.EAT,
+  MPF.AIA.EE,
+  MPF.AIA.FB,
+  MPF.AIA.FG,
+  MPF.AIA.FS,
+  MPF.AIA.G,
+  MPF.AIA.GB,
+  MPF.AIA.GCE,
+  MPF.AIA.GCP,
+  MPF.AIA.GCT,
+  MPF.AIA.GF,
+  MPF.AIA.GT,
+  MPF.AIA.HKE,
+  MPF.AIA.JE,
+  MPF.AIA.MPFC,
+  MPF.AIA.NAE,
+  MPF.AIA.NAT,
+  MPF.AIA.P,
+  MPF.AIA.S,
+  MPF.AIA.SFP
+)
 
-MPF.AIA.AB <- monthlyReturn(as.xts(MPF.AIA$AB), type="arithmetic")
-MPF.AIA.AE <- monthlyReturn(as.xts(MPF.AIA$AE), type="arithmetic")
-MPF.AIA.B <- monthlyReturn(as.xts(MPF.AIA$B), type="arithmetic")
-MPF.AIA.CA <- monthlyReturn(as.xts(MPF.AIA$CA), type="arithmetic")
-MPF.AIA.EAT <- monthlyReturn(as.xts(MPF.AIA$EAT), type="arithmetic")
-MPF.AIA.EE <- monthlyReturn(as.xts(MPF.AIA$EE), type="arithmetic")
-MPF.AIA.FB <- monthlyReturn(as.xts(MPF.AIA$FB), type="arithmetic")
-MPF.AIA.FG <- monthlyReturn(as.xts(MPF.AIA$FG), type="arithmetic")
-MPF.AIA.FS <- monthlyReturn(as.xts(MPF.AIA$FS), type="arithmetic")
-MPF.AIA.G <- monthlyReturn(as.xts(MPF.AIA$G), type="arithmetic")
-MPF.AIA.GB <- monthlyReturn(as.xts(MPF.AIA$GB), type="arithmetic")
-MPF.AIA.GCE <- monthlyReturn(as.xts(MPF.AIA$GCE), type="arithmetic")
-MPF.AIA.GCP <- monthlyReturn(as.xts(MPF.AIA$GCP), type="arithmetic")
-MPF.AIA.GCT <- monthlyReturn(as.xts(MPF.AIA$GCT), type="arithmetic")
-MPF.AIA.GF <- monthlyReturn(as.xts(MPF.AIA$GF), type="arithmetic")
-MPF.AIA.GT <- monthlyReturn(as.xts(MPF.AIA$GT), type="arithmetic")
-MPF.AIA.HKE <- monthlyReturn(as.xts(MPF.AIA$HKE), type="arithmetic")
-MPF.AIA.JE <- monthlyReturn(as.xts(MPF.AIA$JE), type="arithmetic")
-MPF.AIA.MPFC <- monthlyReturn(as.xts(MPF.AIA$MPFC), type="arithmetic")
-MPF.AIA.NAE <- monthlyReturn(as.xts(MPF.AIA$NAE), type="arithmetic")
-MPF.AIA.NAT <- monthlyReturn(as.xts(MPF.AIA$NAT), type="arithmetic")
-MPF.AIA.P <- monthlyReturn(as.xts(MPF.AIA$P), type="arithmetic")
-MPF.AIA.S <- monthlyReturn(as.xts(MPF.AIA$S), type="arithmetic")
-MPF.AIA.SFP <- monthlyReturn(as.xts(MPF.AIA$SFP), type="arithmetic")
+MPF.AIA.AB <- monthlyReturn(as.xts(MPF.AIA$AB), type = "arithmetic")
+MPF.AIA.AE <- monthlyReturn(as.xts(MPF.AIA$AE), type = "arithmetic")
+MPF.AIA.B <- monthlyReturn(as.xts(MPF.AIA$B), type = "arithmetic")
+MPF.AIA.CA <- monthlyReturn(as.xts(MPF.AIA$CA), type = "arithmetic")
+MPF.AIA.EAT <- monthlyReturn(as.xts(MPF.AIA$EAT), type = "arithmetic")
+MPF.AIA.EE <- monthlyReturn(as.xts(MPF.AIA$EE), type = "arithmetic")
+MPF.AIA.FB <- monthlyReturn(as.xts(MPF.AIA$FB), type = "arithmetic")
+MPF.AIA.FG <- monthlyReturn(as.xts(MPF.AIA$FG), type = "arithmetic")
+MPF.AIA.FS <- monthlyReturn(as.xts(MPF.AIA$FS), type = "arithmetic")
+MPF.AIA.G <- monthlyReturn(as.xts(MPF.AIA$G), type = "arithmetic")
+MPF.AIA.GB <- monthlyReturn(as.xts(MPF.AIA$GB), type = "arithmetic")
+MPF.AIA.GCE <- monthlyReturn(as.xts(MPF.AIA$GCE), type = "arithmetic")
+MPF.AIA.GCP <- monthlyReturn(as.xts(MPF.AIA$GCP), type = "arithmetic")
+MPF.AIA.GCT <- monthlyReturn(as.xts(MPF.AIA$GCT), type = "arithmetic")
+MPF.AIA.GF <- monthlyReturn(as.xts(MPF.AIA$GF), type = "arithmetic")
+MPF.AIA.GT <- monthlyReturn(as.xts(MPF.AIA$GT), type = "arithmetic")
+MPF.AIA.HKE <- monthlyReturn(as.xts(MPF.AIA$HKE), type = "arithmetic")
+MPF.AIA.JE <- monthlyReturn(as.xts(MPF.AIA$JE), type = "arithmetic")
+MPF.AIA.MPFC <-
+  monthlyReturn(as.xts(MPF.AIA$MPFC), type = "arithmetic")
+MPF.AIA.NAE <- monthlyReturn(as.xts(MPF.AIA$NAE), type = "arithmetic")
+MPF.AIA.NAT <- monthlyReturn(as.xts(MPF.AIA$NAT), type = "arithmetic")
+MPF.AIA.P <- monthlyReturn(as.xts(MPF.AIA$P), type = "arithmetic")
+MPF.AIA.S <- monthlyReturn(as.xts(MPF.AIA$S), type = "arithmetic")
+MPF.AIA.SFP <- monthlyReturn(as.xts(MPF.AIA$SFP), type = "arithmetic")
 
-MPF.AIA.simple.returns <- merge(MPF.AIA.AB, MPF.AIA.AE, MPF.AIA.B, MPF.AIA.CA, MPF.AIA.EAT,
-                         MPF.AIA.EE, MPF.AIA.FB, MPF.AIA.FG, MPF.AIA.FS, MPF.AIA.G,
-                         MPF.AIA.GB, MPF.AIA.GCE, MPF.AIA.GCP, MPF.AIA.GCT, MPF.AIA.GF,
-                         MPF.AIA.GT, MPF.AIA.HKE, MPF.AIA.JE, MPF.AIA.MPFC, MPF.AIA.NAE,
-                         MPF.AIA.NAT, MPF.AIA.P, MPF.AIA.S, MPF.AIA.SFP)
+MPF.AIA.simple.returns <-
+  merge(
+    MPF.AIA.AB,
+    MPF.AIA.AE,
+    MPF.AIA.B,
+    MPF.AIA.CA,
+    MPF.AIA.EAT,
+    MPF.AIA.EE,
+    MPF.AIA.FB,
+    MPF.AIA.FG,
+    MPF.AIA.FS,
+    MPF.AIA.G,
+    MPF.AIA.GB,
+    MPF.AIA.GCE,
+    MPF.AIA.GCP,
+    MPF.AIA.GCT,
+    MPF.AIA.GF,
+    MPF.AIA.GT,
+    MPF.AIA.HKE,
+    MPF.AIA.JE,
+    MPF.AIA.MPFC,
+    MPF.AIA.NAE,
+    MPF.AIA.NAT,
+    MPF.AIA.P,
+    MPF.AIA.S,
+    MPF.AIA.SFP
+  )
 
-colnames(MPF.AIA.simple.returns) <- c("AB", "AE", "B", "CA", "EAT",
-                         "EE", "FB", "FG", "FS", "G",
-                         "GB", "GCE", "GCP", "GCT", "GF",
-                         "GT", "HKE", "JE", "MPFC", "NAE",
-                         "NAT", "P", "S", "SFP")
+colnames(MPF.AIA.simple.returns) <- c(
+  "AB",
+  "AE",
+  "B",
+  "CA",
+  "EAT",
+  "EE",
+  "FB",
+  "FG",
+  "FS",
+  "G",
+  "GB",
+  "GCE",
+  "GCP",
+  "GCT",
+  "GF",
+  "GT",
+  "HKE",
+  "JE",
+  "MPFC",
+  "NAE",
+  "NAT",
+  "P",
+  "S",
+  "SFP"
+)
 
 
-rm(MPF.AIA.AB, MPF.AIA.AE, MPF.AIA.B, MPF.AIA.CA, MPF.AIA.EAT,
-   MPF.AIA.EE, MPF.AIA.FB, MPF.AIA.FG, MPF.AIA.FS, MPF.AIA.G,
-   MPF.AIA.GB, MPF.AIA.GCE, MPF.AIA.GCP, MPF.AIA.GCT, MPF.AIA.GF,
-   MPF.AIA.GT, MPF.AIA.HKE, MPF.AIA.JE, MPF.AIA.MPFC, MPF.AIA.NAE,
-   MPF.AIA.NAT, MPF.AIA.P, MPF.AIA.S, MPF.AIA.SFP)
+rm(
+  MPF.AIA.AB,
+  MPF.AIA.AE,
+  MPF.AIA.B,
+  MPF.AIA.CA,
+  MPF.AIA.EAT,
+  MPF.AIA.EE,
+  MPF.AIA.FB,
+  MPF.AIA.FG,
+  MPF.AIA.FS,
+  MPF.AIA.G,
+  MPF.AIA.GB,
+  MPF.AIA.GCE,
+  MPF.AIA.GCP,
+  MPF.AIA.GCT,
+  MPF.AIA.GF,
+  MPF.AIA.GT,
+  MPF.AIA.HKE,
+  MPF.AIA.JE,
+  MPF.AIA.MPFC,
+  MPF.AIA.NAE,
+  MPF.AIA.NAT,
+  MPF.AIA.P,
+  MPF.AIA.S,
+  MPF.AIA.SFP
+)
 ```
 
 ### Calculate average RSI of the month, and then adjustment factor
 ```{r warning=FALSE}
-MPF.AIA.RSI.month <- as.xts(do.call(rbind, lapply(split(as.xts(MPF.AIA.RSI), "months"), function(x) colAvgs(x))), order.by = monthly)
+MPF.AIA.RSI.month <-
+  as.xts(do.call(rbind, lapply(split(as.xts(MPF.AIA.RSI), "months"), 
+                               function(x) colAvgs(x))), order.by = monthly)
 
 MPF.AIA.RSI.p <- MPF.AIA.returns
-MPF.AIA.RSI.p[,] <- 0
+MPF.AIA.RSI.p[, ] <- 0
 
-for (col in 1:length(MPF.AIA.RSI.month[1,])) {
+for (col in 1:length(MPF.AIA.RSI.month[1, ])) {
   if (col != 19) {
-    for (row in 1:length(MPF.AIA.RSI.month[,col])) {
-      percentile <- ecdf(as.numeric(MPF.AIA.RSI.month[1:row,col]))
-      if (percentile(MPF.AIA.RSI.month[row,col]) >= (RSI_Overbuy - 1/length(1:row)^(1/2))) {
-        MPF.AIA.RSI.p[row,col] <- 0.2
+    for (row in 1:length(MPF.AIA.RSI.month[, col])) {
+      percentile <- ecdf(as.numeric(MPF.AIA.RSI.month[1:row, col]))
+      if (percentile(MPF.AIA.RSI.month[row, col]) >= (RSI_Overbuy - 1 /
+                                                      length(1:row) ^ (1 / 2))) {
+        MPF.AIA.RSI.p[row, col] <- 0.2
       } else {
-        MPF.AIA.RSI.p[row,col] <- 1.2-(percentile(MPF.AIA.RSI.month[row,col])^(3))
+        MPF.AIA.RSI.p[row, col] <-
+          1.2 - (percentile(MPF.AIA.RSI.month[row, col]) ^ (3))
       }
     }
   } else {
-    MPF.AIA.RSI.p[,col] <- 1
+    MPF.AIA.RSI.p[, col] <- 1
   }
 }
 
-MPF.AIA.RSI.sum <- as.xts(rowSums(MPF.AIA.RSI.p), order.by = monthly)
+MPF.AIA.RSI.sum <-
+  as.xts(rowSums(MPF.AIA.RSI.p), order.by = monthly)
 
-for (row in 1:length(MPF.AIA.RSI.p[,col])) {
-  MPF.AIA.RSI.p[row,] <- apply(MPF.AIA.RSI.p[row,], 2, function(x) (x/MPF.AIA.RSI.sum[row,1])^(1/4))
+for (row in 1:length(MPF.AIA.RSI.p[, col])) {
+  MPF.AIA.RSI.p[row, ] <-
+    apply(MPF.AIA.RSI.p[row, ], 2, function(x)
+      (x / MPF.AIA.RSI.sum[row, 1]) ^ (1 / 4))
 }
-MPF.AIA.RSI.sum <- as.xts(rowSums(MPF.AIA.RSI.p), order.by = monthly) 
+MPF.AIA.RSI.sum <-
+  as.xts(rowSums(MPF.AIA.RSI.p), order.by = monthly)
 
 ```
 
 ### Allocate MPF for n-m MA BIAS
 ```{r warning=FALSE}
-rm(MPF.AIA.BIAS.diff, MPF.AIA.BIAS.diff.qu, MPF.AIA.BIAS.month, MPF.AIA.BIAS.p)
-MPF.AIA.BIAS.diff <- (MPF.AIA.SMA.mt - MPF.AIA.SMA.hy) / MPF.AIA.SMA.hy
-MPF.AIA.BIAS.diff.qu <- MPF.AIA.BIAS.diff - stats::lag(MPF.AIA.BIAS.diff, k=21*nm)
+rm(MPF.AIA.BIAS.diff,
+   MPF.AIA.BIAS.diff.qu,
+   MPF.AIA.BIAS.month,
+   MPF.AIA.BIAS.p)
+MPF.AIA.BIAS.diff <-
+  (MPF.AIA.SMA.mt - MPF.AIA.SMA.hy) / MPF.AIA.SMA.hy
+MPF.AIA.BIAS.diff.qu <-
+  MPF.AIA.BIAS.diff - stats::lag(MPF.AIA.BIAS.diff, k = 21 * nm)
 MPF.AIA.BIAS.diff.qu <- na.fill(MPF.AIA.BIAS.diff.qu, 0)
 
 
-MPF.AIA.BIAS.month <- do.call(rbind, lapply(split(as.xts(MPF.AIA.BIAS.diff.qu), "months"), function(x) colAvgs(x)))
+MPF.AIA.BIAS.month <-
+  do.call(rbind, lapply(split(as.xts(
+    MPF.AIA.BIAS.diff.qu
+  ), "months"), function(x)
+    colAvgs(x)))
 
 MPF.portf.weight <- MPF.AIA.returns
-MPF.portf.weight[,] <- NA
-#colnames(MPF.portf.weight) <- c("AB", "AE", "B", "CA", "EAT","EE", "FB", "FG", "FS", "G","GB", "GCE", "GCP", "GCT", "GF","GT", "HKE", "JE", "MPFC", "NAE","NAT", "P", "S", "SFP")
-
-MPF.AIA.stock.return <- as.xts(rowSums(MPF.AIA.BIAS.month), order.by=monthly)
+MPF.portf.weight[, ] <- NA
+MPF.AIA.stock.return <-
+  as.xts(rowSums(MPF.AIA.BIAS.month), order.by = monthly)
 MPF.AIA.stock.return[] <- NA
 
-MPF.portf.return <- as.xts(rowSums(MPF.AIA.BIAS.month), order.by=monthly)
+MPF.portf.return <-
+  as.xts(rowSums(MPF.AIA.BIAS.month), order.by = monthly)
 MPF.portf.return[] <- NA
 
 up <- TRUE
 hedge <- FALSE
 
-round_percent <- function(x) { 
+round_percent <- function(x) {
   x <- x * 100
   result <- floor(x)    # Find integer bits
   remain <- x - result
@@ -421,46 +567,54 @@ round_percent <- function(x) {
   if (rsum < 100) {
     o <- order(remain, decreasing = TRUE)
     while (rsum < 100) {
-      if (i > length(remain)) i <- 1
+      if (i > length(remain))
+        i <- 1
       idx <- o[i]
       if (result[idx] == 0) {
-        i <- i+1
+        i <- i + 1
         next
       }
       result[idx] <- result[idx] + 1
       rsum <- sum(result)
-      i <- i+1
+      i <- i + 1
     }
-  } 
-  result <- result/100
-  return(result)    
+  }
+  result <- result / 100
+  return(result)
 }
 
 
 
 MPF.AIA.returns.mat <- as.matrix(MPF.AIA.returns)
 MPF.AIA.stock.mean <- 0
-for (row in 1:length(MPF.AIA.BIAS.month[,1])) {
-  MPF.AIA.BIAS.month[row,] <- (MPF.AIA.BIAS.month[row,]) * MPF.AIA.RSI.p[row,]#* VIX.month[row,6] * (MPF.AIA.RSI.p[row,])
-  
+for (row in 1:length(MPF.AIA.BIAS.month[, 1])) {
+  MPF.AIA.BIAS.month[row, ] <-
+    (MPF.AIA.BIAS.month[row, ]) * MPF.AIA.RSI.p[row, ]
   MPF.AIA.stock.mean <- 0
   i <- 0
-  for (col in 1:length(MPF.AIA.BIAS.month[1,])) {
-        if (col != 1 && col != 3 && col != 4 && col != 7 && col != 9 && col != 11 && col != 13 && col != 19 && col != 22 && col != 23 && col != 24) {
+  for (col in 1:length(MPF.AIA.BIAS.month[1, ])) {
+    if (col != 1 &&
+        col != 3 &&
+        col != 4 &&
+        col != 7 &&
+        col != 9 &&
+        col != 11 &&
+        col != 13 && col != 19 && col != 22 && col != 23 && col != 24) {
       if (!is.na(MPF.AIA.returns.mat[row, col]) &&
           MPF.AIA.returns.mat[row, col] != 0) {
-        MPF.AIA.stock.mean <- MPF.AIA.stock.mean + MPF.AIA.returns.mat[row, col]
-          i <- i + 1
-        }
-        if (MPF.AIA.BIAS.month[row, col] < 1e-6) {
-          MPF.AIA.BIAS.month[row, col] <- 0
-        }
+        MPF.AIA.stock.mean <-
+          MPF.AIA.stock.mean + MPF.AIA.returns.mat[row, col]
+        i <- i + 1
+      }
+      if (MPF.AIA.BIAS.month[row, col] < 1e-6) {
+        MPF.AIA.BIAS.month[row, col] <- 0
+      }
     } else {
       if (MPF.AIA.BIAS.month[row, col] < 0) {
         MPF.AIA.BIAS.month[row, col] <- 0
       }
     }
-  
+    
     # if (MPF.AIA.BIAS.month[row,col] < Min_NMMA){
     #   MPF.AIA.BIAS.month[row,col] <- 0
     # }
@@ -468,53 +622,52 @@ for (row in 1:length(MPF.AIA.BIAS.month[,1])) {
   
   MPF.AIA.stock.return[row] <- MPF.AIA.stock.mean / i
   
-  if (is.nan(MPF.AIA.BIAS.month[row,col])) {
-    MPF.AIA.BIAS.month[row,col] <- 0
+  if (is.nan(MPF.AIA.BIAS.month[row, col])) {
+    MPF.AIA.BIAS.month[row, col] <- 0
   }
   
   # Retain two most increasing fund
-  last <- length(MPF.AIA.BIAS.month[1,]) - top
+  last <- length(MPF.AIA.BIAS.month[1, ]) - top
   
-  order <- order(MPF.AIA.BIAS.month[row,])[1:last]
+  order <- order(MPF.AIA.BIAS.month[row, ])[1:last]
   for (col in order) {
-    MPF.AIA.BIAS.month[row,col] <- 0
+    MPF.AIA.BIAS.month[row, col] <- 0
   }
-
-  MPF.AIA.sum <- sum(MPF.AIA.BIAS.month[row,])
-  MPF.AIA.BIAS.p <- MPF.AIA.BIAS.month[row,]
+  
+  MPF.AIA.sum <- sum(MPF.AIA.BIAS.month[row, ])
+  MPF.AIA.BIAS.p <- MPF.AIA.BIAS.month[row, ]
   MPF.AIA.BIAS.p[] <- 0
   
-
+  
   if (row > 8 && MPF.AIA.stock.return[row] <
       quantile(na.omit(MPF.AIA.stock.return), c(.35)) &&
       MPF.AIA.stock.return[row - 3] <
       quantile(na.omit(MPF.AIA.stock.return), c(.45))) {
     up <- FALSE
   }
-
+  
   if (row > 8 && hedge &&
       MPF.AIA.stock.return[row] >
-        quantile(na.omit(MPF.AIA.stock.return), c(.45))  &&
+      quantile(na.omit(MPF.AIA.stock.return), c(.45))  &&
       MPF.AIA.stock.return[row - 3] >
-        quantile(na.omit(MPF.AIA.stock.return), c(.35))) {
+      quantile(na.omit(MPF.AIA.stock.return), c(.35))) {
     hedge <- FALSE
     up <- TRUE
   }
-
+  
   if (row > 8 &&  (MPF.AIA.stock.return[row] < 0 &&
-                  MPF.AIA.stock.return[row-1] >
-                  quantile(na.omit(MPF.AIA.stock.return), c(.85)))) {
+                   MPF.AIA.stock.return[row - 1] >
+                   quantile(na.omit(MPF.AIA.stock.return), c(.85)))) {
     hedge <- TRUE
   }
   
-  MPF.AIA.sum <- sum(MPF.AIA.BIAS.month[row, ])
+  MPF.AIA.sum <- sum(MPF.AIA.BIAS.month[row,])
   MPF.AIA.BIAS.p[] <- 0
   
   
-  if (row <= 12 || MPF.AIA.sum == MPF.AIA.BIAS.month[row,19] ||
+  if (row <= 12 || MPF.AIA.sum == MPF.AIA.BIAS.month[row, 19] ||
       MPF.AIA.sum < 1e-6 || hedge == TRUE) {
     if (row >= 198) {
-      
       MPF.AIA.BIAS.p[11] <- 0.3
       MPF.AIA.BIAS.p[19] <- 0.3
       MPF.AIA.BIAS.p[24] <- 0.4
@@ -524,22 +677,22 @@ for (row in 1:length(MPF.AIA.BIAS.month[,1])) {
     } else {
       MPF.AIA.BIAS.p[19] <- 1
     }
-  } else if (min(MPF.AIA.stock.return[(row-3):row]) < -0.08) {
+  } else if (min(MPF.AIA.stock.return[(row - 3):row]) < -0.08) {
     if (row >= 198) {
-      MPF.AIA.BIAS.p[] <- MPF.AIA.BIAS.month[row, ] / MPF.AIA.sum / 10 * 7
-      MPF.AIA.BIAS.p[24] <- MPF.AIA.BIAS.p[24]+0.12
-      MPF.AIA.BIAS.p[19] <- MPF.AIA.BIAS.p[19]+0.08
-      MPF.AIA.BIAS.p[11] <- MPF.AIA.BIAS.p[11]+0.1
+      MPF.AIA.BIAS.p[] <- MPF.AIA.BIAS.month[row,] / MPF.AIA.sum / 10 * 7
+      MPF.AIA.BIAS.p[24] <- MPF.AIA.BIAS.p[24] + 0.12
+      MPF.AIA.BIAS.p[19] <- MPF.AIA.BIAS.p[19] + 0.08
+      MPF.AIA.BIAS.p[11] <- MPF.AIA.BIAS.p[11] + 0.1
     } else if (row >= 92) {
-      MPF.AIA.BIAS.p[] <- MPF.AIA.BIAS.month[row, ] / MPF.AIA.sum / 10 * 7
-      MPF.AIA.BIAS.p[19] <- MPF.AIA.BIAS.p[19]+0.18
-      MPF.AIA.BIAS.p[11] <- MPF.AIA.BIAS.p[11]+0.12
+      MPF.AIA.BIAS.p[] <- MPF.AIA.BIAS.month[row,] / MPF.AIA.sum / 10 * 7
+      MPF.AIA.BIAS.p[19] <- MPF.AIA.BIAS.p[19] + 0.18
+      MPF.AIA.BIAS.p[11] <- MPF.AIA.BIAS.p[11] + 0.12
     } else {
-      MPF.AIA.BIAS.p[ ] <- MPF.AIA.BIAS.month[row, ] / MPF.AIA.sum / 10 * 7
-      MPF.AIA.BIAS.p[19] <- MPF.AIA.BIAS.p[19]+0.3
+      MPF.AIA.BIAS.p[] <- MPF.AIA.BIAS.month[row,] / MPF.AIA.sum / 10 * 7
+      MPF.AIA.BIAS.p[19] <- MPF.AIA.BIAS.p[19] + 0.3
     }
   } else {
-    MPF.AIA.BIAS.p[ ] <- MPF.AIA.BIAS.month[row, ] / MPF.AIA.sum
+    MPF.AIA.BIAS.p[] <- MPF.AIA.BIAS.month[row,] / MPF.AIA.sum
   }
   
   if (MPF.AIA.BIAS.p[20] != 0 && monthly[row] > "2011-09-30") {
@@ -569,14 +722,14 @@ for (row in 1:length(MPF.AIA.BIAS.month[,1])) {
   
   
   
-
-  MPF.portf.weight[row,] <-
-    round_percent(MPF.AIA.BIAS.p) 
+  
+  MPF.portf.weight[row, ] <-
+    round_percent(MPF.AIA.BIAS.p)
   
   portf.rebal.fm <-
     Return.portfolio(
       na.fill(MPF.AIA.simple.returns, 0),
-      weight = MPF.portf.weight[1:row,],
+      weight = MPF.portf.weight[1:row, ],
       geometric = TRUE,
       rebalance_on = "months"
     )
@@ -586,7 +739,8 @@ for (row in 1:length(MPF.AIA.BIAS.month[,1])) {
   MPF.portf.drawdown <- Drawdowns(MPF.portf.return,
                                   geometric = TRUE)
   
-  if (tail(na.omit(MPF.portf.drawdown), 1) < -0.065 && up == FALSE) {
+  if (tail(na.omit(MPF.portf.drawdown), 1) < -0.065 &&
+      up == FALSE) {
     hedge = TRUE
   }
 }
@@ -605,68 +759,81 @@ portf.rebal.fm <- Return.portfolio(
 etfs <- c('SPY', 'QQQ', '^HSI')
 golden.butterfly <- c('VTI', 'IWM', 'SHY', 'TLT', 'GLD')
 
-weights <- c(
-  1,0,0,
-  0,1,0,
-  0,0,1
-)
+weights <- c(1, 0, 0,
+             0, 1, 0,
+             0, 0, 1)
 
 weights.table <-  tibble(etfs) %>%
   tq_repeat_df(n = 3) %>%
   bind_cols(tibble(weights)) %>%
   group_by(portfolio)
 
-etf.dat <- c(etfs) %>% 
-  map_df(function(i) i %>% 
-           tq_get("stock.prices",
-                  from = "2001-01-01" %>%
-                    as.Date,
-                  to = "2019-12-31" %>%
-                    as.Date
-           )
+etf.dat <- c(etfs) %>%
+  map_df(
+    function(i)
+      i %>%
+      tq_get(
+        "stock.prices",
+        from = "2001-01-01" %>%
+          as.Date,
+        to = "2019-12-31" %>%
+          as.Date
+      )
   ) %>% group_by(symbol)  %>%
-  tq_transmute(select     = adjusted, 
-               mutate_fun = periodReturn, 
-               period     = "monthly", 
-               col_rename = "Rb")
+  tq_transmute(
+    select     = adjusted,
+    mutate_fun = periodReturn,
+    period     = "monthly",
+    col_rename = "Rb"
+  )
 
-GoldBut.dat <- c(golden.butterfly) %>% 
-  map_df(function(i) i %>% 
-           tq_get("stock.prices",
-                  from = "2004-11-01" %>%
-                    as.Date,
-                  to = "2019-12-31" %>%
-                    as.Date
-           )
+GoldBut.dat <- c(golden.butterfly) %>%
+  map_df(
+    function(i)
+      i %>%
+      tq_get(
+        "stock.prices",
+        from = "2004-11-01" %>%
+          as.Date,
+        to = "2019-12-31" %>%
+          as.Date
+      )
   ) %>% group_by(symbol)  %>%
-  tq_transmute(select     = adjusted, 
-               mutate_fun = periodReturn, 
-               period     = "monthly", 
-               col_rename = "Rb")
-  
+  tq_transmute(
+    select     = adjusted,
+    mutate_fun = periodReturn,
+    period     = "monthly",
+    col_rename = "Rb"
+  )
+
 
 etf.by.column <- spread(etf.dat, symbol, Rb)
-SPY.etf <- na.omit(select(etf.by.column, 'date', 'SPY')) %>% mutate(symb = 'SPY')
-QQQ.etf <- na.omit(select(etf.by.column, 'date', 'QQQ')) %>% mutate(symb = 'QQQ')
-HSI.etf <- na.omit(select(etf.by.column, 'date', '^HSI')) %>% mutate(symb = 'HSI')
+SPY.etf <-
+  na.omit(select(etf.by.column, 'date', 'SPY')) %>% mutate(symb = 'SPY')
+QQQ.etf <-
+  na.omit(select(etf.by.column, 'date', 'QQQ')) %>% mutate(symb = 'QQQ')
+HSI.etf <-
+  na.omit(select(etf.by.column, 'date', '^HSI')) %>% mutate(symb = 'HSI')
 
 SPY.return.monthly <- SPY.etf %>%
-  tq_portfolio(assets_col  = symb, 
-               returns_col = SPY, 
+  tq_portfolio(assets_col  = symb,
+               returns_col = SPY,
                col_rename  = "Rb.SPY")
 QQQ.return.monthly <- QQQ.etf %>%
-  tq_portfolio(assets_col  = symb, 
-               returns_col = QQQ, 
+  tq_portfolio(assets_col  = symb,
+               returns_col = QQQ,
                col_rename  = "Rb.QQQ")
 HSI.return.monthly <- HSI.etf %>%
-  tq_portfolio(assets_col  = symb, 
-               returns_col = `^HSI`, 
+  tq_portfolio(assets_col  = symb,
+               returns_col = `^HSI`,
                col_rename  = "Rb.HSI")
 GoldBut.return.monthly <- GoldBut.dat %>%
-  tq_portfolio(assets_col = symbol,
-               returns_col = Rb,
-               col_rename = "Rb.GoldBut",
-               rebalance_on = "years")
+  tq_portfolio(
+    assets_col = symbol,
+    returns_col = Rb,
+    col_rename = "Rb.GoldBut",
+    rebalance_on = "years"
+  )
 
 portf.rebal.fm.dollar <- Return.portfolio(
   MPF.AIA.simple.returns,
@@ -684,211 +851,262 @@ portf.rebal.fm.dollar.cpy <- Return.portfolio(
 )
 
 portf.rebal.fm.dollar.gb <- Return.portfolio(
-  tail(MPF.AIA.simple.returns, -48),
-  weight = tail(MPF.portf.weight, -48),
+  tail(MPF.AIA.simple.returns,-48),
+  weight = tail(MPF.portf.weight,-48),
   geometric = TRUE,
   rebalance_on = "months"
 )
 
 portf.rebal.fm.dollar.gb.cpy <- Return.portfolio(
-  tail(MPF.AIA.simple.returns,-48),
-  weight = tail(MPF.portf.weight,-48),
+  tail(MPF.AIA.simple.returns, -48),
+  weight = tail(MPF.portf.weight, -48),
   geometric = TRUE,
   rebalance_on = "months",
   wealth.index = TRUE
 )
 
 xts2df <- function(x) {
-  data.frame(date=index(x), coredata(x))
+  data.frame(date = index(x), coredata(x))
 }
 
 colnames(portf.rebal.fm.dollar) <- "Ra"
 
 
-portf.rebal.fm.dollar.tb <- tbl_df(melt(xts2df(portf.rebal.fm.dollar), id="date"))
-portf.rebal.fm.dollar.tb <- portf.rebal.fm.dollar.tb[,-2]
-colnames(portf.rebal.fm.dollar.tb) <- c("date","Ra")
-portf.rebal.fm.dollar.gb.tb <- tbl_df(melt(xts2df(portf.rebal.fm.dollar.gb), id="date"))
-portf.rebal.fm.dollar.gb.tb <- portf.rebal.fm.dollar.gb.tb[,-2]
-colnames(portf.rebal.fm.dollar.gb.tb) <- c("date","Ra")
+portf.rebal.fm.dollar.tb <-
+  tbl_df(melt(xts2df(portf.rebal.fm.dollar), id = "date"))
+portf.rebal.fm.dollar.tb <- portf.rebal.fm.dollar.tb[, -2]
+colnames(portf.rebal.fm.dollar.tb) <- c("date", "Ra")
+portf.rebal.fm.dollar.gb.tb <-
+  tbl_df(melt(xts2df(portf.rebal.fm.dollar.gb), id = "date"))
+portf.rebal.fm.dollar.gb.tb <- portf.rebal.fm.dollar.gb.tb[, -2]
+colnames(portf.rebal.fm.dollar.gb.tb) <- c("date", "Ra")
 
-portf.rebal.fm.dollar.tb[,1] <- SPY.etf[,1]
-RaSPY.multiple.portfolio <- left_join(portf.rebal.fm.dollar.tb, 
+portf.rebal.fm.dollar.tb[, 1] <- SPY.etf[, 1]
+RaSPY.multiple.portfolio <- left_join(portf.rebal.fm.dollar.tb,
                                       SPY.return.monthly, by = "date")
-portf.rebal.fm.dollar.tb[,1] <- QQQ.etf[,1]
-RaQQQ.multiple.portfolio <- left_join(portf.rebal.fm.dollar.tb, 
+portf.rebal.fm.dollar.tb[, 1] <- QQQ.etf[, 1]
+RaQQQ.multiple.portfolio <- left_join(portf.rebal.fm.dollar.tb,
                                       QQQ.return.monthly, by = "date")
-portf.rebal.fm.dollar.gb.tb[,1] <- GoldBut.dat[,2]
-RaGoldBut.multiple.portfolio <- left_join(portf.rebal.fm.dollar.gb.tb,
-                                          GoldBut.return.monthly, by="date")
-portf.rebal.fm.dollar.tb[,1] <- HSI.etf[,1]
-RaHSI.multiple.portfolio <- left_join(portf.rebal.fm.dollar.tb, 
+portf.rebal.fm.dollar.gb.tb[, 1] <- GoldBut.dat[, 2]
+RaGoldBut.multiple.portfolio <-
+  left_join(portf.rebal.fm.dollar.gb.tb,
+            GoldBut.return.monthly, by = "date")
+portf.rebal.fm.dollar.tb[, 1] <- HSI.etf[, 1]
+RaHSI.multiple.portfolio <- left_join(portf.rebal.fm.dollar.tb,
                                       HSI.return.monthly, by = "date")
 
 
 print("Annualised return of SPY:")
-TORI.SPY <- RaSPY.multiple.portfolio %>% 
+TORI.SPY <- RaSPY.multiple.portfolio %>%
   tq_performance(Rb.SPY, NULL, performance_fun = table.AnnualizedReturns)
 print(TORI.SPY)
 
 print("Annualised return of QQQ:")
-TORI.QQQ <- RaQQQ.multiple.portfolio %>% 
+TORI.QQQ <- RaQQQ.multiple.portfolio %>%
   tq_performance(Rb.QQQ, NULL, performance_fun = table.AnnualizedReturns)
 print(TORI.QQQ)
 
 print("Annualised return of Golden Butterfly:")
-TORI.GoldBut <- RaGoldBut.multiple.portfolio %>% 
+TORI.GoldBut <- RaGoldBut.multiple.portfolio %>%
   tq_performance(Rb.GoldBut, NULL, performance_fun = table.AnnualizedReturns)
 print(TORI.GoldBut)
 
 print("Annualised return of HSI:")
-TORI.HSI <- RaHSI.multiple.portfolio %>% 
+TORI.HSI <- RaHSI.multiple.portfolio %>%
   tq_performance(Rb.HSI, NULL, performance_fun = table.AnnualizedReturns)
 print(TORI.HSI)
 
 print("CAPM Information against SPY:")
-TORI.SPY <- RaSPY.multiple.portfolio %>% 
+TORI.SPY <- RaSPY.multiple.portfolio %>%
   tq_performance(Ra, Rb.SPY, performance_fun = table.CAPM)
 print(TORI.SPY)
 
 print("CAPM Information against QQQ:")
-TORI.QQQ <- RaQQQ.multiple.portfolio %>% 
+TORI.QQQ <- RaQQQ.multiple.portfolio %>%
   tq_performance(Ra, Rb.QQQ, performance_fun = table.CAPM)
 print(TORI.QQQ)
 
 print("CAPM Information against GoldBut:")
-TORI.GoldBut <- RaGoldBut.multiple.portfolio %>% 
+TORI.GoldBut <- RaGoldBut.multiple.portfolio %>%
   tq_performance(Ra, Rb.GoldBut, performance_fun = table.CAPM)
 print(TORI.GoldBut)
 
 print("CAPM Information against HSI:")
-TORI.HSI <- RaHSI.multiple.portfolio %>% 
+TORI.HSI <- RaHSI.multiple.portfolio %>%
   tq_performance(Ra, Rb.HSI, performance_fun = table.CAPM)
 print(TORI.HSI)
 
 
 print("Information Ratio against SPY:")
-TORI.SPY <- RaSPY.multiple.portfolio %>% 
+TORI.SPY <- RaSPY.multiple.portfolio %>%
   tq_performance(Ra, Rb.SPY, performance_fun = table.InformationRatio)
 print(TORI.SPY)
 
 print("Information Ratio against QQQ:")
-TORI.QQQ <- RaQQQ.multiple.portfolio %>% 
+TORI.QQQ <- RaQQQ.multiple.portfolio %>%
   tq_performance(Ra, Rb.QQQ, performance_fun = table.InformationRatio)
 print(TORI.QQQ)
 
 print("Information Ratio against GoldBut:")
-TORI.GoldBut <- RaGoldBut.multiple.portfolio %>% 
+TORI.GoldBut <- RaGoldBut.multiple.portfolio %>%
   tq_performance(Ra, Rb.GoldBut, performance_fun = table.InformationRatio)
 print(TORI.GoldBut)
 
 print("Information Ratio against HSI:")
-TORI.HSI <- RaHSI.multiple.portfolio %>% 
+TORI.HSI <- RaHSI.multiple.portfolio %>%
   tq_performance(Ra, Rb.HSI, performance_fun = table.InformationRatio)
 print(TORI.HSI)
 
 SPY.dollar.monthly <- SPY.etf %>%
-  tq_portfolio(assets_col  = symb, 
-               returns_col = SPY, 
-               col_rename  = "Rb.SPY",
-               wealth.index = TRUE) %>%
+  tq_portfolio(
+    assets_col  = symb,
+    returns_col = SPY,
+    col_rename  = "Rb.SPY",
+    wealth.index = TRUE
+  ) %>%
   mutate(Rb.SPY = Rb.SPY * 2301)
 QQQ.dollar.monthly <- QQQ.etf %>%
-  tq_portfolio(assets_col  = symb, 
-               returns_col = QQQ, 
-               col_rename  = "Rb.QQQ",
-               wealth.index = TRUE) %>%
+  tq_portfolio(
+    assets_col  = symb,
+    returns_col = QQQ,
+    col_rename  = "Rb.QQQ",
+    wealth.index = TRUE
+  ) %>%
   mutate(Rb.QQQ = Rb.QQQ * 2301)
 GoldBut.dollar.monthly <- GoldBut.dat %>%
-  tq_portfolio(assets_col = symbol,
-               returns_col = Rb,
-               col_rename = "Rb.GoldBut",
-               rebalance_on = "years",
-               wealth.index = TRUE) %>%
+  tq_portfolio(
+    assets_col = symbol,
+    returns_col = Rb,
+    col_rename = "Rb.GoldBut",
+    rebalance_on = "years",
+    wealth.index = TRUE
+  ) %>%
   mutate(Rb.GoldBut = Rb.GoldBut * 2301)
 HSI.dollar.monthly <- HSI.etf %>%
-  tq_portfolio(assets_col  = symb, 
-               returns_col = `^HSI`, 
-               col_rename  = "Rb.HSI",
-               wealth.index = TRUE) %>%
+  tq_portfolio(
+    assets_col  = symb,
+    returns_col = `^HSI`,
+    col_rename  = "Rb.HSI",
+    wealth.index = TRUE
+  ) %>%
   mutate(Rb.HSI = Rb.HSI * 2301)
 
 
-portf.rebal.fm.dollar.tb.cpy <- tbl_df(melt(xts2df(portf.rebal.fm.dollar.cpy), 
-                                            id="date", variable_name = "Ra"))
-portf.rebal.fm.dollar.tb.cpy <- portf.rebal.fm.dollar.tb.cpy[,-2]
-colnames(portf.rebal.fm.dollar.tb.cpy) <- c("date","Ra")
-portf.rebal.fm.dollar.tb.cpy[,1] <- HSI.etf[,1]
+portf.rebal.fm.dollar.tb.cpy <-
+  tbl_df(melt(
+    xts2df(portf.rebal.fm.dollar.cpy),
+    id = "date",
+    variable_name = "Ra"
+  ))
+portf.rebal.fm.dollar.tb.cpy <- portf.rebal.fm.dollar.tb.cpy[, -2]
+colnames(portf.rebal.fm.dollar.tb.cpy) <- c("date", "Ra")
+portf.rebal.fm.dollar.tb.cpy[, 1] <- HSI.etf[, 1]
 portf.dollar.monthly <- portf.rebal.fm.dollar.tb.cpy %>%
   mutate(Ra = Ra * 2301)
 
-portf.rebal.fm.dollar.gb.tb.cpy <- tbl_df(melt(xts2df(portf.rebal.fm.dollar.gb.cpy), 
-                                            id="date", variable_name = "Ra"))
-portf.rebal.fm.dollar.gb.tb.cpy <- portf.rebal.fm.dollar.gb.tb.cpy[,-2]
-colnames(portf.rebal.fm.dollar.gb.tb.cpy) <- c("date","Ra")
-portf.rebal.fm.dollar.gb.tb.cpy[,1] <- GoldBut.dat[,2]
+portf.rebal.fm.dollar.gb.tb.cpy <-
+  tbl_df(melt(
+    xts2df(portf.rebal.fm.dollar.gb.cpy),
+    id = "date",
+    variable_name = "Ra"
+  ))
+portf.rebal.fm.dollar.gb.tb.cpy <-
+  portf.rebal.fm.dollar.gb.tb.cpy[, -2]
+colnames(portf.rebal.fm.dollar.gb.tb.cpy) <- c("date", "Ra")
+portf.rebal.fm.dollar.gb.tb.cpy[, 1] <- GoldBut.dat[, 2]
 portf.dollar.monthly.gb <- portf.rebal.fm.dollar.gb.tb.cpy %>%
   mutate(Ra = Ra * 2301)
 
 
 
-ggplot()+
-  scale_color_manual(labels = c("SPY", "QQQ", "HSI", "TORI @ AIA"), 
-                     values = c(1,2,3,"pink3")) +
-  geom_line(aes(x = date, y = Rb.SPY, color = as.factor(1)), SPY.dollar.monthly, size=0.8)+
-  geom_line(aes(x = date, y = Rb.QQQ, color = as.factor(2)), QQQ.dollar.monthly, size=0.8)+
-  geom_line(aes(x = date, y = Rb.HSI, color = as.factor(3)), HSI.dollar.monthly, size=0.8)+
-  geom_line(aes(x = date, y = Ra, color = "pink3"), portf.dollar.monthly, size=1.8)+
-  labs(title = "TORI @ AIA versus SPY, QQQ, and Hang Seng Index",
-       subtitle = "How TORI @ AIA outperform common index fund",
-       x = "", y = "Portfolio Value",
-       color = "Portfolio or Index ETFs") +
+ggplot() +
+  scale_color_manual(
+    labels = c("SPY", "QQQ", "HSI", "TORI @ AIA"),
+    values = c(1, 2, 3, "pink3")
+  ) +
+  geom_line(aes(x = date, y = Rb.SPY, color = as.factor(1)),
+            SPY.dollar.monthly,
+            size = 0.8) +
+  geom_line(aes(x = date, y = Rb.QQQ, color = as.factor(2)),
+            QQQ.dollar.monthly,
+            size = 0.8) +
+  geom_line(aes(x = date, y = Rb.HSI, color = as.factor(3)),
+            HSI.dollar.monthly,
+            size = 0.8) +
+  geom_line(aes(x = date, y = Ra, color = "pink3"), portf.dollar.monthly, size =
+              1.8) +
+  labs(
+    title = "TORI @ AIA versus SPY, QQQ, and Hang Seng Index",
+    subtitle = "How TORI @ AIA outperform common index fund",
+    x = "",
+    y = "Portfolio Value",
+    color = "Portfolio or Index ETFs"
+  ) +
   theme_tq() +
   scale_y_continuous(labels = scales::dollar)
 
-ggplot()+
-  scale_color_manual(labels = c("Golden Butterfly", "TORI @ AIA"), 
-                     values = c(4,"pink3")) +
-  geom_line(aes(x = date, y = Rb.GoldBut, color = as.factor(3)), GoldBut.dollar.monthly, size=0.8)+
-  geom_line(aes(x = date, y = Ra, color = "pink3"), portf.dollar.monthly.gb, size=1.8)+
-  labs(title = "TORI @ AIA versus Golden Butterfly Portfolio",
-       subtitle = "How TORI @ AIA outperform golden butterfly portfolio",
-       x = "", y = "Portfolio Value",
-       color = "Portfolio") +
+ggplot() +
+  scale_color_manual(labels = c("Golden Butterfly", "TORI @ AIA"),
+                     values = c(4, "pink3")) +
+  geom_line(aes(x = date, y = Rb.GoldBut, color = as.factor(3)),
+            GoldBut.dollar.monthly,
+            size = 0.8) +
+  geom_line(aes(x = date, y = Ra, color = "pink3"),
+            portf.dollar.monthly.gb,
+            size = 1.8) +
+  labs(
+    title = "TORI @ AIA versus Golden Butterfly Portfolio",
+    subtitle = "How TORI @ AIA outperform golden butterfly portfolio",
+    x = "",
+    y = "Portfolio Value",
+    color = "Portfolio"
+  ) +
   theme_tq() +
   scale_y_continuous(labels = scales::dollar)
 
 
 
 
-cat("Cumulative return: ", Return.cumulative(portf.rebal.fm, geometric=TRUE), "\n")
-portf.rebal.fm.sharpe <- Return.annualized(portf.rebal.fm, geometric=TRUE) /
+cat("Cumulative return: ",
+    Return.cumulative(portf.rebal.fm, geometric = TRUE),
+    "\n")
+portf.rebal.fm.sharpe <-
+  Return.annualized(portf.rebal.fm, geometric = TRUE) /
   (StdDev.annualized(portf.rebal.fm))
 rownames(portf.rebal.fm.sharpe) <- "Sharpe Ratio"
-cat("Annualised return: ", Return.annualized(portf.rebal.fm, geometric=TRUE), "\n")
+cat("Annualised return: ",
+    Return.annualized(portf.rebal.fm, geometric = TRUE),
+    "\n")
 
 mean.annual.return <-
   mean(do.call(rbind, lapply(split(portf.rebal.fm, "years"), function(x)
     colMeans(x))) * 12)
 cat("Mean annual return (for ref. only): ", mean.annual.return, "\n")
-portf.rebal.fm.sharpe.mean <- mean.annual.return / (StdDev.annualized(portf.rebal.fm))
-rownames(portf.rebal.fm.sharpe.mean) <- "Sharpe Ratio (Mean annual return)"
+portf.rebal.fm.sharpe.mean <-
+  mean.annual.return / (StdDev.annualized(portf.rebal.fm))
+rownames(portf.rebal.fm.sharpe.mean) <-
+  "Sharpe Ratio (Mean annual return)"
 
-SharpeRatio(portf.rebal.fm, annualize = TRUE, method="modified") 
-cat("Annualised Standard Deviation: ", StdDev.annualized(portf.rebal.fm), "\n")
+SharpeRatio(portf.rebal.fm, annualize = TRUE, method = "modified")
+cat("Annualised Standard Deviation: ",
+    StdDev.annualized(portf.rebal.fm),
+    "\n")
 cat("Sortino Ratio: ", SortinoRatio(portf.rebal.fm) * sqrt(12), "\n")
-cat("Coditional Value of Risk (CVaR, Expected Shortfall ES", 
-    ES(portf.rebal.fm, method="modified"), "\n")
-tail(MPF.portf.weight, n=6)
+cat(
+  "Coditional Value of Risk (CVaR, Expected Shortfall ES",
+  ES(portf.rebal.fm, method = "modified"),
+  "\n"
+)
+tail(MPF.portf.weight, n = 6)
 ```
 
 ### Monthly Installment
 ```{r linewidth=159, warning=FALSE}
 MPF.AIA.units <- MPF.AIA.returns
-MPF.AIA.units[, ] <- 0
+MPF.AIA.units[,] <- 0
 
 MPF.monthly.asset <- MPF.AIA.returns
-MPF.monthly.asset[, ] <- 0
+MPF.monthly.asset[,] <- 0
 
 MPF.monthly.returns <-
   as.xts(rowSums(MPF.AIA.returns), order.by = monthly)
@@ -899,39 +1117,43 @@ MPF.pay <- -2301 + 0 * MPF.time
 
 
 for (row in 1:length(MPF.AIA.returns[, 1])) {
-#for (row in 1:13) {
+  #for (row in 1:13) {
   this.price <- as.matrix(MPF.AIA[monthly[row]])
-  MPF.AIA.units[row, ] <- this.price
+  MPF.AIA.units[row,] <- this.price
   
   if (row == 1) {
     last.value <- 2301 / 100
     this.value <- last.value * this.price[19]
-    MPF.monthly.returns[row] <- (sum(na.fill(this.value,0)) - 2301) / 2301
-    MPF.monthly.asset[row,] <-
-      na.fill(((this.value + 2301) / this.price * MPF.portf.weight[row, ]),0)
+    MPF.monthly.returns[row] <-
+      (sum(na.fill(this.value, 0)) - 2301) / 2301
+    MPF.monthly.asset[row, ] <-
+      na.fill(((this.value + 2301) / this.price * MPF.portf.weight[row,]), 0)
     
     last.price <- this.price
   } else {
-
-    last.value <- na.fill(MPF.monthly.asset[row-1,] * last.price,0)
-    this.value <- na.fill(MPF.monthly.asset[row-1,] * this.price,0)
-    MPF.monthly.returns[row] <- (sum(this.value) - sum(last.value)) / sum(last.value)
-
-    MPF.monthly.asset.old <- this.value / sum(na.fill(this.value,0))
-    MPF.monthly.asset.propose <- as.matrix(MPF.portf.weight[row,]) -
-       as.matrix(MPF.monthly.asset.old)
-    MPF.monthly.unit.change <- MPF.monthly.asset.propose * sum(na.fill(this.value,0)) / this.price
-
-    this.unit <- as.matrix(MPF.monthly.asset[row-1,]) + as.matrix(MPF.monthly.unit.change)
-    this.unit <- as.matrix(this.unit) + (2301 / as.matrix(this.price) * MPF.portf.weight[row,])
-
-    MPF.monthly.asset[row,] <- na.fill(this.unit,0)
+    last.value <- na.fill(MPF.monthly.asset[row - 1, ] * last.price, 0)
+    this.value <- na.fill(MPF.monthly.asset[row - 1, ] * this.price, 0)
+    MPF.monthly.returns[row] <-
+      (sum(this.value) - sum(last.value)) / sum(last.value)
+    
+    MPF.monthly.asset.old <- this.value / sum(na.fill(this.value, 0))
+    MPF.monthly.asset.propose <- as.matrix(MPF.portf.weight[row, ]) -
+      as.matrix(MPF.monthly.asset.old)
+    MPF.monthly.unit.change <-
+      MPF.monthly.asset.propose * sum(na.fill(this.value, 0)) / this.price
+    
+    this.unit <-
+      as.matrix(MPF.monthly.asset[row - 1, ]) + as.matrix(MPF.monthly.unit.change)
+    this.unit <-
+      as.matrix(this.unit) + (2301 / as.matrix(this.price) * MPF.portf.weight[row, ])
+    
+    MPF.monthly.asset[row, ] <- na.fill(this.unit, 0)
     last.price <- this.price
   }
 }
 
 
-total.asset.value <- sum(MPF.monthly.asset[row, ] * this.price)
+total.asset.value <- sum(MPF.monthly.asset[row,] * this.price)
 total.contribution <- 2301 * length(MPF.AIA.returns[, 1])
 
 MPF.pay[row + 1] <- total.asset.value
@@ -941,7 +1163,9 @@ IRR.root <- uniroot(IRR.f, c(0, 1))
 
 
 cat("Total asset in the last valuation date: ", total.asset.value, "\n")
-cat("Total contribution starting from 2000/12/01: ", total.contribution, "\n")
+cat("Total contribution starting from 2000/12/01: ",
+    total.contribution,
+    "\n")
 
 mean.monthly.annual.return <-
   mean(do.call(rbind, lapply(split(MPF.monthly.returns, "years"), function(x)
