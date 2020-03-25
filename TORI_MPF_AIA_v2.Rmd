@@ -41,9 +41,26 @@ header-includes:
 7. 本聲明如有歧義，將以英文版本作準。    
 
 
-## 最後更新日期 Last update: 2020/03/18.   
+## 最後更新日期 Last update: 2020/03/25.   
 ### Changelog    
 ### 更新記錄    
+
+2020-03-25 v2.1.1    
+1. Adding Golden Butterfly Portfolio as a benchmark portfolio.     
+1. 增加Golden Butterfly Portfolio作為基準指標。  
+
+2020-03-25 v2.1    
+1. Further diversify the hedge mode with Sixty-Fifth Plus Fund.      
+2. Performance indicator calculation on first installment revised extensively, includes:    
+* Adding SPY (SPDR S&P 500 ETF), QQQ (Invesco QQQ Trust), and HSI (Hang Seng Index) as a benchmark.   
+* Captial Asset Pricing Model CAPM and Information Ration results are available. (The author disapprove the use of CAPM, the results of CAPM are for reference only)   
+* Charting with benchmark are accomplished through tidyquant and ggplot now.         
+1. 使用65歲後基金進一步分散避險狀態下的風險。   
+2. 計算第一期投資的回報已作出重大修改，包括：    
+加入SPY,QQQ及恒生指數作基準   
+以三項基準計算資本資產定價模型CAPM及資訊比率Information Ratio的比較。
+（作者不認同CAPM是有效的評估方法。數值僅供參考。）   
+圖表改以tidyquant + ggplot展示，並加入與基準的比較。      
 
 2020-03-18 v2   
 1. Separate the return used in calculating AKANE, TORI (log) and return (simple).    
@@ -125,23 +142,27 @@ In this example, MPF would have T+2 time delay for obtaining historical price, h
 ### TORI 前移式回測結果     
 
 單一供款 One-off MPF Installment:    
-年率化回報 Annualized Return: ~10.88%     
-算術年均回報 Mean Annual Return: ~10.82%       
-累積回報 Cumulative Return: ~611.73%    
-年率化標準誤差 Annualized Standard Deviation: ~9.55% (StdDev(monthly return) * sqrt(12))    
-夏普比率 Sharpe Ratio: 1.1335          
-索丁諾比率 Sortino Ratio: 2.2154 (MAR = 0%)      
-預期損失 Expected Shortfall: 5.26 % loss (0% Risk-free rate, 95% C.I.)       
+年率化回報 Annualized Return: ~11.05%     
+算術年均回報 Mean Annual Return: ~10.98%       
+累積回報 Cumulative Return: ~632.64%    
+年率化標準誤差 Annualized Standard Deviation: ~9.65% (StdDev(monthly return) * sqrt(12))    
+夏普比率 Sharpe Ratio: 1.1456          
+索丁諾比率 Sortino Ratio: 2.2087 (MAR = 0%)    
+資訊比率 Information Ratio: 0.2196 (SPY), 0.4419 (HSI), 0.1913 (Golden Butterfly)    
+Jensen's Alpha: 0.0923 (SPY), 0.1001 (HSI), 0.1000 (Golden Butterfly)    
+Beta: 0.2731 (SPY), 0.2555 (HSI), 0.0598 (Golden Butterfly)     
+關聯系數 Correlation Coefficient: 0.4069 (SPY), 0.5396 (HSI), 0.0451 (Golden Butterfly)    
+預期損失 Expected Shortfall: 4.64% loss (0% Risk-free rate, 95% C.I.)      
 
 月供投資 Monthly MPF installment (或有誤差 maybe slightly differs):    
 每月供款 Monthly installment amount: 2301    
 總供款 Total contribution: 526929    
-最新結餘 Latest asset value: 1558490        
-算術年均回報 Mean annual return: 10.53%      
-內部回報率 Internal Rate of Return (IRR): 9.83%    
-年率化標準誤差 Annualized Standard Deviation: 9.53%    
-夏普比率 Sharpe Ratio: 1.1049          
-索丁諾比率 Sortino Ratio: 2.2150 (MAR = 0%)    
+最新結餘 Latest asset value: 1602584        
+算術年均回報 Mean annual return: 10.68%      
+內部回報率 Internal Rate of Return (IRR): 10.06%    
+年率化標準誤差 Annualized Standard Deviation: 9.63%    
+夏普比率 Sharpe Ratio: 1.1097          
+索丁諾比率 Sortino Ratio: 2.2082 (MAR = 0%)    
 
 
 ## 流程 Detailed Workflow
@@ -149,7 +170,7 @@ In this example, MPF would have T+2 time delay for obtaining historical price, h
 
 ### Package Preparation
 1. Install necessary packages
-```{r warning=FALSE, results=FALSE, eval=FALSE}
+```{r linewidth=40,  warning=FALSE, results=FALSE, eval=FALSE}
 r = getOption("repos")
 r["CRAN"] = "https://cran.r-project.org/"
 options(repos = r)
@@ -160,22 +181,44 @@ install.packages("xts", type="binary")
 install.packages("fBasics", type="binary")
 install.packages("quantmod", dependencies = TRUE, type="binary")
 install.packages("PerformanceAnalytics", dependencies = TRUE, type="binary")
-install.packages("keras", type="binary")
+install.packages("tidyverse", dependencies = TRUE, type="binary")
+install.packages("tibbletime", dependencies = TRUE, type="binary")
+install.packages("tidyquant", dependencies = TRUE, type="binary")
+install.packages("reshape", type="binary")
 
-install.packages("remotes")
-remotes::install_github('rstudio/rmarkdown')
+```
 
+
+```{r linewidth=40,  wrap-hook}
+library(knitr)
+hook_output = knit_hooks$get('output')
+knit_hooks$set(output = function(x, options) {
+  # this hook is used only when the linewidth option is not NULL
+  if (!is.null(n <- options$linewidth)) {
+    x = knitr:::split_lines(x)
+    # any lines wider than n should be wrapped
+    if (any(nchar(x) > n)) x = strwrap(x, width = n)
+    x = paste(x, collapse = '\n')
+  }
+  hook_output(x, options)
+})
 ```
 
 2. Now load necessary packages.
-```{r warning=FALSE, results=FALSE}
+```{r linewidth=40,  warning=FALSE, results=FALSE}
 library("zoo")
 library("xts")
+
 library("fBasics")
+library("tidyverse")
+library("timetk")
+library("tibbletime")
+
+library("reshape")
 library("quantmod")
 library("PerformanceAnalytics")
+library("tidyquant")
 ```
-
 
 ### Load Prices and Calculate Return
 0. Parameters
@@ -350,7 +393,7 @@ MPF.AIA.RSI.sum <- as.xts(rowSums(MPF.AIA.RSI.p), order.by = monthly)
 ```{r warning=FALSE}
 rm(MPF.AIA.BIAS.diff, MPF.AIA.BIAS.diff.qu, MPF.AIA.BIAS.month, MPF.AIA.BIAS.p)
 MPF.AIA.BIAS.diff <- (MPF.AIA.SMA.mt - MPF.AIA.SMA.hy) / MPF.AIA.SMA.hy
-MPF.AIA.BIAS.diff.qu <- MPF.AIA.BIAS.diff - lag(MPF.AIA.BIAS.diff, k=21*nm)
+MPF.AIA.BIAS.diff.qu <- MPF.AIA.BIAS.diff - stats::lag(MPF.AIA.BIAS.diff, k=21*nm)
 MPF.AIA.BIAS.diff.qu <- na.fill(MPF.AIA.BIAS.diff.qu, 0)
 
 
@@ -470,14 +513,24 @@ for (row in 1:length(MPF.AIA.BIAS.month[,1])) {
   
   if (row <= 12 || MPF.AIA.sum == MPF.AIA.BIAS.month[row,19] ||
       MPF.AIA.sum < 1e-6 || hedge == TRUE) {
-    if (row >= 92) {
+    if (row >= 198) {
+      
       MPF.AIA.BIAS.p[11] <- 0.3
-      MPF.AIA.BIAS.p[19] <- 0.7
+      MPF.AIA.BIAS.p[19] <- 0.3
+      MPF.AIA.BIAS.p[24] <- 0.4
+    } else if (row >= 92) {
+      MPF.AIA.BIAS.p[11] <- 0.5
+      MPF.AIA.BIAS.p[19] <- 0.5
     } else {
       MPF.AIA.BIAS.p[19] <- 1
     }
   } else if (min(MPF.AIA.stock.return[(row-3):row]) < -0.08) {
-    if (row >= 92) {
+    if (row >= 198) {
+      MPF.AIA.BIAS.p[] <- MPF.AIA.BIAS.month[row, ] / MPF.AIA.sum / 10 * 7
+      MPF.AIA.BIAS.p[24] <- MPF.AIA.BIAS.p[24]+0.12
+      MPF.AIA.BIAS.p[19] <- MPF.AIA.BIAS.p[19]+0.08
+      MPF.AIA.BIAS.p[11] <- MPF.AIA.BIAS.p[11]+0.1
+    } else if (row >= 92) {
       MPF.AIA.BIAS.p[] <- MPF.AIA.BIAS.month[row, ] / MPF.AIA.sum / 10 * 7
       MPF.AIA.BIAS.p[19] <- MPF.AIA.BIAS.p[19]+0.18
       MPF.AIA.BIAS.p[11] <- MPF.AIA.BIAS.p[11]+0.12
@@ -549,30 +602,283 @@ portf.rebal.fm <- Return.portfolio(
   rebalance_on = "months"
 )
 
+etfs <- c('SPY', 'QQQ', '^HSI')
+golden.butterfly <- c('VTI', 'IWM', 'SHY', 'TLT', 'GLD')
+
+weights <- c(
+  1,0,0,
+  0,1,0,
+  0,0,1
+)
+
+weights.table <-  tibble(etfs) %>%
+  tq_repeat_df(n = 3) %>%
+  bind_cols(tibble(weights)) %>%
+  group_by(portfolio)
+
+etf.dat <- c(etfs) %>% 
+  map_df(function(i) i %>% 
+           tq_get("stock.prices",
+                  from = "2001-01-01" %>%
+                    as.Date,
+                  to = "2019-12-31" %>%
+                    as.Date
+           )
+  ) %>% group_by(symbol)  %>%
+  tq_transmute(select     = adjusted, 
+               mutate_fun = periodReturn, 
+               period     = "monthly", 
+               col_rename = "Rb")
+
+GoldBut.dat <- c(golden.butterfly) %>% 
+  map_df(function(i) i %>% 
+           tq_get("stock.prices",
+                  from = "2004-11-01" %>%
+                    as.Date,
+                  to = "2019-12-31" %>%
+                    as.Date
+           )
+  ) %>% group_by(symbol)  %>%
+  tq_transmute(select     = adjusted, 
+               mutate_fun = periodReturn, 
+               period     = "monthly", 
+               col_rename = "Rb")
+  
+
+etf.by.column <- spread(etf.dat, symbol, Rb)
+SPY.etf <- na.omit(select(etf.by.column, 'date', 'SPY')) %>% mutate(symb = 'SPY')
+QQQ.etf <- na.omit(select(etf.by.column, 'date', 'QQQ')) %>% mutate(symb = 'QQQ')
+HSI.etf <- na.omit(select(etf.by.column, 'date', '^HSI')) %>% mutate(symb = 'HSI')
+
+SPY.return.monthly <- SPY.etf %>%
+  tq_portfolio(assets_col  = symb, 
+               returns_col = SPY, 
+               col_rename  = "Rb.SPY")
+QQQ.return.monthly <- QQQ.etf %>%
+  tq_portfolio(assets_col  = symb, 
+               returns_col = QQQ, 
+               col_rename  = "Rb.QQQ")
+HSI.return.monthly <- HSI.etf %>%
+  tq_portfolio(assets_col  = symb, 
+               returns_col = `^HSI`, 
+               col_rename  = "Rb.HSI")
+GoldBut.return.monthly <- GoldBut.dat %>%
+  tq_portfolio(assets_col = symbol,
+               returns_col = Rb,
+               col_rename = "Rb.GoldBut",
+               rebalance_on = "years")
+
+portf.rebal.fm.dollar <- Return.portfolio(
+  MPF.AIA.simple.returns,
+  weight = MPF.portf.weight,
+  geometric = TRUE,
+  rebalance_on = "months"
+)
+
+portf.rebal.fm.dollar.cpy <- Return.portfolio(
+  MPF.AIA.simple.returns,
+  weight = MPF.portf.weight,
+  geometric = TRUE,
+  rebalance_on = "months",
+  wealth.index = TRUE
+)
+
+portf.rebal.fm.dollar.gb <- Return.portfolio(
+  tail(MPF.AIA.simple.returns, -48),
+  weight = tail(MPF.portf.weight, -48),
+  geometric = TRUE,
+  rebalance_on = "months"
+)
+
+portf.rebal.fm.dollar.gb.cpy <- Return.portfolio(
+  tail(MPF.AIA.simple.returns,-48),
+  weight = tail(MPF.portf.weight,-48),
+  geometric = TRUE,
+  rebalance_on = "months",
+  wealth.index = TRUE
+)
+
+xts2df <- function(x) {
+  data.frame(date=index(x), coredata(x))
+}
+
+colnames(portf.rebal.fm.dollar) <- "Ra"
+
+
+portf.rebal.fm.dollar.tb <- tbl_df(melt(xts2df(portf.rebal.fm.dollar), id="date"))
+portf.rebal.fm.dollar.tb <- portf.rebal.fm.dollar.tb[,-2]
+colnames(portf.rebal.fm.dollar.tb) <- c("date","Ra")
+portf.rebal.fm.dollar.gb.tb <- tbl_df(melt(xts2df(portf.rebal.fm.dollar.gb), id="date"))
+portf.rebal.fm.dollar.gb.tb <- portf.rebal.fm.dollar.gb.tb[,-2]
+colnames(portf.rebal.fm.dollar.gb.tb) <- c("date","Ra")
+
+portf.rebal.fm.dollar.tb[,1] <- SPY.etf[,1]
+RaSPY.multiple.portfolio <- left_join(portf.rebal.fm.dollar.tb, 
+                                      SPY.return.monthly, by = "date")
+portf.rebal.fm.dollar.tb[,1] <- QQQ.etf[,1]
+RaQQQ.multiple.portfolio <- left_join(portf.rebal.fm.dollar.tb, 
+                                      QQQ.return.monthly, by = "date")
+portf.rebal.fm.dollar.gb.tb[,1] <- GoldBut.dat[,2]
+RaGoldBut.multiple.portfolio <- left_join(portf.rebal.fm.dollar.gb.tb,
+                                          GoldBut.return.monthly, by="date")
+portf.rebal.fm.dollar.tb[,1] <- HSI.etf[,1]
+RaHSI.multiple.portfolio <- left_join(portf.rebal.fm.dollar.tb, 
+                                      HSI.return.monthly, by = "date")
+
+
+print("Annualised return of SPY:")
+TORI.SPY <- RaSPY.multiple.portfolio %>% 
+  tq_performance(Rb.SPY, NULL, performance_fun = table.AnnualizedReturns)
+print(TORI.SPY)
+
+print("Annualised return of QQQ:")
+TORI.QQQ <- RaQQQ.multiple.portfolio %>% 
+  tq_performance(Rb.QQQ, NULL, performance_fun = table.AnnualizedReturns)
+print(TORI.QQQ)
+
+print("Annualised return of Golden Butterfly:")
+TORI.GoldBut <- RaGoldBut.multiple.portfolio %>% 
+  tq_performance(Rb.GoldBut, NULL, performance_fun = table.AnnualizedReturns)
+print(TORI.GoldBut)
+
+print("Annualised return of HSI:")
+TORI.HSI <- RaHSI.multiple.portfolio %>% 
+  tq_performance(Rb.HSI, NULL, performance_fun = table.AnnualizedReturns)
+print(TORI.HSI)
+
+print("CAPM Information against SPY:")
+TORI.SPY <- RaSPY.multiple.portfolio %>% 
+  tq_performance(Ra, Rb.SPY, performance_fun = table.CAPM)
+print(TORI.SPY)
+
+print("CAPM Information against QQQ:")
+TORI.QQQ <- RaQQQ.multiple.portfolio %>% 
+  tq_performance(Ra, Rb.QQQ, performance_fun = table.CAPM)
+print(TORI.QQQ)
+
+print("CAPM Information against GoldBut:")
+TORI.GoldBut <- RaGoldBut.multiple.portfolio %>% 
+  tq_performance(Ra, Rb.GoldBut, performance_fun = table.CAPM)
+print(TORI.GoldBut)
+
+print("CAPM Information against HSI:")
+TORI.HSI <- RaHSI.multiple.portfolio %>% 
+  tq_performance(Ra, Rb.HSI, performance_fun = table.CAPM)
+print(TORI.HSI)
+
+
+print("Information Ratio against SPY:")
+TORI.SPY <- RaSPY.multiple.portfolio %>% 
+  tq_performance(Ra, Rb.SPY, performance_fun = table.InformationRatio)
+print(TORI.SPY)
+
+print("Information Ratio against QQQ:")
+TORI.QQQ <- RaQQQ.multiple.portfolio %>% 
+  tq_performance(Ra, Rb.QQQ, performance_fun = table.InformationRatio)
+print(TORI.QQQ)
+
+print("Information Ratio against GoldBut:")
+TORI.GoldBut <- RaGoldBut.multiple.portfolio %>% 
+  tq_performance(Ra, Rb.GoldBut, performance_fun = table.InformationRatio)
+print(TORI.GoldBut)
+
+print("Information Ratio against HSI:")
+TORI.HSI <- RaHSI.multiple.portfolio %>% 
+  tq_performance(Ra, Rb.HSI, performance_fun = table.InformationRatio)
+print(TORI.HSI)
+
+SPY.dollar.monthly <- SPY.etf %>%
+  tq_portfolio(assets_col  = symb, 
+               returns_col = SPY, 
+               col_rename  = "Rb.SPY",
+               wealth.index = TRUE) %>%
+  mutate(Rb.SPY = Rb.SPY * 2301)
+QQQ.dollar.monthly <- QQQ.etf %>%
+  tq_portfolio(assets_col  = symb, 
+               returns_col = QQQ, 
+               col_rename  = "Rb.QQQ",
+               wealth.index = TRUE) %>%
+  mutate(Rb.QQQ = Rb.QQQ * 2301)
+GoldBut.dollar.monthly <- GoldBut.dat %>%
+  tq_portfolio(assets_col = symbol,
+               returns_col = Rb,
+               col_rename = "Rb.GoldBut",
+               rebalance_on = "years",
+               wealth.index = TRUE) %>%
+  mutate(Rb.GoldBut = Rb.GoldBut * 2301)
+HSI.dollar.monthly <- HSI.etf %>%
+  tq_portfolio(assets_col  = symb, 
+               returns_col = `^HSI`, 
+               col_rename  = "Rb.HSI",
+               wealth.index = TRUE) %>%
+  mutate(Rb.HSI = Rb.HSI * 2301)
+
+
+portf.rebal.fm.dollar.tb.cpy <- tbl_df(melt(xts2df(portf.rebal.fm.dollar.cpy), 
+                                            id="date", variable_name = "Ra"))
+portf.rebal.fm.dollar.tb.cpy <- portf.rebal.fm.dollar.tb.cpy[,-2]
+colnames(portf.rebal.fm.dollar.tb.cpy) <- c("date","Ra")
+portf.rebal.fm.dollar.tb.cpy[,1] <- HSI.etf[,1]
+portf.dollar.monthly <- portf.rebal.fm.dollar.tb.cpy %>%
+  mutate(Ra = Ra * 2301)
+
+portf.rebal.fm.dollar.gb.tb.cpy <- tbl_df(melt(xts2df(portf.rebal.fm.dollar.gb.cpy), 
+                                            id="date", variable_name = "Ra"))
+portf.rebal.fm.dollar.gb.tb.cpy <- portf.rebal.fm.dollar.gb.tb.cpy[,-2]
+colnames(portf.rebal.fm.dollar.gb.tb.cpy) <- c("date","Ra")
+portf.rebal.fm.dollar.gb.tb.cpy[,1] <- GoldBut.dat[,2]
+portf.dollar.monthly.gb <- portf.rebal.fm.dollar.gb.tb.cpy %>%
+  mutate(Ra = Ra * 2301)
+
+
+
+ggplot()+
+  scale_color_manual(labels = c("SPY", "QQQ", "HSI", "TORI @ AIA"), 
+                     values = c(1,2,3,"pink3")) +
+  geom_line(aes(x = date, y = Rb.SPY, color = as.factor(1)), SPY.dollar.monthly, size=0.8)+
+  geom_line(aes(x = date, y = Rb.QQQ, color = as.factor(2)), QQQ.dollar.monthly, size=0.8)+
+  geom_line(aes(x = date, y = Rb.HSI, color = as.factor(3)), HSI.dollar.monthly, size=0.8)+
+  geom_line(aes(x = date, y = Ra, color = "pink3"), portf.dollar.monthly, size=1.8)+
+  labs(title = "TORI @ AIA versus SPY, QQQ, and Hang Seng Index",
+       subtitle = "How TORI @ AIA outperform common index fund",
+       x = "", y = "Portfolio Value",
+       color = "Portfolio or Index ETFs") +
+  theme_tq() +
+  scale_y_continuous(labels = scales::dollar)
+
+ggplot()+
+  scale_color_manual(labels = c("Golden Butterfly", "TORI @ AIA"), 
+                     values = c(4,"pink3")) +
+  geom_line(aes(x = date, y = Rb.GoldBut, color = as.factor(3)), GoldBut.dollar.monthly, size=0.8)+
+  geom_line(aes(x = date, y = Ra, color = "pink3"), portf.dollar.monthly.gb, size=1.8)+
+  labs(title = "TORI @ AIA versus Golden Butterfly Portfolio",
+       subtitle = "How TORI @ AIA outperform golden butterfly portfolio",
+       x = "", y = "Portfolio Value",
+       color = "Portfolio") +
+  theme_tq() +
+  scale_y_continuous(labels = scales::dollar)
+
+
+
+
+cat("Cumulative return: ", Return.cumulative(portf.rebal.fm, geometric=TRUE), "\n")
+portf.rebal.fm.sharpe <- Return.annualized(portf.rebal.fm, geometric=TRUE) /
+  (StdDev.annualized(portf.rebal.fm))
+rownames(portf.rebal.fm.sharpe) <- "Sharpe Ratio"
+cat("Annualised return: ", Return.annualized(portf.rebal.fm, geometric=TRUE), "\n")
+
 mean.annual.return <-
   mean(do.call(rbind, lapply(split(portf.rebal.fm, "years"), function(x)
     colMeans(x))) * 12)
-
-charts.PerformanceSummary(
-  portf.rebal.fm,
-  methods = "ModifiedES",
-  geometric = TRUE,
-  p = .95,
-  main = "AIA MPF Scheme First Contribution Performance"
-)
-
-Return.cumulative(portf.rebal.fm, geometric=TRUE)
-portf.rebal.fm.sharpe <- Return.annualized(portf.rebal.fm, geometric=TRUE) / (StdDev.annualized(portf.rebal.fm))
-rownames(portf.rebal.fm.sharpe) <- "Sharpe Ratio"
-Return.annualized(portf.rebal.fm, geometric=TRUE)
-mean.annual.return
+cat("Mean annual return (for ref. only): ", mean.annual.return, "\n")
 portf.rebal.fm.sharpe.mean <- mean.annual.return / (StdDev.annualized(portf.rebal.fm))
 rownames(portf.rebal.fm.sharpe.mean) <- "Sharpe Ratio (Mean annual return)"
-SharpeRatio(portf.rebal.fm) * sqrt(12)
-portf.rebal.fm.sharpe.mean
-StdDev.annualized(portf.rebal.fm)
-SortinoRatio(portf.rebal.fm) * sqrt(12)
-ES(portf.rebal.fm, method="historical")
+
+SharpeRatio(portf.rebal.fm, annualize = TRUE, method="modified") 
+cat("Annualised Standard Deviation: ", StdDev.annualized(portf.rebal.fm), "\n")
+cat("Sortino Ratio: ", SortinoRatio(portf.rebal.fm) * sqrt(12), "\n")
+cat("Coditional Value of Risk (CVaR, Expected Shortfall ES", 
+    ES(portf.rebal.fm, method="modified"), "\n")
 tail(MPF.portf.weight, n=6)
 ```
 
