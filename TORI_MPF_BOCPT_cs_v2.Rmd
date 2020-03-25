@@ -196,6 +196,7 @@ install.packages("PerformanceAnalytics", dependencies = TRUE, type="binary")
 install.packages("tidyverse", dependencies = TRUE, type="binary")
 install.packages("tibbletime", dependencies = TRUE, type="binary")
 install.packages("tidyquant", dependencies = TRUE, type="binary")
+install.packages("reshape", type="binary")
 
 ```
 
