@@ -45,9 +45,13 @@ header-includes:
 7. 本聲明如有歧義，將以英文版本作準。    
 
 
-## 最後更新日期 Last update: 2020/03/24.   
+## 最後更新日期 Last update: 2020/03/25.   
 ### Changelog    
 ### 更新記錄    
+
+2020-03-25 v2.1.1    
+1. Adding Golden Butterfly Portfolio as a benchmark portfolio.     
+1. 增加Golden Butterfly Portfolio作為基準指標。  
 
 2020-03-24 v2.1    
 1. Further diversify the hedge mode with Sixty-Fifth Plus Fund.      
@@ -155,10 +159,10 @@ In this example, MPF would have T+2 time delay for obtaining historical price, h
 年率化標準誤差 Annualized Standard Deviation: ~9.17% (StdDev(monthly return) * sqrt(12))    
 夏普比率 Sharpe Ratio: 1.3292          
 索丁諾比率 Sortino Ratio: 3.4038 (MAR = 0%)    
-資訊比率 Information Ratio: 0.3998 (SPY), 0.517 (HSI)    
-Jensen's Alpha: 0.1014 (SPY), 0.1107 (HSI)    
-Beta: 0.2897 (SPY), 0.2572 (HSI)     
-關聯系數 Correlation Coefficient: 0.4544 (SPY), 0.5717 (HSI)    
+資訊比率 Information Ratio: 0.3998 (SPY), 0.517 (HSI), 0.4366 (Golden Butterfly)    
+Jensen's Alpha: 0.1014 (SPY), 0.1107 (HSI), 0.1375 (Golden Butterfly)    
+Beta: 0.2897 (SPY), 0.2572 (HSI), -0.120 (Golden Butterfly)     
+關聯系數 Correlation Coefficient: 0.4544 (SPY), 0.5717 (HSI), -0.0089 (Golden Butterfly)    
 預期損失 Expected Shortfall: 3.37% loss (0% Risk-free rate, 95% C.I.)       
 
 月供投資 Monthly MPF installment (或有誤差 maybe slightly differs):    
@@ -653,6 +657,7 @@ portf.rebal.fm <- Return.portfolio(
 )
 
 etfs <- c('SPY', 'QQQ', '^HSI')
+golden.butterfly <- c('VTI', 'IWM', 'SHY', 'TLT', 'GLD')
 
 weights <- c(
   1,0,0,
@@ -679,6 +684,21 @@ etf.dat <- c(etfs) %>%
                period     = "monthly", 
                col_rename = "Rb")
 
+GoldBut.dat <- c(golden.butterfly) %>% 
+  map_df(function(i) i %>% 
+           tq_get("stock.prices",
+                  from = "2004-11-01" %>%
+                    as.Date,
+                  to = "2019-12-31" %>%
+                    as.Date
+           )
+  ) %>% group_by(symbol)  %>%
+  tq_transmute(select     = adjusted, 
+               mutate_fun = periodReturn, 
+               period     = "monthly", 
+               col_rename = "Rb")
+  
+
 etf.by.column <- spread(etf.dat, symbol, Rb)
 SPY.etf <- na.omit(select(etf.by.column, 'date', 'SPY')) %>% mutate(symb = 'SPY')
 QQQ.etf <- na.omit(select(etf.by.column, 'date', 'QQQ')) %>% mutate(symb = 'QQQ')
@@ -696,6 +716,11 @@ HSI.return.monthly <- HSI.etf %>%
   tq_portfolio(assets_col  = symb, 
                returns_col = `^HSI`, 
                col_rename  = "Rb.HSI")
+GoldBut.return.monthly <- GoldBut.dat %>%
+  tq_portfolio(assets_col = symbol,
+               returns_col = Rb,
+               col_rename = "Rb.GoldBut",
+               rebalance_on = "years")
 
 portf.rebal.fm.dollar <- Return.portfolio(
   MPF.BCT.simple.returns,
@@ -712,6 +737,21 @@ portf.rebal.fm.dollar.cpy <- Return.portfolio(
   wealth.index = TRUE
 )
 
+portf.rebal.fm.dollar.gb <- Return.portfolio(
+  tail(MPF.BCT.simple.returns, -48),
+  weight = tail(MPF.portf.weight, -48),
+  geometric = TRUE,
+  rebalance_on = "months"
+)
+
+portf.rebal.fm.dollar.gb.cpy <- Return.portfolio(
+  tail(MPF.BCT.simple.returns,-48),
+  weight = tail(MPF.portf.weight,-48),
+  geometric = TRUE,
+  rebalance_on = "months",
+  wealth.index = TRUE
+)
+
 xts2df <- function(x) {
   data.frame(date=index(x), coredata(x))
 }
@@ -722,61 +762,84 @@ colnames(portf.rebal.fm.dollar) <- "Ra"
 portf.rebal.fm.dollar.tb <- tbl_df(melt(xts2df(portf.rebal.fm.dollar), id="date"))
 portf.rebal.fm.dollar.tb <- portf.rebal.fm.dollar.tb[,-2]
 colnames(portf.rebal.fm.dollar.tb) <- c("date","Ra")
+portf.rebal.fm.dollar.gb.tb <- tbl_df(melt(xts2df(portf.rebal.fm.dollar.gb), id="date"))
+portf.rebal.fm.dollar.gb.tb <- portf.rebal.fm.dollar.gb.tb[,-2]
+colnames(portf.rebal.fm.dollar.gb.tb) <- c("date","Ra")
+
 portf.rebal.fm.dollar.tb[,1] <- SPY.etf[,1]
 RaSPY.multiple.portfolio <- left_join(portf.rebal.fm.dollar.tb, 
                                       SPY.return.monthly, by = "date")
 portf.rebal.fm.dollar.tb[,1] <- QQQ.etf[,1]
 RaQQQ.multiple.portfolio <- left_join(portf.rebal.fm.dollar.tb, 
                                       QQQ.return.monthly, by = "date")
+portf.rebal.fm.dollar.gb.tb[,1] <- GoldBut.dat[,2]
+RaGoldBut.multiple.portfolio <- left_join(portf.rebal.fm.dollar.gb.tb,
+                                          GoldBut.return.monthly, by="date")
 portf.rebal.fm.dollar.tb[,1] <- HSI.etf[,1]
 RaHSI.multiple.portfolio <- left_join(portf.rebal.fm.dollar.tb, 
                                       HSI.return.monthly, by = "date")
 
+
 print("Annualised return of SPY:")
 TORI.SPY <- RaSPY.multiple.portfolio %>% 
   tq_performance(Rb.SPY, NULL, performance_fun = table.AnnualizedReturns)
-TORI.SPY
+print(TORI.SPY)
 
 print("Annualised return of QQQ:")
 TORI.QQQ <- RaQQQ.multiple.portfolio %>% 
   tq_performance(Rb.QQQ, NULL, performance_fun = table.AnnualizedReturns)
-TORI.QQQ
+print(TORI.QQQ)
+
+print("Annualised return of Golden Butterfly:")
+TORI.GoldBut <- RaGoldBut.multiple.portfolio %>% 
+  tq_performance(Rb.GoldBut, NULL, performance_fun = table.AnnualizedReturns)
+print(TORI.GoldBut)
 
 print("Annualised return of HSI:")
 TORI.HSI <- RaHSI.multiple.portfolio %>% 
   tq_performance(Rb.HSI, NULL, performance_fun = table.AnnualizedReturns)
-TORI.HSI
+print(TORI.HSI)
 
 print("CAPM Information against SPY:")
 TORI.SPY <- RaSPY.multiple.portfolio %>% 
   tq_performance(Ra, Rb.SPY, performance_fun = table.CAPM)
-TORI.SPY
+print(TORI.SPY)
 
 print("CAPM Information against QQQ:")
 TORI.QQQ <- RaQQQ.multiple.portfolio %>% 
   tq_performance(Ra, Rb.QQQ, performance_fun = table.CAPM)
-TORI.QQQ
+print(TORI.QQQ)
+
+print("CAPM Information against GoldBut:")
+TORI.GoldBut <- RaGoldBut.multiple.portfolio %>% 
+  tq_performance(Ra, Rb.GoldBut, performance_fun = table.CAPM)
+print(TORI.GoldBut)
 
 print("CAPM Information against HSI:")
 TORI.HSI <- RaHSI.multiple.portfolio %>% 
   tq_performance(Ra, Rb.HSI, performance_fun = table.CAPM)
-TORI.HSI
+print(TORI.HSI)
 
 
 print("Information Ratio against SPY:")
 TORI.SPY <- RaSPY.multiple.portfolio %>% 
   tq_performance(Ra, Rb.SPY, performance_fun = table.InformationRatio)
-TORI.SPY
+print(TORI.SPY)
 
 print("Information Ratio against QQQ:")
 TORI.QQQ <- RaQQQ.multiple.portfolio %>% 
   tq_performance(Ra, Rb.QQQ, performance_fun = table.InformationRatio)
-TORI.QQQ
+print(TORI.QQQ)
+
+print("Information Ratio against GoldBut:")
+TORI.GoldBut <- RaGoldBut.multiple.portfolio %>% 
+  tq_performance(Ra, Rb.GoldBut, performance_fun = table.InformationRatio)
+print(TORI.GoldBut)
 
 print("Information Ratio against HSI:")
 TORI.HSI <- RaHSI.multiple.portfolio %>% 
   tq_performance(Ra, Rb.HSI, performance_fun = table.InformationRatio)
-TORI.HSI
+print(TORI.HSI)
 
 SPY.dollar.monthly <- SPY.etf %>%
   tq_portfolio(assets_col  = symb, 
@@ -790,6 +853,13 @@ QQQ.dollar.monthly <- QQQ.etf %>%
                col_rename  = "Rb.QQQ",
                wealth.index = TRUE) %>%
   mutate(Rb.QQQ = Rb.QQQ * 2301)
+GoldBut.dollar.monthly <- GoldBut.dat %>%
+  tq_portfolio(assets_col = symbol,
+               returns_col = Rb,
+               col_rename = "Rb.GoldBut",
+               rebalance_on = "years",
+               wealth.index = TRUE) %>%
+  mutate(Rb.GoldBut = Rb.GoldBut * 2301)
 HSI.dollar.monthly <- HSI.etf %>%
   tq_portfolio(assets_col  = symb, 
                returns_col = `^HSI`, 
@@ -806,6 +876,14 @@ portf.rebal.fm.dollar.tb.cpy[,1] <- HSI.etf[,1]
 portf.dollar.monthly <- portf.rebal.fm.dollar.tb.cpy %>%
   mutate(Ra = Ra * 2301)
 
+portf.rebal.fm.dollar.gb.tb.cpy <- tbl_df(melt(xts2df(portf.rebal.fm.dollar.gb.cpy), 
+                                            id="date", variable_name = "Ra"))
+portf.rebal.fm.dollar.gb.tb.cpy <- portf.rebal.fm.dollar.gb.tb.cpy[,-2]
+colnames(portf.rebal.fm.dollar.gb.tb.cpy) <- c("date","Ra")
+portf.rebal.fm.dollar.gb.tb.cpy[,1] <- GoldBut.dat[,2]
+portf.dollar.monthly.gb <- portf.rebal.fm.dollar.gb.tb.cpy %>%
+  mutate(Ra = Ra * 2301)
+
 
 
 ggplot()+
@@ -815,10 +893,22 @@ ggplot()+
   geom_line(aes(x = date, y = Rb.QQQ, color = as.factor(2)), QQQ.dollar.monthly, size=0.8)+
   geom_line(aes(x = date, y = Rb.HSI, color = as.factor(3)), HSI.dollar.monthly, size=0.8)+
   geom_line(aes(x = date, y = Ra, color = "pink3"), portf.dollar.monthly, size=1.8)+
-  labs(title = "TORI @ BCT(Civil Servant) versus SPY, QQQ, and Hang Seng Index",
+  labs(title = "TORI @ BCT (civil servant pricing) versus SPY, QQQ, and Hang Seng Index",
        subtitle = "How TORI @ BCT outperform common index fund",
        x = "", y = "Portfolio Value",
        color = "Portfolio or Index ETFs") +
+  theme_tq() +
+  scale_y_continuous(labels = scales::dollar)
+
+ggplot()+
+  scale_color_manual(labels = c("Golden Butterfly", "TORI @ BCT"), 
+                     values = c(4,"pink3")) +
+  geom_line(aes(x = date, y = Rb.GoldBut, color = as.factor(3)), GoldBut.dollar.monthly, size=0.8)+
+  geom_line(aes(x = date, y = Ra, color = "pink3"), portf.dollar.monthly.gb, size=1.8)+
+  labs(title = "TORI @ BCT (civil servant pricing) versus Golden Butterfly Portfolio",
+       subtitle = "How TORI @ BCT outperform golden butterfly portfolio",
+       x = "", y = "Portfolio Value",
+       color = "Portfolio") +
   theme_tq() +
   scale_y_continuous(labels = scales::dollar)
 
