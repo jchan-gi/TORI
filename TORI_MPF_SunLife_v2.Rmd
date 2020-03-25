@@ -45,9 +45,27 @@ header-includes:
 7. 本聲明如有歧義，將以英文版本作準。    
 
 
-## 最後更新日期 Last update: 2020/03/18.   
+## 最後更新日期 Last update: 2020/03/25.   
 ### Changelog    
 ### 更新記錄    
+
+2020-03-25 v2.1.1    
+1. Adding Golden Butterfly Portfolio as a benchmark portfolio.     
+1. 增加Golden Butterfly Portfolio作為基準指標。    
+
+2020-03-24 v2.1    
+1. Further diversify the hedge mode with Sixty-Fifth Plus Fund.      
+2. HSI tracking fund is no longer a substitute candidate of HKCE fund. Currently only Fidelity SaveEasy 2040 and GCE tracking fund are candidates of substituting HKCE fund.   
+3. Performance indicator calculation on first installment revised extensively, includes:    
+* Adding SPY (SPDR S&P 500 ETF), QQQ (Invesco QQQ Trust), and HSI (Hang Seng Index) as a benchmark.   
+* Captial Asset Pricing Model CAPM and Information Ration results are available. (The author disapprove the use of CAPM, the results of CAPM are for reference only)   
+* Charting with benchmark are accomplished through tidyquant and ggplot now.         
+1. 使用65歲後基金進一步分散避險狀態下的風險。   
+2. 取代中港股票基金的替代品不再包括恒指基金。富達2040及大中華基金仍為中港股票基金的替代品。   
+3. 計算第一期投資的回報已作出重大修改，包括：    
+加入SPY,QQQ及恒生指數作基準   
+以三項基準計算資本資產定價模型CAPM及資訊比率Information Ratio的比較。（作者不認同CAPM是有效的評估方法。數值僅供參考。）   
+圖表改以tidyquant + ggplot展示，並加入與基準的比較。       
 
 2020-03-18 v2    
 1. Separate the return used in calculating AKANE, TORI (log) and return (simple).     
@@ -129,31 +147,33 @@ In this example, MPF would have T+2 time delay for obtaining historical price, h
 ### TORI 前移式回測結果     
 
 單一供款 One-off MPF Installment:    
-年率化回報 Annualized Return: ~9.99%     
-算術年均回報 Mean Annual Return: ~9.59%       
-累積回報 Cumulative Return: ~468.56%    
-年率化標準誤差 Annualized Standard Deviation: ~8.87% (StdDev(monthly return) * sqrt(12))    
-夏普比率 Sharpe Ratio: 1.1197          
-索丁諾比率 Sortino Ratio: 2.9177 (MAR = 0%)      
-預期損失 Expected Shortfall: 3.91 % loss (0% Risk-free rate, 95% C.I.)       
+年率化回報 Annualized Return: ~10.14%     
+算術年均回報 Mean Annual Return: ~9.73%       
+累積回報 Cumulative Return: ~483.41%    
+年率化標準誤差 Annualized Standard Deviation: ~8.89%     
+夏普比率 Sharpe Ratio: 1.1414          
+索丁諾比率 Sortino Ratio: 2.9447 (MAR = 0%)      
+資訊比率 Information Ratio: 0.1447 (SPY), 0.2484(HSI), 0.2126 (Golden Butterfly)     
+Jensen's Alpha: 0.1015 (SPY), 0.1017 (HSI), 0.1000 (Golden Butterfly)    
+Beta: 0.0436 (SPY), 0.0518 (HSI), 0.678 (Golden Butterfly)     
+關聯系數 Correlation Coefficient: 0.0690 (SPY), 0.1165 (HSI), 0.0545 (Golden Butterfly)    
+預期損失 Expected Shortfall: 6.84 % loss (0% Risk-free rate, 95% C.I.)       
 
 月供投資 Monthly MPF installment (或有誤差 maybe slightly differs):    
 每月供款 Monthly installment amount: 2301    
 總供款 Total contribution: 506220    
-最新結餘 Latest asset value: 1380085        
-算術年均回報 Mean annual return: 10.01%      
-內部回報率 Internal Rate of Return (IRR): 9.54%    
-年率化標準誤差 Annualized Standard Deviation: 8.87%    
-夏普比率 Sharpe Ratio: 1.1295          
-索丁諾比率 Sortino Ratio: 2.9553 (MAR = 0%)    
+最新結餘 Latest asset value: 1413811        
+算術年均回報 Mean annual return: 10.15%      
+內部回報率 Internal Rate of Return (IRR): 9.75%    
+年率化標準誤差 Annualized Standard Deviation: 8.88%    
+夏普比率 Sharpe Ratio: 1.1431          
+索丁諾比率 Sortino Ratio: 2.9821 (MAR = 0%)    
 
 
 ## 流程 Detailed Workflow
-
-
 ### Package Preparation
 1. Install necessary packages
-```{r warning=FALSE, results=FALSE, eval=FALSE}
+```{r linewidth=40,  warning=FALSE, results=FALSE, eval=FALSE}
 r = getOption("repos")
 r["CRAN"] = "https://cran.r-project.org/"
 options(repos = r)
@@ -164,18 +184,41 @@ install.packages("xts", type="binary")
 install.packages("fBasics", type="binary")
 install.packages("quantmod", dependencies = TRUE, type="binary")
 install.packages("PerformanceAnalytics", dependencies = TRUE, type="binary")
-install.packages("keras", type="binary")
+install.packages("tidyverse", dependencies = TRUE, type="binary")
+install.packages("tibbletime", dependencies = TRUE, type="binary")
+install.packages("tidyquant", dependencies = TRUE, type="binary")
+install.packages("reshape", type="binary")
 
-install.packages("remotes")
-remotes::install_github('rstudio/rmarkdown')
+```
 
+
+```{r linewidth=40,  wrap-hook}
+library(knitr)
+hook_output = knit_hooks$get('output')
+knit_hooks$set(output = function(x, options) {
+  # this hook is used only when the linewidth option is not NULL
+  if (!is.null(n <- options$linewidth)) {
+    x = knitr:::split_lines(x)
+    # any lines wider than n should be wrapped
+    if (any(nchar(x) > n)) x = strwrap(x, width = n)
+    x = paste(x, collapse = '\n')
+  }
+  hook_output(x, options)
+})
 ```
 
 2. Now load necessary packages.
 ```{r warning=FALSE, results=FALSE}
 library("zoo")
 library("xts")
+
 library("fBasics")
+library("tidyverse")
+library("timetk")
+library("tibbletime")
+
+library("reshape")
+library("tidyquant")
 library("quantmod")
 library("PerformanceAnalytics")
 ```
@@ -242,7 +285,21 @@ MPF.SunLife.HKE <- monthlyReturn(as.xts(MPF.SunLife$HKE), type="log")
 MPF.SunLife.MPFC <- monthlyReturn(as.xts(MPF.SunLife$MPFC), type="log")
 MPF.SunLife.SFP <- monthlyReturn(as.xts(MPF.SunLife$SFP), type="log")
 
-MPF.SunLife.returns <- merge(MPF.SunLife.AE, MPF.SunLife.B, MPF.SunLife.CA, MPF.SunLife.CE, MPF.SunLife.HKT, MPF.SunLife.G, MPF.SunLife.GB, MPF.SunLife.GE, MPF.SunLife.HKB, MPF.SunLife.HKE, MPF.SunLife.MPFC, MPF.SunLife.SFP)
+MPF.SunLife.returns <-
+  merge(
+    MPF.SunLife.AE,
+    MPF.SunLife.B,
+    MPF.SunLife.CA,
+    MPF.SunLife.CE,
+    MPF.SunLife.HKT,
+    MPF.SunLife.G,
+    MPF.SunLife.GB,
+    MPF.SunLife.GE,
+    MPF.SunLife.HKB,
+    MPF.SunLife.HKE,
+    MPF.SunLife.MPFC,
+    MPF.SunLife.SFP
+  )
 
 MPF.SunLife.AE <- monthlyReturn(as.xts(MPF.SunLife$AE), type="arithmetic")
 MPF.SunLife.B <- monthlyReturn(as.xts(MPF.SunLife$B), type="arithmetic")
@@ -257,76 +314,178 @@ MPF.SunLife.HKE <- monthlyReturn(as.xts(MPF.SunLife$HKE), type="arithmetic")
 MPF.SunLife.MPFC <- monthlyReturn(as.xts(MPF.SunLife$MPFC), type="arithmetic")
 MPF.SunLife.SFP <- monthlyReturn(as.xts(MPF.SunLife$SFP), type="arithmetic")
 
-MPF.SunLife.simple.returns <- merge(MPF.SunLife.AE, MPF.SunLife.B, MPF.SunLife.CA, MPF.SunLife.CE, MPF.SunLife.HKT, MPF.SunLife.G, MPF.SunLife.GB, MPF.SunLife.GE, MPF.SunLife.HKB, MPF.SunLife.HKE, MPF.SunLife.MPFC, MPF.SunLife.SFP)
+MPF.SunLife.simple.returns <-
+  merge(
+    MPF.SunLife.AE,
+    MPF.SunLife.B,
+    MPF.SunLife.CA,
+    MPF.SunLife.CE,
+    MPF.SunLife.HKT,
+    MPF.SunLife.G,
+    MPF.SunLife.GB,
+    MPF.SunLife.GE,
+    MPF.SunLife.HKB,
+    MPF.SunLife.HKE,
+    MPF.SunLife.MPFC,
+    MPF.SunLife.SFP
+  )
 
-MPF.SunLife.original.cost <- c(0.0201, 0.0187, 0.0085, 0.0206, 0.0102, 0.0183, 0.0202, 0.0204, 0.0180, 0.0177, 0.0096, 0.0085) / 12
-MPF.SunLife.cs.cost <- c(0.0096, 0.0089, 0.0095, 0.0096, 0.0096, 0.0089, 0.0089, 0.0096, 0.0089, 0.0089, 0.0004, 0.0095) / 12
+MPF.SunLife.original.cost <-
+  c(
+    0.0201,
+    0.0187,
+    0.0085,
+    0.0206,
+    0.0102,
+    0.0183,
+    0.0202,
+    0.0204,
+    0.0180,
+    0.0177,
+    0.0096,
+    0.0085
+  ) / 12
+MPF.SunLife.cs.cost <-
+  c(
+    0.0096,
+    0.0089,
+    0.0095,
+    0.0096,
+    0.0096,
+    0.0089,
+    0.0089,
+    0.0096,
+    0.0089,
+    0.0089,
+    0.0004,
+    0.0095
+  ) / 12
 
-# for(col in 1:length(MPF.SunLife.returns[1,])) {
-#   MPF.SunLife.returns[,col] <- MPF.SunLife.returns[,col] - MPF.SunLife.cs.cost[col] + MPF.SunLife.original.cost[col]
-#    MPF.SunLife.simple.returns[,col] <- MPF.SunLife.simple.returns[,col] - MPF.SunLife.cs.cost[col] + MPF.SunLife.original.cost[col]
+# for (col in 1:length(MPF.SunLife.returns[1, ])) {
+#   MPF.SunLife.returns[, col] <-
+#     MPF.SunLife.returns[, col] - MPF.SunLife.cs.cost[col] + MPF.SunLife.original.cost[col]
+#   MPF.SunLife.simple.returns[, col] <-
+#     MPF.SunLife.simple.returns[, col] - MPF.SunLife.cs.cost[col] + MPF.SunLife.original.cost[col]
 # }
 
 monthly <- index(MPF.SunLife.returns)
-colnames(MPF.SunLife.returns) <- c("AE", "B", "CA", "CE", "FTSE HK", "G", "GB", "GE", "HKB", "HKE", "MPFC", "SFP")
-colnames(MPF.SunLife.simple.returns) <- c("AE", "B", "CA", "CE", "FTSE HK", "G", "GB", "GE", "HKB", "HKE", "MPFC", "SFP")
+colnames(MPF.SunLife.returns) <-
+  c("AE",
+    "B",
+    "CA",
+    "CE",
+    "FTSE HK",
+    "G",
+    "GB",
+    "GE",
+    "HKB",
+    "HKE",
+    "MPFC",
+    "SFP")
+colnames(MPF.SunLife.simple.returns) <-
+  c("AE",
+    "B",
+    "CA",
+    "CE",
+    "FTSE HK",
+    "G",
+    "GB",
+    "GE",
+    "HKB",
+    "HKE",
+    "MPFC",
+    "SFP")
 
 
-rm(MPF.SunLife.AE, MPF.SunLife.B, MPF.SunLife.CA, MPF.SunLife.CE, MPF.SunLife.HKT, MPF.SunLife.G, MPF.SunLife.GB, MPF.SunLife.GE, MPF.SunLife.HKB, MPF.SunLife.HKE, MPF.SunLife.MPFC, MPF.SunLife.SFP)
+rm(
+  MPF.SunLife.AE,
+  MPF.SunLife.B,
+  MPF.SunLife.CA,
+  MPF.SunLife.CE,
+  MPF.SunLife.HKT,
+  MPF.SunLife.G,
+  MPF.SunLife.GB,
+  MPF.SunLife.GE,
+  MPF.SunLife.HKB,
+  MPF.SunLife.HKE,
+  MPF.SunLife.MPFC,
+  MPF.SunLife.SFP
+)
 ```
 
 
 ### Calculate average RSI of the month, and then adjustment factor
 ```{r warning=FALSE}
-MPF.SunLife.RSI.month <- as.xts(do.call(rbind, lapply(split(as.xts(MPF.SunLife.RSI), "months"), function(x) colAvgs(x))), order.by = monthly)
+MPF.SunLife.RSI.month <-
+  as.xts(do.call(rbind, lapply(split(as.xts(MPF.SunLife.RSI), "months"), function(x)
+    colAvgs(x))), order.by = monthly)
 
 MPF.SunLife.RSI.p <- MPF.SunLife.returns
-MPF.SunLife.RSI.p[,] <- 0
+MPF.SunLife.RSI.p[, ] <- 0
 
-for (col in 1:length(MPF.SunLife.RSI.month[1,])) {
+for (col in 1:length(MPF.SunLife.RSI.month[1, ])) {
   if (col != 11) {
-    for (row in 1:length(MPF.SunLife.RSI.month[,col])) {
-      percentile <- ecdf(as.numeric(MPF.SunLife.RSI.month[1:row,col]))
-      if (percentile(MPF.SunLife.RSI.month[row,col]) >= (RSI_Overbuy - 1/length(1:row)^(1/2))) {
-        MPF.SunLife.RSI.p[row,col] <- 0.2
+    for (row in 1:length(MPF.SunLife.RSI.month[, col])) {
+      percentile <- ecdf(as.numeric(MPF.SunLife.RSI.month[1:row, col]))
+      if (percentile(MPF.SunLife.RSI.month[row, col]) >= 
+          (RSI_Overbuy - 1 /length(1:row) ^ (1 / 2))) {
+        MPF.SunLife.RSI.p[row, col] <- 0.2
       } else {
-        MPF.SunLife.RSI.p[row,col] <- 1.2-(percentile(MPF.SunLife.RSI.month[row,col])^(3))
+        MPF.SunLife.RSI.p[row, col] <-
+          1.2 - (percentile(MPF.SunLife.RSI.month[row, col]) ^ (3))
       }
     }
   } else {
-    MPF.SunLife.RSI.p[,col] <- 1
+    MPF.SunLife.RSI.p[, col] <- 1
   }
 }
 
-MPF.SunLife.RSI.sum <- as.xts(rowSums(MPF.SunLife.RSI.p), order.by = monthly)
+MPF.SunLife.RSI.sum <-
+  as.xts(rowSums(MPF.SunLife.RSI.p), order.by = monthly)
 
-for (row in 1:length(MPF.SunLife.RSI.p[,col])) {
-  MPF.SunLife.RSI.p[row,] <- apply(MPF.SunLife.RSI.p[row,], 2, function(x) (x/MPF.SunLife.RSI.sum[row,1])^(1/4))
+for (row in 1:length(MPF.SunLife.RSI.p[, col])) {
+  MPF.SunLife.RSI.p[row, ] <-
+    apply(MPF.SunLife.RSI.p[row, ], 2, function(x)
+      (x / MPF.SunLife.RSI.sum[row, 1]) ^ (1 / 4))
 }
-MPF.SunLife.RSI.sum <- as.xts(rowSums(MPF.SunLife.RSI.p), order.by = monthly) 
+MPF.SunLife.RSI.sum <-
+  as.xts(rowSums(MPF.SunLife.RSI.p), order.by = monthly) 
 
 ```
 
 ### Allocate MPF for n-m MA BIAS
 ```{r warning=FALSE}
-rm(MPF.SunLife.BIAS.diff, MPF.SunLife.BIAS.diff.qu, MPF.SunLife.BIAS.month, MPF.SunLife.BIAS.p)
-MPF.SunLife.BIAS.diff <- (MPF.SunLife.SMA.mt - MPF.SunLife.SMA.hy) / MPF.SunLife.SMA.hy
-MPF.SunLife.BIAS.diff.qu <- MPF.SunLife.BIAS.diff - lag(MPF.SunLife.BIAS.diff, k=21*nm)
+rm(
+  MPF.SunLife.BIAS.diff,
+  MPF.SunLife.BIAS.diff.qu,
+  MPF.SunLife.BIAS.month,
+  MPF.SunLife.BIAS.p
+)
+MPF.SunLife.BIAS.diff <-
+  (MPF.SunLife.SMA.mt - MPF.SunLife.SMA.hy) / MPF.SunLife.SMA.hy
+MPF.SunLife.BIAS.diff.qu <-
+  MPF.SunLife.BIAS.diff - stats::lag(MPF.SunLife.BIAS.diff, k = 21 * nm)
 MPF.SunLife.BIAS.diff.qu <- na.fill(MPF.SunLife.BIAS.diff.qu, 0)
 
 
-MPF.SunLife.BIAS.month <- do.call(rbind, lapply(split(as.xts(MPF.SunLife.BIAS.diff.qu), "months"), function(x) colAvgs(x)))
+MPF.SunLife.BIAS.month <-
+  do.call(rbind, lapply(split(
+    as.xts(MPF.SunLife.BIAS.diff.qu), "months"
+  ), function(x)
+    colAvgs(x)))
 
 MPF.portf.weight <- MPF.SunLife.returns
 MPF.portf.weight[,] <- NA
-#colnames(MPF.portf.weight) <- c("AP", "B", "CA", "CE", "EE", "G", "GB", "HSIT", "HKCE", "MPFC", "NA", "S", "HSHIT", "VCAP", "VCB", "VCE", "VCUS", "GE")
 
-MPF.SunLife.stock.return <- as.xts(rowSums(MPF.SunLife.BIAS.month), order.by=monthly)
+MPF.SunLife.stock.return <-
+  as.xts(rowSums(MPF.SunLife.BIAS.month), order.by = monthly)
 MPF.SunLife.stock.return[] <- NA
 
-MPF.portf.return <- as.xts(rowSums(MPF.SunLife.BIAS.month), order.by=monthly)
+MPF.portf.return <-
+  as.xts(rowSums(MPF.SunLife.BIAS.month), order.by = monthly)
 MPF.portf.return[] <- NA
 
+up <- TRUE
 hedge <- FALSE
 
 round_percent <- function(x) { 
@@ -357,106 +516,121 @@ round_percent <- function(x) {
 
 MPF.SunLife.returns.mat <- as.matrix(MPF.SunLife.returns)
 MPF.SunLife.stock.mean <- 0
-for (row in 1:length(MPF.SunLife.BIAS.month[,1])) {
-  MPF.SunLife.BIAS.month[row,] <- (MPF.SunLife.BIAS.month[row,]) * MPF.SunLife.RSI.p[row,]#* VIX.month[row,6] * (MPF.SunLife.RSI.p[row,])
+for (row in 1:length(MPF.SunLife.BIAS.month[, 1])) {
+  MPF.SunLife.BIAS.month[row, ] <-
+    (MPF.SunLife.BIAS.month[row, ]) * MPF.SunLife.RSI.p[row, ]
   
   MPF.SunLife.stock.mean <- 0
   i <- 0
-  for (col in 1:length(MPF.SunLife.BIAS.month[1,])) {
-        if (col != 2 && col != 3 && col != 7 && col != 9 && col != 11 && col != 12) {
+  for (col in 1:length(MPF.SunLife.BIAS.month[1, ])) {
+    if (col != 2 &&
+        col != 3 && col != 7 && col != 9 && col != 11 && col != 12) {
       if (!is.na(MPF.SunLife.returns.mat[row, col]) &&
           MPF.SunLife.returns.mat[row, col] != 0) {
-        MPF.SunLife.stock.mean <- MPF.SunLife.stock.mean + MPF.SunLife.returns.mat[row, col]
-          i <- i + 1
-        }
-        if (MPF.SunLife.BIAS.month[row, col] < 1e-6) {
-          MPF.SunLife.BIAS.month[row, col] <- 0
-        }
+        MPF.SunLife.stock.mean <-
+          MPF.SunLife.stock.mean + MPF.SunLife.returns.mat[row, col]
+        i <- i + 1
+      }
+      if (MPF.SunLife.BIAS.month[row, col] < 1e-6) {
+        MPF.SunLife.BIAS.month[row, col] <- 0
+      }
     } else {
       if (MPF.SunLife.BIAS.month[row, col] < 0) {
         MPF.SunLife.BIAS.month[row, col] <- 0
       }
     }
-  
-    # if (MPF.SunLife.BIAS.month[row,col] < Min_NMMA){
-    #   MPF.SunLife.BIAS.month[row,col] <- 0
-    # }
+    
   }
   
   MPF.SunLife.stock.return[row] <- MPF.SunLife.stock.mean / i
   
-  if (is.nan(MPF.SunLife.BIAS.month[row,col])) {
-    MPF.SunLife.BIAS.month[row,col] <- 0
+  if (is.nan(MPF.SunLife.BIAS.month[row, col])) {
+    MPF.SunLife.BIAS.month[row, col] <- 0
   }
   
   # Retain two most increasing fund
-  last <- length(MPF.SunLife.BIAS.month[1,]) - top
+  last <- length(MPF.SunLife.BIAS.month[1, ]) - top
   
-  order <- order(MPF.SunLife.BIAS.month[row,])[1:last]
+  order <- order(MPF.SunLife.BIAS.month[row, ])[1:last]
   for (col in order) {
-    MPF.SunLife.BIAS.month[row,col] <- 0
+    MPF.SunLife.BIAS.month[row, col] <- 0
   }
-
-  MPF.SunLife.sum <- sum(MPF.SunLife.BIAS.month[row,])
-  MPF.SunLife.BIAS.p <- MPF.SunLife.BIAS.month[row,]
+  
+  MPF.SunLife.sum <- sum(MPF.SunLife.BIAS.month[row, ])
+  MPF.SunLife.BIAS.p <- MPF.SunLife.BIAS.month[row, ]
   MPF.SunLife.BIAS.p[] <- 0
   
-
+  
   if (row > 8 && MPF.SunLife.stock.return[row] <
       quantile(na.omit(MPF.SunLife.stock.return), c(.35)) &&
       MPF.SunLife.stock.return[row - 3] <
       quantile(na.omit(MPF.SunLife.stock.return), c(.45))) {
     up <- FALSE
   }
-
+  
   if (row > 8 && hedge &&
       MPF.SunLife.stock.return[row] >
-        quantile(na.omit(MPF.SunLife.stock.return), c(.45))  &&
+      quantile(na.omit(MPF.SunLife.stock.return), c(.45))  &&
       MPF.SunLife.stock.return[row - 3] >
-        quantile(na.omit(MPF.SunLife.stock.return), c(.35))) {
+      quantile(na.omit(MPF.SunLife.stock.return), c(.35))) {
     hedge <- FALSE
     up <- TRUE
   }
-
+  
   if (row > 8 &&  (MPF.SunLife.stock.return[row] < 0 &&
-                  MPF.SunLife.stock.return[row-1] >
-                  quantile(na.omit(MPF.SunLife.stock.return), c(.85)))) {
+                   MPF.SunLife.stock.return[row - 1] >
+                   quantile(na.omit(MPF.SunLife.stock.return), c(.85)))) {
     hedge <- TRUE
   }
   
-  MPF.SunLife.sum <- sum(MPF.SunLife.BIAS.month[row, ])
+  MPF.SunLife.sum <- sum(MPF.SunLife.BIAS.month[row,])
   MPF.SunLife.BIAS.p[] <- 0
   
   
-  if (row <= 12 || MPF.SunLife.sum == MPF.SunLife.BIAS.month[row,11] ||
+  if (row <= 12 ||
+      MPF.SunLife.sum == MPF.SunLife.BIAS.month[row, 11] ||
       MPF.SunLife.sum < 1e-6 || hedge == TRUE) {
-    if (row >= 102) {
+    if (row >= 189) {
       MPF.SunLife.BIAS.p[7] <- 0.3
-      MPF.SunLife.BIAS.p[11] <- 0.7
+      MPF.SunLife.BIAS.p[11] <- 0.3
+      MPF.SunLife.BIAS.p[12] <- 0.4
+    } else if (row >= 102) {
+      MPF.SunLife.BIAS.p[7] <- 0.5
+      MPF.SunLife.BIAS.p[11] <- 0.5
     } else {
       MPF.SunLife.BIAS.p[11] <- 1
     }
-  } else if (min(MPF.SunLife.stock.return[(row-3):row]) < -0.08) {
-    if (row >= 102) {
-      MPF.SunLife.BIAS.p[] <- MPF.SunLife.BIAS.month[row, ] / MPF.SunLife.sum / 10 * 7
-      MPF.SunLife.BIAS.p[11] <- MPF.SunLife.BIAS.p[11]+0.18
-      MPF.SunLife.BIAS.p[7] <- MPF.SunLife.BIAS.p[7]+0.12
+  } else if (min(MPF.SunLife.stock.return[(row - 3):row]) < -0.08) {
+    if (row >= 189) {
+      MPF.SunLife.BIAS.p[] <-
+        MPF.SunLife.BIAS.month[row,] / MPF.SunLife.sum / 10 * 7
+      
+      MPF.SunLife.BIAS.p[12] <- MPF.SunLife.BIAS.p[12] + 0.12
+      MPF.SunLife.BIAS.p[11] <- MPF.SunLife.BIAS.p[11] + 0.08
+      MPF.SunLife.BIAS.p[7] <- MPF.SunLife.BIAS.p[7] + 0.1
+    } else if (row >= 102) {
+      MPF.SunLife.BIAS.p[] <-
+        MPF.SunLife.BIAS.month[row,] / MPF.SunLife.sum / 10 * 7
+      MPF.SunLife.BIAS.p[11] <- MPF.SunLife.BIAS.p[11] + 0.12
+      MPF.SunLife.BIAS.p[7] <- MPF.SunLife.BIAS.p[7] + 0.18
     } else {
-      MPF.SunLife.BIAS.p[ ] <- MPF.SunLife.BIAS.month[row, ] / MPF.SunLife.sum / 10 * 7
-      MPF.SunLife.BIAS.p[11] <- MPF.SunLife.BIAS.p[11]+0.3
+      MPF.SunLife.BIAS.p[] <-
+        MPF.SunLife.BIAS.month[row,] / MPF.SunLife.sum / 10 * 7
+      MPF.SunLife.BIAS.p[11] <- MPF.SunLife.BIAS.p[11] + 0.3
     }
   } else {
-    MPF.SunLife.BIAS.p[ ] <- MPF.SunLife.BIAS.month[row, ] / MPF.SunLife.sum
+    MPF.SunLife.BIAS.p[] <-
+      MPF.SunLife.BIAS.month[row,] / MPF.SunLife.sum
   }
   
-
-  MPF.portf.weight[row,] <-
-    round_percent(MPF.SunLife.BIAS.p) 
+  
+  MPF.portf.weight[row, ] <-
+    round_percent(MPF.SunLife.BIAS.p)
   
   portf.rebal.fm <-
     Return.portfolio(
       na.fill(MPF.SunLife.simple.returns, 0),
-      weight = MPF.portf.weight[1:row,],
+      weight = MPF.portf.weight[1:row, ],
       geometric = TRUE,
       rebalance_on = "months"
     )
@@ -466,7 +640,8 @@ for (row in 1:length(MPF.SunLife.BIAS.month[,1])) {
   MPF.portf.drawdown <- Drawdowns(MPF.portf.return,
                                   geometric = TRUE)
   
-  if (tail(na.omit(MPF.portf.drawdown), 1) < -0.065 && up == FALSE) {
+  if (tail(na.omit(MPF.portf.drawdown), 1) < -0.065 &&
+      up == FALSE) {
     hedge = TRUE
   }
 }
@@ -482,41 +657,359 @@ portf.rebal.fm <- Return.portfolio(
   rebalance_on = "months"
 )
 
+etfs <- c('SPY', 'QQQ', '^HSI')
+golden.butterfly <- c('VTI', 'IWM', 'SHY', 'TLT', 'GLD')
+
+weights <- c(1, 0, 0,
+             0, 1, 0,
+             0, 0, 1)
+
+weights.table <-  tibble(etfs) %>%
+  tq_repeat_df(n = 3) %>%
+  bind_cols(tibble(weights)) %>%
+  group_by(portfolio)
+
+etf.dat <- c(etfs) %>%
+  map_df(
+    function(i)
+      i %>%
+      tq_get(
+        "stock.prices",
+        from = "2001-09-01" %>%
+          as.Date,
+        to = "2019-12-31" %>%
+          as.Date
+      )
+  ) %>% group_by(symbol)  %>%
+  tq_transmute(
+    select     = adjusted,
+    mutate_fun = periodReturn,
+    period     = "monthly",
+    col_rename = "Rb"
+  )
+
+GoldBut.dat <- c(golden.butterfly) %>%
+  map_df(
+    function(i)
+      i %>%
+      tq_get(
+        "stock.prices",
+        from = "2004-11-01" %>%
+          as.Date,
+        to = "2019-12-31" %>%
+          as.Date
+      )
+  ) %>% group_by(symbol)  %>%
+  tq_transmute(
+    select     = adjusted,
+    mutate_fun = periodReturn,
+    period     = "monthly",
+    col_rename = "Rb"
+  )
+
+
+etf.by.column <- spread(etf.dat, symbol, Rb)
+SPY.etf <-
+  na.omit(select(etf.by.column, 'date', 'SPY')) %>% mutate(symb = 'SPY')
+QQQ.etf <-
+  na.omit(select(etf.by.column, 'date', 'QQQ')) %>% mutate(symb = 'QQQ')
+HSI.etf <-
+  na.omit(select(etf.by.column, 'date', '^HSI')) %>% mutate(symb = 'HSI')
+
+SPY.return.monthly <- SPY.etf %>%
+  tq_portfolio(assets_col  = symb,
+               returns_col = SPY,
+               col_rename  = "Rb.SPY")
+QQQ.return.monthly <- QQQ.etf %>%
+  tq_portfolio(assets_col  = symb,
+               returns_col = QQQ,
+               col_rename  = "Rb.QQQ")
+HSI.return.monthly <- HSI.etf %>%
+  tq_portfolio(assets_col  = symb,
+               returns_col = `^HSI`,
+               col_rename  = "Rb.HSI")
+GoldBut.return.monthly <- GoldBut.dat %>%
+  tq_portfolio(
+    assets_col = symbol,
+    returns_col = Rb,
+    col_rename = "Rb.GoldBut",
+    rebalance_on = "years"
+  )
+
+portf.rebal.fm.dollar <- Return.portfolio(
+  MPF.SunLife.simple.returns,
+  weight = MPF.portf.weight,
+  geometric = TRUE,
+  rebalance_on = "months"
+)
+
+portf.rebal.fm.dollar.cpy <- Return.portfolio(
+  MPF.SunLife.simple.returns,
+  weight = MPF.portf.weight,
+  geometric = TRUE,
+  rebalance_on = "months",
+  wealth.index = TRUE
+)
+
+portf.rebal.fm.dollar.gb <- Return.portfolio(
+  tail(MPF.SunLife.simple.returns,-39),
+  weight = tail(MPF.portf.weight,-39),
+  geometric = TRUE,
+  rebalance_on = "months"
+)
+
+portf.rebal.fm.dollar.gb.cpy <- Return.portfolio(
+  tail(MPF.SunLife.simple.returns, -39),
+  weight = tail(MPF.portf.weight, -39),
+  geometric = TRUE,
+  rebalance_on = "months",
+  wealth.index = TRUE
+)
+
+xts2df <- function(x) {
+  data.frame(date = index(x), coredata(x))
+}
+
+colnames(portf.rebal.fm.dollar) <- "Ra"
+
+
+portf.rebal.fm.dollar.tb <-
+  tbl_df(melt(xts2df(portf.rebal.fm.dollar), id = "date"))
+portf.rebal.fm.dollar.tb <- portf.rebal.fm.dollar.tb[, -2]
+colnames(portf.rebal.fm.dollar.tb) <- c("date", "Ra")
+portf.rebal.fm.dollar.gb.tb <-
+  tbl_df(melt(xts2df(portf.rebal.fm.dollar.gb), id = "date"))
+portf.rebal.fm.dollar.gb.tb <- portf.rebal.fm.dollar.gb.tb[, -2]
+colnames(portf.rebal.fm.dollar.gb.tb) <- c("date", "Ra")
+
+portf.rebal.fm.dollar.tb[, 1] <- SPY.etf[, 1]
+RaSPY.multiple.portfolio <- left_join(portf.rebal.fm.dollar.tb,
+                                      SPY.return.monthly, by = "date")
+portf.rebal.fm.dollar.tb[, 1] <- QQQ.etf[, 1]
+RaQQQ.multiple.portfolio <- left_join(portf.rebal.fm.dollar.tb,
+                                      QQQ.return.monthly, by = "date")
+portf.rebal.fm.dollar.gb.tb[, 1] <- GoldBut.dat[, 2]
+RaGoldBut.multiple.portfolio <-
+  left_join(portf.rebal.fm.dollar.gb.tb,
+            GoldBut.return.monthly, by = "date")
+portf.rebal.fm.dollar.tb[, 1] <- HSI.etf[, 1]
+RaHSI.multiple.portfolio <- left_join(portf.rebal.fm.dollar.tb,
+                                      HSI.return.monthly, by = "date")
+
+
+print("Annualised return of SPY:")
+TORI.SPY <- RaSPY.multiple.portfolio %>%
+  tq_performance(Rb.SPY, NULL, performance_fun = table.AnnualizedReturns)
+print(TORI.SPY)
+
+print("Annualised return of QQQ:")
+TORI.QQQ <- RaQQQ.multiple.portfolio %>%
+  tq_performance(Rb.QQQ, NULL, performance_fun = table.AnnualizedReturns)
+print(TORI.QQQ)
+
+print("Annualised return of Golden Butterfly:")
+TORI.GoldBut <- RaGoldBut.multiple.portfolio %>%
+  tq_performance(Rb.GoldBut, NULL, performance_fun = table.AnnualizedReturns)
+print(TORI.GoldBut)
+
+print("Annualised return of HSI:")
+TORI.HSI <- RaHSI.multiple.portfolio %>%
+  tq_performance(Rb.HSI, NULL, performance_fun = table.AnnualizedReturns)
+print(TORI.HSI)
+
+print("CAPM Information against SPY:")
+TORI.SPY <- RaSPY.multiple.portfolio %>%
+  tq_performance(Ra, Rb.SPY, performance_fun = table.CAPM)
+print(TORI.SPY)
+
+print("CAPM Information against QQQ:")
+TORI.QQQ <- RaQQQ.multiple.portfolio %>%
+  tq_performance(Ra, Rb.QQQ, performance_fun = table.CAPM)
+print(TORI.QQQ)
+
+print("CAPM Information against GoldBut:")
+TORI.GoldBut <- RaGoldBut.multiple.portfolio %>%
+  tq_performance(Ra, Rb.GoldBut, performance_fun = table.CAPM)
+print(TORI.GoldBut)
+
+print("CAPM Information against HSI:")
+TORI.HSI <- RaHSI.multiple.portfolio %>%
+  tq_performance(Ra, Rb.HSI, performance_fun = table.CAPM)
+print(TORI.HSI)
+
+
+print("Information Ratio against SPY:")
+TORI.SPY <- RaSPY.multiple.portfolio %>%
+  tq_performance(Ra, Rb.SPY, performance_fun = table.InformationRatio)
+print(TORI.SPY)
+
+print("Information Ratio against QQQ:")
+TORI.QQQ <- RaQQQ.multiple.portfolio %>%
+  tq_performance(Ra, Rb.QQQ, performance_fun = table.InformationRatio)
+print(TORI.QQQ)
+
+print("Information Ratio against GoldBut:")
+TORI.GoldBut <- RaGoldBut.multiple.portfolio %>%
+  tq_performance(Ra, Rb.GoldBut, performance_fun = table.InformationRatio)
+print(TORI.GoldBut)
+
+print("Information Ratio against HSI:")
+TORI.HSI <- RaHSI.multiple.portfolio %>%
+  tq_performance(Ra, Rb.HSI, performance_fun = table.InformationRatio)
+print(TORI.HSI)
+
+SPY.dollar.monthly <- SPY.etf %>%
+  tq_portfolio(
+    assets_col  = symb,
+    returns_col = SPY,
+    col_rename  = "Rb.SPY",
+    wealth.index = TRUE
+  ) %>%
+  mutate(Rb.SPY = Rb.SPY * 2301)
+QQQ.dollar.monthly <- QQQ.etf %>%
+  tq_portfolio(
+    assets_col  = symb,
+    returns_col = QQQ,
+    col_rename  = "Rb.QQQ",
+    wealth.index = TRUE
+  ) %>%
+  mutate(Rb.QQQ = Rb.QQQ * 2301)
+GoldBut.dollar.monthly <- GoldBut.dat %>%
+  tq_portfolio(
+    assets_col = symbol,
+    returns_col = Rb,
+    col_rename = "Rb.GoldBut",
+    rebalance_on = "years",
+    wealth.index = TRUE
+  ) %>%
+  mutate(Rb.GoldBut = Rb.GoldBut * 2301)
+HSI.dollar.monthly <- HSI.etf %>%
+  tq_portfolio(
+    assets_col  = symb,
+    returns_col = `^HSI`,
+    col_rename  = "Rb.HSI",
+    wealth.index = TRUE
+  ) %>%
+  mutate(Rb.HSI = Rb.HSI * 2301)
+
+
+portf.rebal.fm.dollar.tb.cpy <-
+  tbl_df(melt(
+    xts2df(portf.rebal.fm.dollar.cpy),
+    id = "date",
+    variable_name = "Ra"
+  ))
+portf.rebal.fm.dollar.tb.cpy <- portf.rebal.fm.dollar.tb.cpy[, -2]
+colnames(portf.rebal.fm.dollar.tb.cpy) <- c("date", "Ra")
+portf.rebal.fm.dollar.tb.cpy[, 1] <- HSI.etf[, 1]
+portf.dollar.monthly <- portf.rebal.fm.dollar.tb.cpy %>%
+  mutate(Ra = Ra * 2301)
+
+portf.rebal.fm.dollar.gb.tb.cpy <-
+  tbl_df(melt(
+    xts2df(portf.rebal.fm.dollar.gb.cpy),
+    id = "date",
+    variable_name = "Ra"
+  ))
+portf.rebal.fm.dollar.gb.tb.cpy <-
+  portf.rebal.fm.dollar.gb.tb.cpy[, -2]
+colnames(portf.rebal.fm.dollar.gb.tb.cpy) <- c("date", "Ra")
+portf.rebal.fm.dollar.gb.tb.cpy[, 1] <- GoldBut.dat[, 2]
+portf.dollar.monthly.gb <- portf.rebal.fm.dollar.gb.tb.cpy %>%
+  mutate(Ra = Ra * 2301)
+
+
+
+ggplot() +
+  scale_color_manual(
+    labels = c("SPY", "QQQ", "HSI", "TORI @ SunLife"),
+    values = c(1, 2, 3, "pink3")
+  ) +
+  geom_line(aes(x = date, y = Rb.SPY, color = as.factor(1)),
+            SPY.dollar.monthly,
+            size = 0.8) +
+  geom_line(aes(x = date, y = Rb.QQQ, color = as.factor(2)),
+            QQQ.dollar.monthly,
+            size = 0.8) +
+  geom_line(aes(x = date, y = Rb.HSI, color = as.factor(3)),
+            HSI.dollar.monthly,
+            size = 0.8) +
+  geom_line(aes(x = date, y = Ra, color = "pink3"), portf.dollar.monthly, size =
+              1.8) +
+  labs(
+    title = "TORI @ SunLife versus SPY, QQQ, and Hang Seng Index",
+    subtitle = "How TORI @ SunLife outperform common index fund",
+    x = "",
+    y = "Portfolio Value",
+    color = "Portfolio or Index ETFs"
+  ) +
+  theme_tq() +
+  scale_y_continuous(labels = scales::dollar)
+
+ggplot() +
+  scale_color_manual(
+    labels = c("Golden Butterfly", "TORI @ SunLife"),
+    values = c(4, "pink3")
+  ) +
+  geom_line(aes(x = date, y = Rb.GoldBut, color = as.factor(3)),
+            GoldBut.dollar.monthly,
+            size = 0.8) +
+  geom_line(aes(x = date, y = Ra, color = "pink3"),
+            portf.dollar.monthly.gb,
+            size = 1.8) +
+  labs(
+    title = "TORI @ SunLife versus Golden Butterfly Portfolio",
+    subtitle = "How TORI @ SunLife outperform golden butterfly portfolio",
+    x = "",
+    y = "Portfolio Value",
+    color = "Portfolio"
+  ) +
+  theme_tq() +
+  scale_y_continuous(labels = scales::dollar)
+
+
+
+
+cat("Cumulative return: ",
+    Return.cumulative(portf.rebal.fm, geometric = TRUE),
+    "\n")
+portf.rebal.fm.sharpe <-
+  Return.annualized(portf.rebal.fm, geometric = TRUE) /
+  (StdDev.annualized(portf.rebal.fm))
+rownames(portf.rebal.fm.sharpe) <- "Sharpe Ratio"
+cat("Annualised return: ",
+    Return.annualized(portf.rebal.fm, geometric = TRUE),
+    "\n")
+
 mean.annual.return <-
   mean(do.call(rbind, lapply(split(portf.rebal.fm, "years"), function(x)
     colMeans(x))) * 12)
+cat("Mean annual return (for ref. only): ", mean.annual.return, "\n")
+portf.rebal.fm.sharpe.mean <-
+  mean.annual.return / (StdDev.annualized(portf.rebal.fm))
+rownames(portf.rebal.fm.sharpe.mean) <-
+  "Sharpe Ratio (Mean annual return)"
 
-charts.PerformanceSummary(
-  portf.rebal.fm,
-  methods = "ModifiedES",
-  geometric = TRUE,
-  p = .95,
-  main = "SunLife MPF Scheme First Contribution Performance"
+SharpeRatio(portf.rebal.fm, annualize = TRUE, method = "modified")
+cat("Annualised Standard Deviation: ",
+    StdDev.annualized(portf.rebal.fm),
+    "\n")
+cat("Sortino Ratio: ", SortinoRatio(portf.rebal.fm) * sqrt(12), "\n")
+cat(
+  "Coditional Value of Risk (CVaR, Expected Shortfall ES",
+  ES(portf.rebal.fm, method = "modified"),
+  "\n"
 )
-
-Return.cumulative(portf.rebal.fm, geometric=TRUE)
-portf.rebal.fm.sharpe <- Return.annualized(portf.rebal.fm, geometric=TRUE) / (StdDev.annualized(portf.rebal.fm))
-rownames(portf.rebal.fm.sharpe) <- "Sharpe Ratio"
-Return.annualized(portf.rebal.fm, geometric=TRUE)
-mean.annual.return
-
-portf.rebal.fm.sharpe.mean <- mean.annual.return / (StdDev.annualized(portf.rebal.fm))
-rownames(portf.rebal.fm.sharpe.mean) <- "Sharpe Ratio (Mean annual return)"
-SharpeRatio(portf.rebal.fm) * sqrt(12)
-portf.rebal.fm.sharpe.mean
-StdDev.annualized(portf.rebal.fm)
-SortinoRatio(portf.rebal.fm) * sqrt(12)
-ES(portf.rebal.fm, method="historical")
-tail(MPF.portf.weight, n=6)
+tail(MPF.portf.weight, n = 6)
 ```
 
 ### Monthly Installment
 ```{r linewidth=159, warning=FALSE}
 MPF.SunLife.units <- MPF.SunLife.returns
-MPF.SunLife.units[, ] <- 0
+MPF.SunLife.units[,] <- 0
 
 MPF.monthly.asset <- MPF.SunLife.returns
-MPF.monthly.asset[, ] <- 0
+MPF.monthly.asset[,] <- 0
 
 MPF.monthly.returns <-
   as.xts(rowSums(MPF.SunLife.returns), order.by = monthly)
@@ -527,39 +1020,42 @@ MPF.pay <- -2301 + 0 * MPF.time
 
 
 for (row in 1:length(MPF.SunLife.returns[, 1])) {
-#for (row in 1:13) {
+  #for (row in 1:13) {
   this.price <- as.matrix(MPF.SunLife[monthly[row]])
-  MPF.SunLife.units[row, ] <- this.price
+  MPF.SunLife.units[row,] <- this.price
   
   if (row == 1) {
     last.value <- 2301
     this.value <- last.value * this.price[11]
-    MPF.monthly.returns[row] <- (sum(na.fill(this.value,0)) - 2301) / 2301
-    MPF.monthly.asset[row,] <-
-      na.fill(((this.value + 2301) / this.price * MPF.portf.weight[row, ]) / this.price,0)
+    MPF.monthly.returns[row] <-
+      (sum(na.fill(this.value, 0)) - 2301) / 2301
+    MPF.monthly.asset[row, ] <-
+      na.fill(((this.value + 2301) / this.price * MPF.portf.weight[row,]) / this.price, 0)
     last.price <- this.price
   } else {
-
+    last.value <- na.fill(MPF.monthly.asset[row - 1, ] * last.price, 0)
+    this.value <- na.fill(MPF.monthly.asset[row - 1, ] * this.price, 0)
+    MPF.monthly.returns[row] <-
+      (sum(this.value) - sum(last.value)) / sum(last.value)
     
-    last.value <- na.fill(MPF.monthly.asset[row-1,] * last.price,0)
-    this.value <- na.fill(MPF.monthly.asset[row-1,] * this.price,0)
-    MPF.monthly.returns[row] <- (sum(this.value) - sum(last.value)) / sum(last.value)
-
-    MPF.monthly.asset.old <- this.value / sum(na.fill(this.value,0))
-    MPF.monthly.asset.propose <- as.matrix(MPF.portf.weight[row,]) -
-       as.matrix(MPF.monthly.asset.old)
-    MPF.monthly.unit.change <- MPF.monthly.asset.propose * sum(na.fill(this.value,0)) /this.price
-
-    this.unit <- as.matrix(MPF.monthly.asset[row-1,]) + as.matrix(MPF.monthly.unit.change)
-    this.unit <- as.matrix(this.unit) + (2301 / as.matrix(this.price) * MPF.portf.weight[row,])
+    MPF.monthly.asset.old <- this.value / sum(na.fill(this.value, 0))
+    MPF.monthly.asset.propose <- as.matrix(MPF.portf.weight[row, ]) -
+      as.matrix(MPF.monthly.asset.old)
+    MPF.monthly.unit.change <-
+      MPF.monthly.asset.propose * sum(na.fill(this.value, 0)) / this.price
     
-    MPF.monthly.asset[row,] <- na.fill(this.unit,0)
+    this.unit <-
+      as.matrix(MPF.monthly.asset[row - 1, ]) + as.matrix(MPF.monthly.unit.change)
+    this.unit <-
+      as.matrix(this.unit) + (2301 / as.matrix(this.price) * MPF.portf.weight[row, ])
+    
+    MPF.monthly.asset[row, ] <- na.fill(this.unit, 0)
     last.price <- this.price
   }
 }
 
 
-total.asset.value <- sum(MPF.monthly.asset[row, ] * this.price)
+total.asset.value <- sum(MPF.monthly.asset[row,] * this.price)
 total.contribution <- 2301 * length(MPF.SunLife.returns[, 1])
 
 MPF.pay[row + 1] <- total.asset.value
@@ -568,7 +1064,9 @@ IRR.f <- function(r)
 IRR.root <- uniroot(IRR.f, c(0, 1))
 
 cat("Total asset in the last valuation date: ", total.asset.value, "\n")
-cat("Total contribution starting from 2001/09/17: ", total.contribution, "\n")
+cat("Total contribution starting from 2001/09/17: ",
+    total.contribution,
+    "\n")
 
 mean.monthly.annual.return <-
   mean(do.call(rbind, lapply(split(MPF.monthly.returns, "years"), function(x)
@@ -586,5 +1084,5 @@ StdDev.annualized(MPF.monthly.returns)
 monthly.installment.sharpe.ratio
 SortinoRatio(MPF.monthly.returns) * sqrt(12)
 ES(MPF.monthly.returns, method = "historical")
-```
 
+```
