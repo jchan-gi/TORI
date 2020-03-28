@@ -32,14 +32,14 @@ df <- data.frame(c("年率化回報 Annualized Return", "累積回報 Cumulative
                     "索丁諾比率 Sortino Ratio", "資訊比率 Information Ratio",
                     "Jensen's Alpha", "Beta", "關聯系數 Correlation Coeff.",
                     "預期損失 Expected Shortfall:"),
-                 c("11.55%", "720.61%", "10.56%", "1.0944", "2.4896", "-->",
-                    "-->", "-->", "-->", "2.92% loss"),
-                 c("5.36%", "/", "14.99%", "0.3577", "/", "0.1447", "0.1015", "0.0436",
-                    "0.0690", "/"),
-                 c("2.21%", "/", "20.53%", "0.1078", "/", "0.2484", "0.1017", "0.0518",
-                    "0.1165", "/"),
-                 c("7.24%", "/", "7.43%", "0.9748", "/", "0.2126",
-                    "0.1000", "0.678", "0.0545", "/")
+                 c("10.83%", "624.63%", "10.58%", "1.0244", "2.1289", "-->",
+                    "-->", "-->", "-->", "5.44% loss"),
+                 c("5.44%", "/", "14.92%", "0.3649", "/", "0.3779", "0.0936", "0.2939",
+                    "0.4144", "/"),
+                 c("2.41%", "/", "20.43%", "0.1181", "/", "0.5065", "0.0994", "0.3027",
+                   "0.5847", "/"),
+                 c("7.25%", "/", "7.43%", "0.9756", "/", "0.4117", "0.0727", "0.5007",
+                    "0.3471", "/")
                  )
 kable(df, col.names = c("指標 Indicator", "TORI @ HSBC", "SPY", "HSI", "Golden Butterfly"))
 ```
@@ -63,9 +63,15 @@ kable(df, col.names = c("指標 Indicator", "TORI @ HSBC", "SPY", "HSI", "Golden
 7. 本聲明如有歧義，將以英文版本作準。   
 
 
-## 最後更新日期 Last update: 2020/03/26.   
+## 最後更新日期 Last update: 2020/03/27.   
 ### Changelog    
 ### 更新記錄    
+
+2020-03-27 v2.1.1a     
+1. Fix return matrix column misalignment in Tori @ HSBC.    
+2. Fix faulty code on inconsistent total asset price across time. Description: Subsetting would not work to produce consistent total asset value when the data is splited by train-test partition. This is due to the hedge flag detect the future signal if the subsetting is being applied to the weight but not the return. This is a characteristics of Return.portfolio but not a glitch of the algorithm.        
+1. 修正回報欄位錯置。    
+2. 修正於不同時間下出現不一致的總資產。    
 
 2020-03-26 v2.1.1    
 1. Adding Golden Butterfly Portfolio as a benchmark portfolio.     
@@ -82,7 +88,6 @@ kable(df, col.names = c("指標 Indicator", "TORI @ HSBC", "SPY", "HSI", "Golden
 加入SPY,QQQ及恒生指數作基準   
 以三項基準計算資本資產定價模型CAPM及資訊比率Information Ratio的比較。（作者不認同CAPM是有效的評估方法。數值僅供參考。）   
 圖表改以tidyquant + ggplot展示，並加入與基準的比較。       
-
 
 2020-03-18 v2   
 1. Separate the return used in calculating AKANE, TORI (log) and return (simple).    
@@ -174,27 +179,27 @@ In this example, MPF would have T+2 time delay for obtaining historical price, h
 ### TORI 前移式回測結果     
 
 單一供款 One-off MPF Installment:    
-年率化回報 Annualized Return: ~12.85%     
-算術年均回報 Mean Annual Return: ~12.73%       
-累積回報 Cumulative Return: ~893.51%    
+年率化回報 Annualized Return: ~11.33%     
+算術年均回報 Mean Annual Return: ~11.32%       
+累積回報 Cumulative Return: ~668.02%    
 年率化標準誤差 Annualized Standard Deviation: ~10.96% (StdDev(monthly return) * sqrt(12))    
-夏普比率 Sharpe Ratio: 1.1715          
-索丁諾比率 Sortino Ratio: 2.5482 (MAR = 0%)      
-資訊比率 Information Ratio: 0.4237 (SPY), 0.5570(HSI), 0.4135 (Golden Butterfly)     
-Jensen's Alpha: 0.1063 (SPY), 0.1165 (HSI), 0.1414 (Golden Butterfly)    
-Beta: 0.3312 (SPY), 0.0319 (HSI), -0.0242 (Golden Butterfly)     
-關聯系數 Correlation Coefficient: 0.4342 (SPY), 0.5608 (HSI), -0.0159 (Golden Butterfly)    
-預期損失 Expected Shortfall: 2.92% loss (0% Risk-free rate, 95% C.I.)       
+夏普比率 Sharpe Ratio: 1.0720          
+索丁諾比率 Sortino Ratio: 2.2452 (MAR = 0%)      
+資訊比率 Information Ratio: 0.3140 (SPY), 0.4746(HSI), 0.0855 (Golden Butterfly)     
+Jensen's Alpha: 0.0932 (SPY), 0.1012 (HSI), 0.0855 (Golden Butterfly)    
+Beta: 0.3042 (SPY), 0.3002 (HSI), 0.5094 (Golden Butterfly)     
+關聯系數 Correlation Coefficient: 0.4139 (SPY), 0.5784 (HSI), 0.3462 (Golden Butterfly)    
+預期損失 Expected Shortfall: 5.44% loss (0% Risk-free rate, 95% C.I.)       
 
 月供投資 Monthly MPF installment (或有誤差 maybe slightly differs):    
 每月供款 Monthly installment amount: 2301    
 總供款 Total contribution: 526929    
-最新結餘 Latest asset value: 2384496    
-算術年均回報 Mean annual return (arithmetric): 12.48%      
-內部回報率 Internal Rate of Return (IRR): 13.15%    
-年率化標準誤差 Annualized Standard Deviation: 11.14%    
-夏普比率 Sharpe Ratio: 1.1201          
-索丁諾比率 Sortino Ratio: 2.5291 (MAR = 0%)    
+最新結餘 Latest asset value: 1882271    
+算術年均回報 Mean annual return (arithmetric): 10.93%      
+內部回報率 Internal Rate of Return (IRR): 11.33%    
+年率化標準誤差 Annualized Standard Deviation: 10.54%    
+夏普比率 Sharpe Ratio: 1.0369          
+索丁諾比率 Sortino Ratio: 2.2435 (MAR = 0%)    
 
 
 ## 流程 Detailed Workflow
@@ -309,10 +314,10 @@ MPF.HSBC.AP <-
   monthlyReturn(as.xts(MPF.HSBC$Asia.Pacific.Equity.Fund), type = "log")
 MPF.HSBC.B <-
   monthlyReturn(as.xts(MPF.HSBC$Balanced.Fund), type = "log")
-MPF.HSBC.CA <-
-  monthlyReturn(as.xts(MPF.HSBC$Core.Accumulation.Fund), type = "log")
 MPF.HSBC.CE <-
   monthlyReturn(as.xts(MPF.HSBC$China.Equity.Fund), type = "log")
+MPF.HSBC.CA <-
+  monthlyReturn(as.xts(MPF.HSBC$Core.Accumulation.Fund), type = "log")
 MPF.HSBC.EE <-
   monthlyReturn(as.xts(MPF.HSBC$European.Equity.Fund), type = "log")
 MPF.HSBC.G <-
@@ -348,8 +353,8 @@ MPF.HSBC.returns <-
   merge(
     MPF.HSBC.AP,
     MPF.HSBC.B,
-    MPF.HSBC.CA,
     MPF.HSBC.CE,
+    MPF.HSBC.CA,
     MPF.HSBC.EE,
     MPF.HSBC.GB,
     MPF.HSBC.G,
@@ -373,8 +378,8 @@ monthly <- index(MPF.HSBC.returns)
 colnames(MPF.HSBC.returns) <- c(
   "AP",
   "B",
-  "CA",
   "CE",
+  "CA",
   "EE",
   "GB",
   "G",
@@ -395,8 +400,8 @@ colnames(MPF.HSBC.returns) <- c(
 rm(
   MPF.HSBC.AP,
   MPF.HSBC.B,
-  MPF.HSBC.CA,
   MPF.HSBC.CE,
+  MPF.HSBC.CA,
   MPF.HSBC.EE,
   MPF.HSBC.G,
   MPF.HSBC.GB,
@@ -418,10 +423,10 @@ MPF.HSBC.AP <-
   monthlyReturn(as.xts(MPF.HSBC$Asia.Pacific.Equity.Fund), type = "arithmetic")
 MPF.HSBC.B <-
   monthlyReturn(as.xts(MPF.HSBC$Balanced.Fund), type = "arithmetic")
-MPF.HSBC.CA <-
-  monthlyReturn(as.xts(MPF.HSBC$Core.Accumulation.Fund), type = "arithmetic")
 MPF.HSBC.CE <-
   monthlyReturn(as.xts(MPF.HSBC$China.Equity.Fund), type = "arithmetic")
+MPF.HSBC.CA <-
+  monthlyReturn(as.xts(MPF.HSBC$Core.Accumulation.Fund), type = "arithmetic")
 MPF.HSBC.EE <-
   monthlyReturn(as.xts(MPF.HSBC$European.Equity.Fund), type = "arithmetic")
 MPF.HSBC.G <-
@@ -458,8 +463,8 @@ MPF.HSBC.simple.returns <-
   merge(
     MPF.HSBC.AP,
     MPF.HSBC.B,
-    MPF.HSBC.CA,
     MPF.HSBC.CE,
+    MPF.HSBC.CA,
     MPF.HSBC.EE,
     MPF.HSBC.GB,
     MPF.HSBC.G,
@@ -481,8 +486,8 @@ MPF.HSBC.simple.returns <-
 colnames(MPF.HSBC.simple.returns) <- c(
   "AP",
   "B",
-  "CA",
   "CE",
+  "CA",
   "EE",
   "GB",
   "G",
@@ -503,8 +508,8 @@ colnames(MPF.HSBC.simple.returns) <- c(
 rm(
   MPF.HSBC.AP,
   MPF.HSBC.B,
-  MPF.HSBC.CA,
   MPF.HSBC.CE,
+  MPF.HSBC.CA,
   MPF.HSBC.EE,
   MPF.HSBC.G,
   MPF.HSBC.GB,
@@ -637,14 +642,16 @@ for (row in 1:length(MPF.HSBC.BIAS.month[, 1])) {
   for (col in 1:length(MPF.HSBC.BIAS.month[1, ])) {
     if (col != 2 && col != 3 && col != 6 && col != 10 &&
         col != 12 && col != 15) {
-      if (col != 4 && !is.na(MPF.HSBC.returns.mat[row, col]) &&
+      if (col != 3 && (col < 14 || col > 19) &&
+          !is.na(MPF.HSBC.returns.mat[row, col]) &&
           MPF.HSBC.returns.mat[row, col] != 0) {
         MPF.HSBC.stock.mean <-
           MPF.HSBC.stock.mean + MPF.HSBC.returns.mat[row, col]
         i <- i + 1
       }
       
-      if (col == 4 || MPF.HSBC.BIAS.month[row, col] < 1e-6) {
+      if (col == 3 || MPF.HSBC.BIAS.month[row, col] < 1e-6 ||
+          (monthly[row] < "2019-07-01" && col >= 14 && col <= 18)) {
         MPF.HSBC.BIAS.month[row, col] <- 0
       }
     } else {
@@ -668,35 +675,33 @@ for (row in 1:length(MPF.HSBC.BIAS.month[, 1])) {
     MPF.HSBC.BIAS.month[row, col] <- 0
   }
   
-  MPF.HSBC.sum <- sum(MPF.HSBC.BIAS.month[row, ])
-  MPF.HSBC.BIAS.p <- MPF.HSBC.BIAS.month[row, ]
-  MPF.HSBC.BIAS.p[] <- 0
-  
-  
   if (row > 8 && MPF.HSBC.stock.return[row] <
-      quantile(na.omit(MPF.HSBC.stock.return), c(.40)) &&
+      quantile(na.omit(MPF.HSBC.stock.return), c(.35)) &&
       MPF.HSBC.stock.return[row - 3] <
-      quantile(na.omit(MPF.HSBC.stock.return), c(.50))) {
+      quantile(na.omit(MPF.HSBC.stock.return), c(.45))) {
     up <- FALSE
   }
   
   if (row > 8 && hedge &&
       MPF.HSBC.stock.return[row] >
-      quantile(na.omit(MPF.HSBC.stock.return), c(.50))  &&
+      quantile(na.omit(MPF.HSBC.stock.return), c(.45))  &&
       MPF.HSBC.stock.return[row - 3] >
-      quantile(na.omit(MPF.HSBC.stock.return), c(.40))) {
+      quantile(na.omit(MPF.HSBC.stock.return), c(.35))) {
     hedge <- FALSE
     up <- TRUE
   }
   
   if (row > 8 &&  (MPF.HSBC.stock.return[row] < 0 &&
                    MPF.HSBC.stock.return[row - 1] >
-                   quantile(na.omit(MPF.HSBC.stock.return), c(.8)))) {
+                   quantile(na.omit(MPF.HSBC.stock.return), c(.8))))
+    {
     hedge <- TRUE
   }
   
-  MPF.HSBC.sum <- sum(MPF.HSBC.BIAS.month[row,])
-  MPF.HSBC.BIAS.p[] <- 0
+
+  MPF.HSBC.sum <- sum(MPF.HSBC.BIAS.month[row, ])
+  MPF.HSBC.BIAS.p <- rep(0, length(MPF.HSBC.BIAS.month[1,]))
+  
   
   
   if (row <= 12 || MPF.HSBC.sum == MPF.HSBC.BIAS.month[row, 10] ||
@@ -752,13 +757,18 @@ for (row in 1:length(MPF.HSBC.BIAS.month[, 1])) {
   MPF.portf.weight[row, ] <-
     round_percent(MPF.HSBC.BIAS.p)
   
-  portf.rebal.fm <-
+  if (row == 1) {
+    portf.rebal.fm <- na.fill(MPF.HSBC.simple.returns[row,], 0) *
+                                MPF.portf.weight[row,]
+  } else {
+    portf.rebal.fm <-
     Return.portfolio(
-      na.fill(MPF.HSBC.simple.returns, 0),
-      weight = MPF.portf.weight[1:row, ],
+      na.fill(MPF.HSBC.simple.returns[1:row,], 0),
+      weight = MPF.portf.weight,
       geometric = TRUE,
       rebalance_on = "months"
     )
+  } 
   
   MPF.portf.return[row] <-
     tail(na.omit(portf.rebal.fm), 1)
@@ -770,6 +780,7 @@ for (row in 1:length(MPF.HSBC.BIAS.month[, 1])) {
     hedge = TRUE
   }
 }
+
 ```
 
 
@@ -802,7 +813,7 @@ etf.dat <- c(etfs) %>%
         "stock.prices",
         from = "2001-01-01" %>%
           as.Date,
-        to = "2019-12-31" %>%
+        to = "2020-01-01" %>%
           as.Date
       )
   ) %>% group_by(symbol)  %>%
@@ -821,7 +832,7 @@ GoldBut.dat <- c(golden.butterfly) %>%
         "stock.prices",
         from = "2004-11-01" %>%
           as.Date,
-        to = "2019-12-31" %>%
+        to = "2020-01-01" %>%
           as.Date
       )
   ) %>% group_by(symbol)  %>%
@@ -877,15 +888,15 @@ portf.rebal.fm.dollar.cpy <- Return.portfolio(
 )
 
 portf.rebal.fm.dollar.gb <- Return.portfolio(
-  tail(MPF.HSBC.simple.returns,-48),
-  weight = tail(MPF.portf.weight,-48),
+  tail(MPF.HSBC.simple.returns,-46),
+  weight = tail(MPF.portf.weight,-46),
   geometric = TRUE,
   rebalance_on = "months"
 )
 
 portf.rebal.fm.dollar.gb.cpy <- Return.portfolio(
-  tail(MPF.HSBC.simple.returns, -48),
-  weight = tail(MPF.portf.weight, -48),
+  tail(MPF.HSBC.simple.returns, -47),
+  weight = tail(MPF.portf.weight, -47),
   geometric = TRUE,
   rebalance_on = "months",
   wealth.index = TRUE
@@ -1122,7 +1133,7 @@ cat("Annualised Standard Deviation: ",
 cat("Sortino Ratio: ", SortinoRatio(portf.rebal.fm) * sqrt(12), "\n")
 cat(
   "Coditional Value of Risk (CVaR, Expected Shortfall ES",
-  ES(portf.rebal.fm, method = "modified"),
+  ES(portf.rebal.fm, method = "historical"),
   "\n"
 )
 tail(MPF.portf.weight, n = 6)
@@ -1155,30 +1166,20 @@ for (row in 1:length(MPF.HSBC.returns[, 1])) {
     MPF.monthly.returns[row] <-
       (sum(na.fill(this.value, 0)) - 2301) / 2301
     MPF.monthly.asset[row, ] <-
-      na.fill(((this.value + 2301) / this.price * MPF.portf.weight[row,]) / this.price, 0)
+      na.fill(((this.value + 2301) * MPF.portf.weight[row,]) / this.price, 0)
     last.price <- this.price
   } else {
-    last.value <- na.fill(MPF.monthly.asset[row - 1, ] * last.price, 0)
-    this.value <- na.fill(MPF.monthly.asset[row - 1, ] * this.price, 0)
-    MPF.monthly.returns[row] <-
-      (sum(this.value) - sum(last.value)) / sum(last.value)
-    
-    MPF.monthly.asset.old <- this.value / sum(na.fill(this.value, 0))
-    MPF.monthly.asset.propose <- as.matrix(MPF.portf.weight[row, ]) -
-      as.matrix(MPF.monthly.asset.old)
-    MPF.monthly.unit.change <-
-      MPF.monthly.asset.propose * sum(na.fill(this.value, 0)) / this.price
-    
-    this.unit <-
-      as.matrix(MPF.monthly.asset[row - 1, ]) + as.matrix(MPF.monthly.unit.change)
-    this.unit <-
-      as.matrix(this.unit) + (2301 / as.matrix(this.price) * MPF.portf.weight[row, ])
-    
-    MPF.monthly.asset[row, ] <- na.fill(this.unit, 0)
+    last.value <-
+      as.numeric(sum(na.fill(last.price * MPF.monthly.asset[row - 1, ], 0)))
+    this.value <-
+      as.numeric(sum(na.fill(this.price * MPF.monthly.asset[row - 1, ], 0)))
+    MPF.monthly.returns[row] <- (this.value -last.value) / last.value
+    MPF.monthly.asset[row,] <-
+      (this.value + 2301) / this.price * MPF.portf.weight[row, ]
     last.price <- this.price
+
   }
 }
-
 
 total.asset.value <- sum(MPF.monthly.asset[row,] * this.price)
 total.contribution <- 2301 * length(MPF.HSBC.returns[, 1])
@@ -1189,7 +1190,7 @@ IRR.f <- function(r)
 IRR.root <- uniroot(IRR.f, c(0, 1))
 
 cat("Total asset in the last valuation date: ", total.asset.value, "\n")
-cat("Total contribution starting from 2001/09/17: ",
+cat("Total contribution starting from 2000/12/01: ",
     total.contribution,
     "\n")
 
