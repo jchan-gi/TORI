@@ -1,11 +1,11 @@
 ---
 title: "Akane Tori 於滙豐強積金智選計劃的回測 -- Backtesting Akane Tori in HSBC SuperTrust Plus"
 output:
-  pdf_document:
-    latex_engine: xelatex
+  pdf_document: 
     df_print: paged
-    keep_tex: TRUE
     extra_dependencies: xeCJK, fontspec
+    keep_tex: FALSE
+    latex_engine: xelatex
 header-includes:
   - \usepackage{fontspec}
   - \usepackage{xeCJK}
@@ -13,7 +13,6 @@ header-includes:
   - \setsansfont{IBM Plex Sans}
   - \setmonofont{IBM Plex Mono}
   - \setCJKmainfont{Noto Sans HK}
-  - \renewcommand{\familydefault}{\sfdefault}
 ---
 <p style="text-align: center;">[![Tori logo](./docs/assets/Tori.png "The logo of Tori")](https://github.com/jchan-gi/TORI)</p>   
     
@@ -94,8 +93,9 @@ df <-
       "/"
     )
   )
-kable(df,
-      col.names = c("指標 Indicator", "TORI @ HSBC", "SPY", "HSI", "Golden Butterfly"))
+
+kable(df, "pandoc",
+      col.names = c("指標 Indicator", "Akane Tori @ HSBC", "SPY", "HSI", "Golden Butterfly"))
 ```
 
 
@@ -318,7 +318,7 @@ Min_NMMA <- 0.00002
 MPF.HSBC <-
   as.xts(
     read.zoo(
-      "~/OneDrive/MPF/HSBC SuperTrust Plus/HSBC_MPF_SuperTrustPlus.csv",
+      "F:/OneDrive/MPF/HSBC SuperTrust Plus/HSBC_MPF_SuperTrustPlus.csv",
       format = "%d/%m/%Y",
       header = TRUE,
       na.strings = "0",
