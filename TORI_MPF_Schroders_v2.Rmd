@@ -223,7 +223,7 @@ Min_NMMA <- 0.00002
 MPF.Schroders <-
   as.xts(
     read.zoo(
-      "~/OneDrive/MPF/Schroders/Schroders.csv",
+      "F:/OneDrive/MPF/Schroders/Schroders.csv",
       format = "%d/%m/%Y",
       header = TRUE,
       read = read.csv,

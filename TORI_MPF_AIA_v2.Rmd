@@ -241,7 +241,7 @@ Min_NMMA <- 0.00002
 MPF.AIA <-
   as.xts(
     read.zoo(
-      "~/OneDrive/MPF/AIA/AIA.csv",
+      "F:/OneDrive/MPF/AIA/AIA.csv",
       format = "%d/%m/%Y",
       header = TRUE,
       read = read.csv,

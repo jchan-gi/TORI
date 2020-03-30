@@ -219,7 +219,7 @@ Min_NMMA <- 0.00002
 options("openxlsx.dateFormat" = "d/m/yyyy")
 
 
-MPF.Allianz.AE <- read.xlsx("~/OneDrive/MPF/Allianz/202001/AE.xlsx")
+MPF.Allianz.AE <- read.xlsx("F:/OneDrive/MPF/Allianz/202001/AE.xlsx")
 MPF.Allianz.AE[, 1] <- convertToDate(MPF.Allianz.AE[, 3])
 MPF.Allianz.AE <-
   na.omit(MPF.Allianz.AE[(9:length(MPF.Allianz.AE[, 1])), 3:4])
@@ -230,7 +230,7 @@ MPF.Allianz.AE <-
 MPF.Allianz.AE[, 1] <- as.numeric(MPF.Allianz.AE[, 1])
 storage.mode(MPF.Allianz.AE) <- "numeric"
 
-MPF.Allianz.B <- read.xlsx("~/OneDrive/MPF/Allianz/202001/B.xlsx")
+MPF.Allianz.B <- read.xlsx("F:/OneDrive/MPF/Allianz/202001/B.xlsx")
 MPF.Allianz.B[, 1] <- convertToDate(MPF.Allianz.B[, 3])
 MPF.Allianz.B <-
   na.omit(MPF.Allianz.B[(9:length(MPF.Allianz.B[, 1])), 3:4])
@@ -240,7 +240,7 @@ MPF.Allianz.B <- as.xts(read.zoo(MPF.Allianz.B, format = "%Y-%m-%d"))
 MPF.Allianz.B[, 1] <- as.numeric(MPF.Allianz.B[, 1])
 storage.mode(MPF.Allianz.B) <- "numeric"
 
-MPF.Allianz.CA <- read.xlsx("~/OneDrive/MPF/Allianz/202001/CA.xlsx")
+MPF.Allianz.CA <- read.xlsx("F:/OneDrive/MPF/Allianz/202001/CA.xlsx")
 MPF.Allianz.CA[, 1] <- convertToDate(MPF.Allianz.CA[, 3])
 MPF.Allianz.CA <-
   na.omit(MPF.Allianz.CA[(9:length(MPF.Allianz.CA[, 1])), 3:4])
@@ -252,7 +252,7 @@ MPF.Allianz.CA[, 1] <- as.numeric(MPF.Allianz.CA[, 1])
 storage.mode(MPF.Allianz.CA) <- "numeric"
 
 MPF.Allianz.FlexB <-
-  read.xlsx("~/OneDrive/MPF/Allianz/202001/FlexB.xlsx")
+  read.xlsx("F:/OneDrive/MPF/Allianz/202001/FlexB.xlsx")
 MPF.Allianz.FlexB[, 1] <- convertToDate(MPF.Allianz.FlexB[, 3])
 MPF.Allianz.FlexB <-
   na.omit(MPF.Allianz.FlexB[(9:length(MPF.Allianz.FlexB[, 1])), 3:4])
@@ -263,7 +263,7 @@ MPF.Allianz.FlexB <-
 MPF.Allianz.FlexB[, 1] <- as.numeric(MPF.Allianz.FlexB[, 1])
 storage.mode(MPF.Allianz.FlexB) <- "numeric"
 
-MPF.Allianz.G <- read.xlsx("~/OneDrive/MPF/Allianz/202001/G.xlsx")
+MPF.Allianz.G <- read.xlsx("F:/OneDrive/MPF/Allianz/202001/G.xlsx")
 MPF.Allianz.G[, 1] <- convertToDate(MPF.Allianz.G[, 3])
 MPF.Allianz.G <-
   na.omit(MPF.Allianz.G[(9:length(MPF.Allianz.G[, 1])), 3:4])
@@ -274,7 +274,7 @@ MPF.Allianz.G[, 1] <- as.numeric(MPF.Allianz.G[, 1])
 storage.mode(MPF.Allianz.G) <- "numeric"
 
 MPF.Allianz.GCE <-
-  read.xlsx("~/OneDrive/MPF/Allianz/202001/GCE.xlsx")
+  read.xlsx("F:/OneDrive/MPF/Allianz/202001/GCE.xlsx")
 MPF.Allianz.GCE[, 1] <- convertToDate(MPF.Allianz.GCE[, 3])
 MPF.Allianz.GCE <-
   na.omit(MPF.Allianz.GCE[(9:length(MPF.Allianz.GCE[, 1])), 3:4])
@@ -286,7 +286,7 @@ MPF.Allianz.GCE[, 1] <- as.numeric(MPF.Allianz.GCE[, 1])
 storage.mode(MPF.Allianz.GCE) <- "numeric"
 
 MPF.Allianz.HKE <-
-  read.xlsx("~/OneDrive/MPF/Allianz/202001/HKE.xlsx")
+  read.xlsx("F:/OneDrive/MPF/Allianz/202001/HKE.xlsx")
 MPF.Allianz.HKE[, 1] <- convertToDate(MPF.Allianz.HKE[, 3])
 MPF.Allianz.HKE <-
   na.omit(MPF.Allianz.HKE[(9:length(MPF.Allianz.HKE[, 1])), 3:4])
@@ -298,7 +298,7 @@ MPF.Allianz.HKE[, 1] <- as.numeric(MPF.Allianz.HKE[, 1])
 storage.mode(MPF.Allianz.HKE) <- "numeric"
 
 MPF.Allianz.MPFC <-
-  read.xlsx("~/OneDrive/MPF/Allianz/202001/MPFC.xlsx")
+  read.xlsx("F:/OneDrive/MPF/Allianz/202001/MPFC.xlsx")
 MPF.Allianz.MPFC[, 1] <- convertToDate(MPF.Allianz.MPFC[, 3])
 MPF.Allianz.MPFC <-
   na.omit(MPF.Allianz.MPFC[(9:length(MPF.Allianz.MPFC[, 1])), 3:4])
@@ -310,7 +310,7 @@ MPF.Allianz.MPFC[, 1] <- as.numeric(MPF.Allianz.MPFC[, 1])
 storage.mode(MPF.Allianz.MPFC) <- "numeric"
 
 MPF.Allianz.Pacific <-
-  read.xlsx("~/OneDrive/MPF/Allianz/202001/Pacific.xlsx")
+  read.xlsx("F:/OneDrive/MPF/Allianz/202001/Pacific.xlsx")
 MPF.Allianz.Pacific[, 1] <- convertToDate(MPF.Allianz.Pacific[, 3])
 MPF.Allianz.Pacific <-
   na.omit(MPF.Allianz.Pacific[(9:length(MPF.Allianz.Pacific[, 1])), 3:4])
@@ -322,7 +322,7 @@ MPF.Allianz.Pacific[, 1] <- as.numeric(MPF.Allianz.Pacific[, 1])
 storage.mode(MPF.Allianz.Pacific) <- "numeric"
 
 MPF.Allianz.RMB <-
-  read.xlsx("~/OneDrive/MPF/Allianz/202001/RMB.xlsx")
+  read.xlsx("F:/OneDrive/MPF/Allianz/202001/RMB.xlsx")
 MPF.Allianz.RMB[, 1] <- convertToDate(MPF.Allianz.RMB[, 3])
 MPF.Allianz.RMB <-
   na.omit(MPF.Allianz.RMB[(9:length(MPF.Allianz.RMB[, 1])), 3:4])
@@ -333,7 +333,7 @@ MPF.Allianz.RMB <-
 MPF.Allianz.RMB[, 1] <- as.numeric(MPF.Allianz.RMB[, 1])
 storage.mode(MPF.Allianz.RMB) <- "numeric"
 
-MPF.Allianz.S <- read.xlsx("~/OneDrive/MPF/Allianz/202001/S.xlsx")
+MPF.Allianz.S <- read.xlsx("F:/OneDrive/MPF/Allianz/202001/S.xlsx")
 MPF.Allianz.S[, 1] <- convertToDate(MPF.Allianz.S[, 3])
 MPF.Allianz.S <-
   na.omit(MPF.Allianz.S[(9:length(MPF.Allianz.S[, 1])), 3:4])
@@ -344,7 +344,7 @@ MPF.Allianz.S[, 1] <- as.numeric(MPF.Allianz.S[, 1])
 storage.mode(MPF.Allianz.S) <- "numeric"
 
 MPF.Allianz.SFP <-
-  read.xlsx("~/OneDrive/MPF/Allianz/202001/SFP.xlsx")
+  read.xlsx("F:/OneDrive/MPF/Allianz/202001/SFP.xlsx")
 MPF.Allianz.SFP[, 1] <- convertToDate(MPF.Allianz.SFP[, 3])
 MPF.Allianz.SFP <-
   na.omit(MPF.Allianz.SFP[(9:length(MPF.Allianz.SFP[, 1])), 3:4])
@@ -355,7 +355,7 @@ MPF.Allianz.SFP <-
 MPF.Allianz.SFP[, 1] <- as.numeric(MPF.Allianz.SFP[, 1])
 storage.mode(MPF.Allianz.SFP) <- "numeric"
 
-MPF.Allianz.SG <- read.xlsx("~/OneDrive/MPF/Allianz/202001/SG.xlsx")
+MPF.Allianz.SG <- read.xlsx("F:/OneDrive/MPF/Allianz/202001/SG.xlsx")
 MPF.Allianz.SG[, 1] <- convertToDate(MPF.Allianz.SG[, 3])
 MPF.Allianz.SG <-
   na.omit(MPF.Allianz.SG[(9:length(MPF.Allianz.SG[, 1])), 3:4])

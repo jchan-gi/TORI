@@ -207,37 +207,37 @@ Min_NMMA <- 0.00002
 
 1. Load the price into zoo format
 ```{r warning=FALSE}
-HKD.csv <- read.csv("~/OneDrive/FlexInvest/202001/HKD.csv", row.names = NULL)
+HKD.csv <- read.csv("F:/OneDrive/FlexInvest/202001/HKD.csv", row.names = NULL)
 HKD.csv <- HKD.csv[1:3]
 colnames(HKD.csv) <- c('Date','Drop','HKD')
 HKD.csv <- HKD.csv[, !colnames(HKD.csv) %in% c("Drop")]
 HKD.csv <- as.xts(read.zoo(HKD.csv, format="%d/%m/%Y"))
 
-GAB.csv <- read.csv("~/OneDrive/FlexInvest/202001/GAB.csv", row.names = NULL)
+GAB.csv <- read.csv("F:/OneDrive/FlexInvest/202001/GAB.csv", row.names = NULL)
 GAB.csv <- GAB.csv[1:3]
 colnames(GAB.csv) <- c('Date','Drop','HKD')
 GAB.csv <- GAB.csv[, !colnames(GAB.csv) %in% c("Drop")]
 GAB.csv <- as.xts(read.zoo(GAB.csv, format="%d/%m/%Y"))
 
-GCB.csv <- read.csv("~/OneDrive/FlexInvest/202001/GCB.csv", row.names = NULL)
+GCB.csv <- read.csv("F:/OneDrive/FlexInvest/202001/GCB.csv", row.names = NULL)
 GCB.csv <- GCB.csv[1:3]
 colnames(GCB.csv) <- c('Date','Drop','HKD')
 GCB.csv <- GCB.csv[, !colnames(GCB.csv) %in% c("Drop")]
 GCB.csv <- as.xts(read.zoo(GCB.csv, format="%d/%m/%Y"))
 
-# DGB.csv <- read.csv("~/OneDrive/FlexInvest/202001/DGB.csv", row.names = NULL)
+# DGB.csv <- read.csv("F:/OneDrive/FlexInvest/202001/DGB.csv", row.names = NULL)
 # DGB.csv <- DGB.csv[1:3]
 # colnames(DGB.csv) <- c('Date','Drop','HKD')
 # DGB.csv <- DGB.csv[, !colnames(DGB.csv) %in% c("Drop")]
 # DGB.csv <- as.xts(read.zoo(DGB.csv, format="%d/%m/%Y"))
 
-GET.csv <- read.csv("~/OneDrive/FlexInvest/202001/GET.csv", row.names = NULL)
+GET.csv <- read.csv("F:/OneDrive/FlexInvest/202001/GET.csv", row.names = NULL)
 GET.csv <- GET.csv[1:3]
 colnames(GET.csv) <- c('Date','Drop','HKD')
 GET.csv <- GET.csv[, !colnames(GET.csv) %in% c("Drop")]
 GET.csv <- as.xts(read.zoo(GET.csv, format="%d/%m/%Y"))
 
-UST.csv <- read.csv("~/OneDrive/FlexInvest/202001/UST.csv", row.names = NULL)
+UST.csv <- read.csv("F:/OneDrive/FlexInvest/202001/UST.csv", row.names = NULL)
 UST.csv <- UST.csv[1:3]
 colnames(UST.csv) <- c('Date','Drop','HKD')
 UST.csv <- UST.csv[, !colnames(UST.csv) %in% c("Drop")]

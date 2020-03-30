@@ -253,7 +253,7 @@ Min_NMMA <- 0.00002
 MPF.BCT <-
   as.xts(
     read.zoo(
-      "~/OneDrive/MPF/BCT/BCT.csv",
+      "F:/OneDrive/MPF/BCT/BCT.csv",
       format = "%d/%m/%Y",
       header = TRUE,
       read = read.csv,

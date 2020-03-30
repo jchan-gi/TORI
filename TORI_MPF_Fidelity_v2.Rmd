@@ -221,7 +221,7 @@ Min_NMMA <- 0.00002
 options("openxlsx.dateFormat" = "d/m/yyyy")
 
 MPF.Fidelity.SFP <-
-  read.xlsx("~/OneDrive/MPF/Fidelity/202001/SFP.xlsx")
+  read.xlsx("F:/OneDrive/MPF/Fidelity/202001/SFP.xlsx")
 MPF.Fidelity.SFP[, 1] <- convertToDate(MPF.Fidelity.SFP[, 1])
 MPF.Fidelity.SFP <-
   MPF.Fidelity.SFP[11:length(MPF.Fidelity.SFP[, 1]), ]
@@ -231,7 +231,7 @@ MPF.Fidelity.SFP <-
   as.xts(read.zoo(MPF.Fidelity.SFP, format = "%Y-%m-%d"))
 
 MPF.Fidelity.CA <-
-  read.xlsx("~/OneDrive/MPF/Fidelity/202001/CA.xlsx")
+  read.xlsx("F:/OneDrive/MPF/Fidelity/202001/CA.xlsx")
 MPF.Fidelity.CA[, 1] <- convertToDate(MPF.Fidelity.CA[, 1])
 MPF.Fidelity.CA <- MPF.Fidelity.CA[11:length(MPF.Fidelity.CA[, 1]), ]
 rownames(MPF.Fidelity.CA) <- MPF.Fidelity.CA[, 1]
@@ -240,7 +240,7 @@ MPF.Fidelity.CA <-
   as.xts(read.zoo(MPF.Fidelity.CA, format = "%Y-%m-%d"))
 
 MPF.Fidelity.AP <-
-  read.xlsx("~/OneDrive/MPF/Fidelity/202001/AP.xlsx")
+  read.xlsx("F:/OneDrive/MPF/Fidelity/202001/AP.xlsx")
 MPF.Fidelity.AP[, 1] <- convertToDate(MPF.Fidelity.AP[, 1])
 MPF.Fidelity.AP <- MPF.Fidelity.AP[11:length(MPF.Fidelity.AP[, 1]), ]
 rownames(MPF.Fidelity.AP) <- MPF.Fidelity.AP[, 1]
@@ -248,7 +248,7 @@ colnames(MPF.Fidelity.AP) <- c("Date", "HKD")
 MPF.Fidelity.AP <-
   as.xts(read.zoo(MPF.Fidelity.AP, format = "%Y-%m-%d"))
 
-MPF.Fidelity.B <- read.xlsx("~/OneDrive/MPF/Fidelity/202001/B.xlsx")
+MPF.Fidelity.B <- read.xlsx("F:/OneDrive/MPF/Fidelity/202001/B.xlsx")
 MPF.Fidelity.B[, 1] <- convertToDate(MPF.Fidelity.B[, 1])
 MPF.Fidelity.B <- MPF.Fidelity.B[11:length(MPF.Fidelity.B[, 1]), ]
 rownames(MPF.Fidelity.B) <- MPF.Fidelity.B[, 1]
@@ -256,7 +256,7 @@ colnames(MPF.Fidelity.B) <- c("Date", "HKD")
 MPF.Fidelity.B <-
   as.xts(read.zoo(MPF.Fidelity.B, format = "%Y-%m-%d"))
 
-MPF.Fidelity.S <- read.xlsx("~/OneDrive/MPF/Fidelity/202001/S.xlsx")
+MPF.Fidelity.S <- read.xlsx("F:/OneDrive/MPF/Fidelity/202001/S.xlsx")
 MPF.Fidelity.S[, 1] <- convertToDate(MPF.Fidelity.S[, 1])
 MPF.Fidelity.S <- MPF.Fidelity.S[11:length(MPF.Fidelity.S[, 1]), ]
 rownames(MPF.Fidelity.S) <- MPF.Fidelity.S[, 1]
@@ -265,7 +265,7 @@ MPF.Fidelity.S <-
   as.xts(read.zoo(MPF.Fidelity.S, format = "%Y-%m-%d"))
 
 MPF.Fidelity.MPFC <-
-  read.xlsx("~/OneDrive/MPF/Fidelity/202001/MPFC.xlsx")
+  read.xlsx("F:/OneDrive/MPF/Fidelity/202001/MPFC.xlsx")
 MPF.Fidelity.MPFC[, 1] <- convertToDate(MPF.Fidelity.MPFC[, 1])
 MPF.Fidelity.MPFC <-
   MPF.Fidelity.MPFC[11:length(MPF.Fidelity.MPFC[, 1]), ]
@@ -275,7 +275,7 @@ MPF.Fidelity.MPFC <-
   as.xts(read.zoo(MPF.Fidelity.MPFC, format = "%Y-%m-%d"))
 
 MPF.Fidelity.GE <-
-  read.xlsx("~/OneDrive/MPF/Fidelity/202001/GE.xlsx")
+  read.xlsx("F:/OneDrive/MPF/Fidelity/202001/GE.xlsx")
 MPF.Fidelity.GE[, 1] <- convertToDate(MPF.Fidelity.GE[, 1])
 MPF.Fidelity.GE <- MPF.Fidelity.GE[11:length(MPF.Fidelity.GE[, 1]), ]
 rownames(MPF.Fidelity.GE) <- MPF.Fidelity.GE[, 1]
@@ -283,7 +283,7 @@ colnames(MPF.Fidelity.GE) <- c("Date", "HKD")
 MPF.Fidelity.GE <-
   as.xts(read.zoo(MPF.Fidelity.GE, format = "%Y-%m-%d"))
 
-MPF.Fidelity.G <- read.xlsx("~/OneDrive/MPF/Fidelity/202001/G.xlsx")
+MPF.Fidelity.G <- read.xlsx("F:/OneDrive/MPF/Fidelity/202001/G.xlsx")
 MPF.Fidelity.G[, 1] <- convertToDate(MPF.Fidelity.G[, 1])
 MPF.Fidelity.G <- MPF.Fidelity.G[11:length(MPF.Fidelity.G[, 1]), ]
 rownames(MPF.Fidelity.G) <- MPF.Fidelity.G[, 1]
@@ -292,7 +292,7 @@ MPF.Fidelity.G <-
   as.xts(read.zoo(MPF.Fidelity.G, format = "%Y-%m-%d"))
 
 MPF.Fidelity.HKB <-
-  read.xlsx("~/OneDrive/MPF/Fidelity/202001/HKB.xlsx")
+  read.xlsx("F:/OneDrive/MPF/Fidelity/202001/HKB.xlsx")
 MPF.Fidelity.HKB[, 1] <- convertToDate(MPF.Fidelity.HKB[, 1])
 MPF.Fidelity.HKB <-
   MPF.Fidelity.HKB[11:length(MPF.Fidelity.HKB[, 1]), ]
@@ -302,7 +302,7 @@ MPF.Fidelity.HKB <-
   as.xts(read.zoo(MPF.Fidelity.HKB, format = "%Y-%m-%d"))
 
 MPF.Fidelity.HKE <-
-  read.xlsx("~/OneDrive/MPF/Fidelity/202001/HKE.xlsx")
+  read.xlsx("F:/OneDrive/MPF/Fidelity/202001/HKE.xlsx")
 MPF.Fidelity.HKE[, 1] <- convertToDate(MPF.Fidelity.HKE[, 1])
 MPF.Fidelity.HKE <-
   MPF.Fidelity.HKE[11:length(MPF.Fidelity.HKE[, 1]), ]
@@ -312,7 +312,7 @@ MPF.Fidelity.HKE <-
   as.xts(read.zoo(MPF.Fidelity.HKE, format = "%Y-%m-%d"))
 
 MPF.Fidelity.RMBB <-
-  na.omit(read.xlsx("~/OneDrive/MPF/Fidelity/202001/RMBB.xlsx"))
+  na.omit(read.xlsx("F:/OneDrive/MPF/Fidelity/202001/RMBB.xlsx"))
 MPF.Fidelity.RMBB[, 1] <- convertToDate(MPF.Fidelity.RMBB[, 1])
 MPF.Fidelity.RMBB <-
   MPF.Fidelity.RMBB[11:length(MPF.Fidelity.RMBB[, 1]), ]
@@ -322,7 +322,7 @@ MPF.Fidelity.RMBB <-
   as.xts(read.zoo(MPF.Fidelity.RMBB, format = "%Y-%m-%d"))
 
 MPF.Fidelity.SG <-
-  read.xlsx("~/OneDrive/MPF/Fidelity/202001/SG.xlsx")
+  read.xlsx("F:/OneDrive/MPF/Fidelity/202001/SG.xlsx")
 MPF.Fidelity.SG[, 1] <- convertToDate(MPF.Fidelity.SG[, 1])
 MPF.Fidelity.SG <- MPF.Fidelity.SG[11:length(MPF.Fidelity.SG[, 1]), ]
 rownames(MPF.Fidelity.SG) <- MPF.Fidelity.SG[, 1]
@@ -331,7 +331,7 @@ MPF.Fidelity.SG <-
   as.xts(read.zoo(MPF.Fidelity.SG, format = "%Y-%m-%d"))
 
 MPF.Fidelity.HSI <-
-  read.xlsx("~/OneDrive/MPF/Fidelity/202001/HSI.xlsx")
+  read.xlsx("F:/OneDrive/MPF/Fidelity/202001/HSI.xlsx")
 MPF.Fidelity.HSI[, 1] <- convertToDate(MPF.Fidelity.HSI[, 1])
 MPF.Fidelity.HSI <-
   MPF.Fidelity.HSI[11:length(MPF.Fidelity.HSI[, 1]), ]
@@ -341,7 +341,7 @@ MPF.Fidelity.HSI <-
   as.xts(read.zoo(MPF.Fidelity.HSI, format = "%Y-%m-%d"))
 
 MPF.Fidelity.GB <-
-  read.xlsx("~/OneDrive/MPF/Fidelity/202001/GB.xlsx")
+  read.xlsx("F:/OneDrive/MPF/Fidelity/202001/GB.xlsx")
 MPF.Fidelity.GB[, 1] <- convertToDate(MPF.Fidelity.GB[, 1])
 MPF.Fidelity.GB <- MPF.Fidelity.GB[11:length(MPF.Fidelity.GB[, 1]), ]
 rownames(MPF.Fidelity.GB) <- MPF.Fidelity.GB[, 1]
@@ -350,7 +350,7 @@ MPF.Fidelity.GB <-
   as.xts(read.zoo(MPF.Fidelity.GB, format = "%Y-%m-%d"))
 
 MPF.Fidelity.Save2040 <-
-  read.xlsx("~/OneDrive/MPF/Fidelity/202001/Save2040.xlsx")
+  read.xlsx("F:/OneDrive/MPF/Fidelity/202001/Save2040.xlsx")
 MPF.Fidelity.Save2040[, 1] <-
   convertToDate(MPF.Fidelity.Save2040[, 1])
 MPF.Fidelity.Save2040 <-

@@ -277,7 +277,7 @@ Min_NMMA <- 0.00002
 MPF.HSBC <-
   as.xts(
     read.zoo(
-      "~/OneDrive/MPF/HSBC SuperTrust Plus/HSBC_MPF_SuperTrustPlus.csv",
+      "F:/OneDrive/MPF/HSBC SuperTrust Plus/HSBC_MPF_SuperTrustPlus.csv",
       format = "%d/%m/%Y",
       header = TRUE,
       na.strings = "0",
