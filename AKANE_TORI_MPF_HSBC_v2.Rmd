@@ -1,11 +1,11 @@
 ---
 title: "Akane Tori 於滙豐強積金智選計劃的回測 -- Backtesting Akane Tori in HSBC SuperTrust Plus"
-output:
-  pdf_document: 
-    df_print: paged
-    extra_dependencies: xeCJK, fontspec
-    keep_tex: FALSE
+output: 
+  pdf_document:
     latex_engine: xelatex
+    df_print: paged
+    keep_tex: FALSE
+    extra_dependencies: xeCJK, fontspec
 header-includes:
   - \usepackage{fontspec}
   - \usepackage{xeCJK}
@@ -13,6 +13,7 @@ header-includes:
   - \setsansfont{IBM Plex Sans}
   - \setmonofont{IBM Plex Mono}
   - \setCJKmainfont{Noto Sans HK}
+  - \renewcommand{\familydefault}{\sfdefault}
 ---
 <p style="text-align: center;">[![Tori logo](./docs/assets/Tori.png "The logo of Tori")](https://github.com/jchan-gi/TORI)</p>   
     
@@ -118,12 +119,16 @@ kable(df, "pandoc",
 7. 本聲明如有歧義，將以英文版本作準。    
 
 
-## 最後更新日期 Last update: 2020/03/27.   
+## 最後更新日期 Last update: 2020/03/31.   
 ### Changelog    
 ### 更新記錄    
 
+2020-03-31 v2.1.2
+Version synchronize before uploading 2020Q1 results.   
+將所有程式版本同步，以準備發佈2020Q1結果。   
+
 2020-03-27 v2.1.1a     
-1. Fix return matrix column misalignment in Tori @ HSBC.    
+1. Fix return matrix column misalignment in Akane Tori @ HSBC.    
 2. Fix faulty code on inconsistent total asset price across time. Description: Subsetting would not work to produce consistent total asset value when the data is splited by train-test partition. This is due to the hedge flag detect the future signal if the subsetting is being applied to the weight but not the return. This is a characteristics of Return.portfolio but not a glitch of the algorithm.        
 1. 修正回報欄位錯置。    
 2. 修正於不同時間下出現不一致的總資產。    
@@ -313,6 +318,10 @@ RSI_Period <- 18
 Min_NMMA <- 0.00002
 ```
 
+```{r echo=FALSE, keep.source = FALSE}
+Sys.setlocale(category = "LC_ALL", locale = "English")
+```
+
 1. Load the price into zoo format
 ```{r warning=FALSE}
 MPF.HSBC <-
@@ -327,6 +336,10 @@ MPF.HSBC <-
   )
 MPF.HSBC <- head(MPF.HSBC,-58)
 daily <- index(MPF.HSBC)
+```
+
+```{r echo=FALSE, keep.source = FALSE}
+Sys.setlocale(category = "LC_ALL", locale = "Chinese (Traditional)")
 ```
 
 2. Calculate Simple Moving Average (SMA) 

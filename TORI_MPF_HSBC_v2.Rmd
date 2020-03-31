@@ -1,10 +1,10 @@
 ---
 title: "TORI 於滙豐強積金智選計劃的回測 -- Backtesting TORI in HSBC SuperTrust Plus"
-output:
+output: 
   pdf_document:
     latex_engine: xelatex
     df_print: paged
-    keep_tex: TRUE
+    keep_tex: FALSE
     extra_dependencies: xeCJK, fontspec
 header-includes:
   - \usepackage{fontspec}
@@ -63,9 +63,13 @@ kable(df, col.names = c("指標 Indicator", "TORI @ HSBC", "SPY", "HSI", "Golden
 7. 本聲明如有歧義，將以英文版本作準。   
 
 
-## 最後更新日期 Last update: 2020/03/27.   
+## 最後更新日期 Last update: 2020/03/31.   
 ### Changelog    
 ### 更新記錄    
+
+2020-03-31 v2.1.2
+Version synchronize before uploading 2020Q1 results.   
+將所有程式版本同步，以準備發佈2020Q1結果。   
 
 2020-03-27 v2.1.1a     
 1. Fix return matrix column misalignment in Tori @ HSBC.    
@@ -272,6 +276,10 @@ RSI_Period <- 18
 Min_NMMA <- 0.00002
 ```
 
+```{r echo=FALSE, keep.source = FALSE}
+Sys.setlocale(category = "LC_ALL", locale = "English")
+```
+
 1. Load the price into zoo format
 ```{r warning=FALSE}
 MPF.HSBC <-
@@ -286,6 +294,10 @@ MPF.HSBC <-
   )
 MPF.HSBC <- head(MPF.HSBC, -58)
 daily <- index(MPF.HSBC)
+```
+
+```{r echo=FALSE, keep.source = FALSE}
+Sys.setlocale(category = "LC_ALL", locale = "Chinese (Traditional)")
 ```
 
 2. Calculate Simple Moving Average (SMA) 

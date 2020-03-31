@@ -4,7 +4,7 @@ output:
   pdf_document:
     latex_engine: xelatex
     df_print: paged
-    keep_tex: TRUE
+    keep_tex: FALSE
     extra_dependencies: xeCJK, fontspec
 header-includes:
   - \usepackage{fontspec}
@@ -41,9 +41,19 @@ header-includes:
 7. 本聲明如有歧義，將以英文版本作準。  
 
 
-## 最後更新日期 Last update: 2020/03/25.   
+## 最後更新日期 Last update: 2020/03/31.   
 ### Changelog    
 ### 更新記錄    
+
+2020-03-31 v2.1.2
+Version synchronize before uploading 2020Q1 results.   
+將所有程式版本同步，以準備發佈2020Q1結果。   
+
+2020-03-27 v2.1.1a     
+1. Fix return matrix column misalignment in Tori @ Allianz.    
+2. Fix faulty code on inconsistent total asset price across time. Description: Subsetting would not work to produce consistent total asset value when the data is splited by train-test partition. This is due to the hedge flag detect the future signal if the subsetting is being applied to the weight but not the return. This is a characteristics of Return.portfolio but not a glitch of the algorithm.        
+1. 修正回報欄位錯置。    
+2. 修正於不同時間下出現不一致的總資產。    
 
 2020-03-25 v2.1.1    
 1. Adding Golden Butterfly Portfolio as a benchmark portfolio.     
@@ -411,7 +421,6 @@ MPF.Allianz.RSI <- as.xts(MPF.Allianz.RSI, order.by = monthly)
 4. Calculate Returns
 ```{r warning=FALSE}
 
-
 MPF.Allianz.returns <-
   na.locf(do.call(cbind, lapply(MPF.Allianz, function(x)
     monthlyReturn(x, type = "log"))))
@@ -423,6 +432,21 @@ MPF.Allianz.simple.returns <-
 monthly <- index(MPF.Allianz.returns)
 
 colnames(MPF.Allianz.returns) <-
+  c('AE',
+    'B',
+    "CA",
+    "FlexB",
+    "G",
+    "GCE",
+    "HKE",
+    "MPFC",
+    "Pacific",
+    "RMB",
+    "S",
+    "SFP",
+    "SG")
+
+colnames(MPF.Allianz.simple.returns) <-
   c('AE',
     'B',
     "CA",
@@ -644,13 +668,18 @@ for (row in 1:length(MPF.Allianz.BIAS.month[, 1])) {
   MPF.portf.weight[row, ] <-
     round_percent(MPF.Allianz.BIAS.p)
   
-  portf.rebal.fm <-
-    Return.portfolio(
-      na.fill(MPF.Allianz.simple.returns, 0),
-      weight = MPF.portf.weight[1:row, ],
-      geometric = TRUE,
-      rebalance_on = "months"
-    )
+  if (row == 1) {
+    portf.rebal.fm <- na.fill(MPF.Allianz.simple.returns[row, ], 0) *
+      MPF.portf.weight[row, ]
+  } else {
+    portf.rebal.fm <-
+      Return.portfolio(
+        na.fill(MPF.Allianz.simple.returns[1:row, ], 0),
+        weight = MPF.portf.weight,
+        geometric = TRUE,
+        rebalance_on = "months"
+      )
+  }
   
   MPF.portf.return[row] <-
     tail(na.omit(portf.rebal.fm), 1)
@@ -1050,28 +1079,16 @@ for (row in 1:length(MPF.Allianz.simple.returns[, 1])) {
     MPF.monthly.returns[row] <-
       sum(na.fill(this.value, 0) - 2301) / 2301
     MPF.monthly.asset[row, ] <-
-      na.fill(((this.value + 2301) / this.price * MPF.portf.weight[row,]) /
-                this.price, 0)
+      na.fill(((this.value + 2301) / this.price * MPF.portf.weight[row,]), 0)
     last.price <- this.price
   } else {
-    last.value <- na.fill(MPF.monthly.asset[row - 1, ] * last.price, 0)
-    this.value <- na.fill(MPF.monthly.asset[row - 1, ] * this.price, 0)
-    MPF.monthly.returns[row] <-
-      (sum(this.value) - sum(last.value)) / sum(last.value)
-    
-    MPF.monthly.asset.old <- this.value / sum(na.fill(this.value, 0))
-    MPF.monthly.asset.propose <- as.matrix(MPF.portf.weight[row, ]) -
-      as.matrix(MPF.monthly.asset.old)
-    MPF.monthly.unit.change <-
-      MPF.monthly.asset.propose * sum(na.fill(this.value, 0)) / this.price
-    
-    this.unit <- as.matrix(MPF.monthly.asset[row - 1, ]) +
-      as.matrix(MPF.monthly.unit.change)
-    this.unit <-
-      as.matrix(this.unit) + (2301 / as.matrix(this.price) *
-                                MPF.portf.weight[row, ])
-    
-    MPF.monthly.asset[row, ] <- na.fill(this.unit, 0)
+    last.value <-
+      as.numeric(sum(na.fill(last.price * MPF.monthly.asset[row - 1, ], 0)))
+    this.value <-
+      as.numeric(sum(na.fill(this.price * MPF.monthly.asset[row - 1, ], 0)))
+    MPF.monthly.returns[row] <- (this.value -last.value) / last.value
+    MPF.monthly.asset[row,] <-
+      (this.value + 2301) / this.price * MPF.portf.weight[row, ]
     last.price <- this.price
   }
 }
