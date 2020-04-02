@@ -1,5 +1,7 @@
 ---
 title: "TORI 於中銀保誠簡易強積金計劃的回測 -- Backtesting TORI in BOCPT Easy Choice"
+author: jchan-gi (Jimmy Chan)
+date: April 2nd, 2020
 output: 
   pdf_document:
     latex_engine: xelatex
@@ -41,9 +43,13 @@ header-includes:
 7. 本聲明如有歧義，將以英文版本作準。    
 
 
-## 最後更新日期 Last update: 2020/03/31.   
+## 最後更新日期 Last update: 2020/04/02.   
 ### Changelog    
 ### 更新記錄    
+
+2020-04-02 v2.1.3a    
+Release results accounted up to 2020/03/31.       
+公佈直至2020/03/31的結果。     
 
 2020-03-31 v2.1.2
 Version synchronize before uploading 2020Q1 results.   
@@ -155,27 +161,85 @@ In this example, MPF would have T+2 time delay for obtaining historical price, h
 ### TORI 前移式回測結果     
 
 單一供款 One-off MPF Installment:    
-年率化回報 Annualized Return: ~9.47%     
-算術年均回報 Mean Annual Return: ~9.57%       
-累積回報 Cumulative Return: ~458.39%    
-年率化標準誤差 Annualized Standard Deviation: ~9.94% (StdDev(monthly return) * sqrt(12))    
-夏普比率 Sharpe Ratio: 0.9533         
-索丁諾比率 Sortino Ratio: 1.9464 (MAR = 0%)    
-資訊比率 Information Ratio: 0.1849 (SPY), 0.3545 (HSI), 0.2143 (Golden Butterfly)    
-Jensen's Alpha: 0.0756 (SPY), 0.0838 (HSI), 0.1065 (Golden Butterfly)    
-Beta: 0.2901 (SPY), 0.2708 (HSI), 0.0484 (Golden Butterfly)     
-關聯系數 Correlation Coefficient: 0.4196 (SPY), 0.5551 (HSI), 0.0332 (Golden Butterfly)    
-預期損失 Expected Shortfall: 2.74% loss (0% Risk-free rate, 95% C.I.)      
+```{r echo=FALSE, keep.source = FALSE}
+library(knitr)
+df <-
+  data.frame(
+    c(
+      "年率化回報 Annualized Return",
+      "累積回報 Cumulative Return",
+      "年率化標準誤差 Annualized SD",
+      "夏普比率 Sharpe Ratio",
+      "索丁諾比率 Sortino Ratio",
+      "資訊比率 Information Ratio",
+      "Annualised Jensen's Alpha",
+      "Beta",
+      "關聯系數 Correlation Coeff.",
+      "預期損失 Expected Shortfall:"
+    ),
+    c(
+      "9.12%",
+      "436.61%",
+      "9.68%",
+      "0.9423",
+      "1.9759",
+      "-->",
+      "-->",
+      "-->",
+      "-->",
+      "5.14% loss"
+    ),
+    c(
+      "5.68%",
+      "/",
+      "14.72%",
+      "0.3859",
+      "/",
+      "0.2436",
+      "0.0777",
+      "0.2567",
+      "0.3905",
+      "/"
+    ),
+    c(
+      "2.21%",
+      "/",
+      "20.42%",
+      "0.1189",
+      "/",
+      "0.3884",
+      "0.0836",
+      "0.2567",
+      "0.5416",
+      "/"
+    ),
+    c(
+      "7.88%",
+      "/",
+      "7.26%",
+      "1.0856",
+      "/",
+      "0.1676",
+      "0.1038",
+      "0.0196",
+      "0.0138",
+      "/"
+    )
+  )
+
+kable(df, "pandoc",
+      col.names = c("指標 Indicator", "Tori @ BOCPT GS Pricing", "SPY", "HSI", "Golden Butterfly"))
+```
 
 月供投資 Monthly MPF installment (或有誤差 maybe slightly differs):    
 每月供款 Monthly installment amount: 2301    
-總供款 Total contribution: 526929    
-最新結餘 Latest asset value: 1567449        
-算術年均回報 Mean annual return: 9.20%      
-內部回報率 Internal Rate of Return (IRR): 9.88%    
-年率化標準誤差 Annualized Standard Deviation: 9.92%    
-夏普比率 Sharpe Ratio: 0.9275          
-索丁諾比率 Sortino Ratio: 1.9441 (MAR = 0%)    
+總供款 Total contribution: 533832    
+最新結餘 Latest asset value: 1504018        
+算術年均回報 Mean annual return: 7.62%      
+內部回報率 Internal Rate of Return (IRR): 9.32%    
+年率化標準誤差 Annualized Standard Deviation: 9.66%    
+夏普比率 Sharpe Ratio: 0.7886          
+索丁諾比率 Sortino Ratio: 1.9737 (MAR = 0%)    
 
 
 
@@ -251,6 +315,8 @@ MPF.BOCPT <-
       na.strings = "0"
     )
   )
+
+MPF.BOCPT[MPF.BOCPT==0] <- NA
 daily <- index(MPF.BOCPT)
 
 ```
@@ -716,7 +782,7 @@ etf.dat <- c(etfs) %>%
         "stock.prices",
         from = "2001-01-01" %>%
           as.Date,
-        to = "2019-12-31" %>%
+        to = "2020-04-01" %>%
           as.Date
       )
   ) %>% group_by(symbol)  %>%
@@ -735,7 +801,7 @@ GoldBut.dat <- c(golden.butterfly) %>%
         "stock.prices",
         from = "2004-11-01" %>%
           as.Date,
-        to = "2019-12-31" %>%
+        to = "2020-04-01" %>%
           as.Date
       )
   ) %>% group_by(symbol)  %>%
@@ -961,7 +1027,7 @@ portf.dollar.monthly.gb <- portf.rebal.fm.dollar.gb.tb.cpy %>%
 
 ggplot() +
   scale_color_manual(
-    labels = c("SPY", "QQQ", "HSI", "TORI @ BOCPT"),
+    labels = c("SPY", "QQQ", "HSI", "Tori @ BOCPT"),
     values = c(1, 2, 3, "pink3")
   ) +
   geom_line(aes(x = date, y = Rb.SPY, color = as.factor(1)),
@@ -976,8 +1042,8 @@ ggplot() +
   geom_line(aes(x = date, y = Ra, color = "pink3"), portf.dollar.monthly, 
             size =1.8) +
   labs(
-    title = "TORI @ BOCPT versus SPY, QQQ, and Hang Seng Index",
-    subtitle = "How TORI @ BOCPT outperform common index fund",
+    title = "Tori @ BOCPT versus SPY, QQQ, and Hang Seng Index",
+    subtitle = "How Tori @ BOCPT outperform common index fund",
     x = "",
     y = "Portfolio Value",
     color = "Portfolio or Index ETFs"
@@ -986,7 +1052,7 @@ ggplot() +
   scale_y_continuous(labels = scales::dollar)
 
 ggplot() +
-  scale_color_manual(labels = c("Golden Butterfly", "TORI @ BOCPT"),
+  scale_color_manual(labels = c("Golden Butterfly", "Tori @ BOCPT"),
                      values = c(4, "pink3")) +
   geom_line(aes(x = date, y = Rb.GoldBut, color = as.factor(3)),
             GoldBut.dollar.monthly,
@@ -995,8 +1061,8 @@ ggplot() +
             portf.dollar.monthly.gb,
             size = 1.8) +
   labs(
-    title = "TORI @ BOCPT versus Golden Butterfly Portfolio",
-    subtitle = "How TORI @ BOCPT outperform golden butterfly portfolio",
+    title = "Tori @ BOCPT versus Golden Butterfly Portfolio",
+    subtitle = "How Tori @ BOCPT outperform golden butterfly portfolio",
     x = "",
     y = "Portfolio Value",
     color = "Portfolio"
@@ -1034,14 +1100,14 @@ cat("Annualised Standard Deviation: ",
 cat("Sortino Ratio: ", SortinoRatio(portf.rebal.fm) * sqrt(12), "\n")
 cat(
   "Coditional Value of Risk (CVaR, Expected Shortfall ES",
-  ES(portf.rebal.fm, method = "modified"),
+  ES(portf.rebal.fm, method = "historical"),
   "\n"
 )
-tail(MPF.portf.weight, n = 6)
+tail(head(MPF.portf.weight,n=-1), n = 6)
 ```
 
 ### Monthly Installment
-```{r linewidth=159, warning=FALSE}
+```{r warning=FALSE, linewidth=159}
 MPF.BOCPT.units <- MPF.BOCPT.returns
 MPF.BOCPT.units[, ] <- 0
 

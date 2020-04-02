@@ -7,17 +7,8 @@
 # Latest news
 # 最新消息   
 
-## Tori Performance @ Market in Turmoil    
-## Tori於混亂的資產市場的表現   
-Akane Tori @ HSBC recorded -5.48% loss during 2020/01/01 to 2020/03/25.    
-Tori @ HSBC recorded -5.64% loss during 2020/01/01 to 2020/03/25.   
-Golden Butterfly Portfolio recorded -5.73% loss during the same period.   
-Akane Tori @ HSBC 於2020/01/01至2020/03/25的表現為-5.48%。   
-Tori @ HSBC 於2020/01/01至2020/03/25的表現為-5.64%。        
-Golden Butterfly 的同期表現為-5.73%。    
-
-Result of Allianz MPF have been published.    
-安聯強積金結果現已公佈。    
+2020Q1 results of HSBC and three current MPF operator in Gov't have been released and add into walk-forward validation.    
+滙豐強積金智選計劃、銀聯積金之選強積金計劃、永明彩虹強積金計劃、中銀保誠簡易強積金計劃的2020第一季表現已列出並加入回測。    
 
 Accelerating KAizen at Negative Environment(Akane,あかね) Module have been made public. It could improve return with slight increase of volality. Checkout now!   
 以輕微增加風險以提高回報的Accelerating KAizen at Negative Environment(Akane,あかね)模組現已公開！   

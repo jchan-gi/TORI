@@ -1,5 +1,7 @@
 ---
 title: "Akane Tori 於滙豐強積金智選計劃的回測 -- Backtesting Akane Tori in HSBC SuperTrust Plus"
+author: jchan-gi (Jimmy Chan)
+date: April 2nd, 2020
 output: 
   pdf_document:
     latex_engine: xelatex
@@ -25,81 +27,6 @@ The Akane Tori is named after:
 Accelerating KAizen at Negative Environment + Trend- & Oversell-based Rebalancing Instructions   
 
 
-## NEWS 最新消息    
-### -5.48% loss against -5.73% loss had been recorded by Tori @ HSBC against Golden butterfly portfolio from 2020/01/01 to 2020/03/25. Monthly contribution of Akane Tori @ HSBC is -4.86% at the same period. SPY and HSI had crashed and in turmoil already. Prelim result:      
-### Akane Tori @ HSBC於2020/01/01至2020/03/25的首筆供款表現為-5.48%，同期Golden Butterfly的首筆供款表現為-5.73%。同期Akane Tori @ HSBC      的月供表現為-4.86%。SPY及恒生指數大跌而陷入調整／熊市。初步數據如下表所示：     
-
-```{r echo=FALSE, keep.source = FALSE}
-library(knitr)
-df <-
-  data.frame(
-    c(
-      "年率化回報 Annualized Return",
-      "累積回報 Cumulative Return",
-      "年率化標準誤差 Annualized SD",
-      "夏普比率 Sharpe Ratio",
-      "索丁諾比率 Sortino Ratio",
-      "資訊比率 Information Ratio",
-      "Jensen's Alpha",
-      "Beta",
-      "關聯系數 Correlation Coeff.",
-      "預期損失 Expected Shortfall:"
-    ),
-    c(
-      "11.69%",
-      "739.96%",
-      "11.18%",
-      "1.0459",
-      "2.1409",
-      "-->",
-      "-->",
-      "-->",
-      "-->",
-      "5.72% loss"
-    ),
-    c(
-      "5.36%",
-      "/",
-      "14.99%",
-      "0.3577",
-      "/",
-      "0.4608",
-      "0.0984",
-      "0.3584",
-      "0.4808",
-      "/"
-    ),
-    c(
-      "2.21%",
-      "/",
-      "20.53%",
-      "0.1078",
-      "/",
-      "0.5803",
-      "0.1078",
-      "0.3319",
-      "0.6097",
-      "/"
-    ),
-    c(
-      "7.24%",
-      "/",
-      "7.43%",
-      "0.9748",
-      "/",
-      "0.3359",
-      "0.1353",
-      "-0.054",
-      "-0.0355",
-      "/"
-    )
-  )
-
-kable(df, "pandoc",
-      col.names = c("指標 Indicator", "Akane Tori @ HSBC", "SPY", "HSI", "Golden Butterfly"))
-```
-
-
 ## Disclaimer    
 1. The author (jchan-gi) expressly stated that nothing my repositories and webpages constitutes any advices or recommendation on investing or allocating assets on any stock or financial products.    
 2. No content in my study have been prepared with respect to specific personal need and investment objects of individuals. All materials reveal to the public are applicable to the author (jchan-gi) only.   
@@ -119,9 +46,13 @@ kable(df, "pandoc",
 7. 本聲明如有歧義，將以英文版本作準。    
 
 
-## 最後更新日期 Last update: 2020/03/31.   
+## 最後更新日期 Last update: 2020/04/02.   
 ### Changelog    
 ### 更新記錄    
+
+2020-04-02 v2.1.3a    
+Release results accounted up to 2020/03/31.       
+公佈直至2020/03/31的結果。   
 
 2020-03-31 v2.1.2
 Version synchronize before uploading 2020Q1 results.   
@@ -226,27 +157,85 @@ In this example, MPF would have T+2 time delay for obtaining historical price, h
 ### Akane Tori 前移式回測結果     
 
 單一供款 One-off MPF Installment:    
-年率化回報 Annualized Return: ~12.18%     
-算術年均回報 Mean Annual Return: ~12.15%       
-累積回報 Cumulative Return: ~788.68%    
-年率化標準誤差 Annualized Standard Deviation: ~11.17% (StdDev(monthly return) * sqrt(12))    
-夏普比率 Sharpe Ratio: 1.1453          
-索丁諾比率 Sortino Ratio: 2.2449 (MAR = 0%)      
-資訊比率 Information Ratio: 0.3938 (SPY), 0.5390(HSI), 0.3956 (Golden Butterfly)     
-Jensen's Alpha: 0.0961 (SPY), 0.1085 (HSI), 0.1410 (Golden Butterfly)    
-Beta: 0.3777 (SPY), 0.3319 (HSI), -0.0469 (Golden Butterfly)     
-關聯系數 Correlation Coefficient: 0.4860 (SPY), 0.6049 (HSI), -0.0311 (Golden Butterfly)    
-預期損失 Expected Shortfall: 5.72% loss (0% Risk-free rate, 95% C.I.)       
+```{r echo=FALSE, keep.source = FALSE}
+library(knitr)
+df <-
+  data.frame(
+    c(
+      "年率化回報 Annualized Return",
+      "累積回報 Cumulative Return",
+      "年率化標準誤差 Annualized SD",
+      "夏普比率 Sharpe Ratio",
+      "索丁諾比率 Sortino Ratio",
+      "資訊比率 Information Ratio",
+      "Annualised Jensen's Alpha",
+      "Beta",
+      "關聯系數 Correlation Coeff.",
+      "預期損失 Expected Shortfall:"
+    ),
+    c(
+      "11.75%",
+      "748.92%",
+      "11.16%",
+      "1.0527",
+      "2.1578",
+      "-->",
+      "-->",
+      "-->",
+      "-->",
+      "5.72% loss"
+    ),
+    c(
+      "5.68%",
+      "/",
+      "14.72%",
+      "0.3859",
+      "/",
+      "0.4482",
+      "0.0976",
+      "0.3645",
+      "0.4807",
+      "/"
+    ),
+    c(
+      "2.21%",
+      "/",
+      "20.42%",
+      "0.1189",
+      "/",
+      "0.5735",
+      "0.1076",
+      "0.3326",
+      "0.6085",
+      "/"
+    ),
+    c(
+      "7.88%",
+      "/",
+      "7.26%",
+      "1.0856",
+      "/",
+      "0.3423",
+      "0.1359",
+      "-0.0524",
+      "-0.0344",
+      "/"
+    )
+  )
+
+kable(df, "pandoc",
+      col.names = c("指標 Indicator", "Akane Tori @ HSBC", "SPY", "HSI", "Golden Butterfly"))
+```
 
 月供投資 Monthly MPF installment (或有誤差 maybe slightly differs):    
 每月供款 Monthly installment amount: 2301    
-總供款 Total contribution: 526929    
-最新結餘 Latest asset value: 2157960    
-算術年均回報 Mean annual return (arithmetric): 11.73%      
-內部回報率 Internal Rate of Return (IRR): 12.38%    
-年率化標準誤差 Annualized Standard Deviation: 11.15%    
-夏普比率 Sharpe Ratio: 1.0521          
-索丁諾比率 Sortino Ratio: 2.2429 (MAR = 0%)    
+總供款 Total contribution: 533832    
+最新結餘 Latest asset value: 2068281    
+算術年均回報 Mean annual return (arithmetric): 11.80%      
+內部回報率 Internal Rate of Return (IRR): 11.14%    
+年率化標準誤差 Annualized Standard Deviation: 11.14%    
+夏普比率 Sharpe Ratio: 0.9259          
+索丁諾比率 Sortino Ratio: 2.1560 (MAR = 0%)    
 
 ## 流程 Detailed Workflow
 ### Package Preparation
@@ -334,7 +323,6 @@ MPF.HSBC <-
       read = read.csv
     )
   )
-MPF.HSBC <- head(MPF.HSBC,-58)
 daily <- index(MPF.HSBC)
 ```
 
@@ -1004,7 +992,7 @@ etf.dat <- c(etfs) %>%
         "stock.prices",
         from = "2001-01-01" %>%
           as.Date,
-        to = "2020-01-01" %>%
+        to = "2020-04-01" %>%
           as.Date
       )
   ) %>% group_by(symbol)  %>%
@@ -1023,7 +1011,7 @@ GoldBut.dat <- c(golden.butterfly) %>%
         "stock.prices",
         from = "2004-11-01" %>%
           as.Date,
-        to = "2020-01-01" %>%
+        to = "2020-04-01" %>%
           as.Date
       )
   ) %>% group_by(symbol)  %>%
@@ -1327,7 +1315,7 @@ cat(
   ES(portf.rebal.fm, method = "historical"),
   "\n"
 )
-tail(MPF.portf.weight, n = 6)
+tail(head(MPF.portf.weight, n=-1), n = 6)
 ```
 
 ### Monthly Installment
