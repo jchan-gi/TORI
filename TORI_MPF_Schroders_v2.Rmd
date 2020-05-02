@@ -1,5 +1,7 @@
 ---
 title: "TORI 於永明強積金集成信託計劃(施羅德)的回測 -- Backtesting TORI in Sun Life MPF Master Trust Scheme (Schroders)"
+author: jchan-gi (Jimmy Chan)
+date: May 3rd, 2020
 output: 
   pdf_document:
     latex_engine: xelatex
@@ -41,9 +43,13 @@ header-includes:
 7. 本聲明如有歧義，將以英文版本作準。    
 
 
-## 最後更新日期 Last update: 2020/03/31.   
+## 最後更新日期 Last update: 2020/05/03.   
 ### Changelog    
 ### 更新記錄    
+
+2020-05-03 v2.1.3b    
+Release results accounted up to 2020/04/28.       
+公佈直至2020/04/28的結果。   
 
 2020-03-31 v2.1.2
 Version synchronize before uploading 2020Q1 results.   
@@ -147,31 +153,91 @@ In this example, MPF would have T+2 time delay for obtaining historical price, h
 在本示例中，強積金大部分均有T+2的時延，因此實際操作將有時延誤差。  
 
 
-### TORI in action: Walk-forwark validation results     
-### TORI 前移式回測結果     
+### Tori in action: Walk-forwark validation results     
+### Tori 前移式回測結果     
+[Click here 按此](#result)    
 
 單一供款 One-off MPF Installment:    
-年率化回報 Annualized Return: ~10.49%     
-算術年均回報 Mean Annual Return: ~10.54%       
-累積回報（等比） Cumulative Return (Geometric): ~565.75%    
-年率化標準誤差 Annualized Standard Deviation: ~10.41% (StdDev(monthly return) * sqrt(12))    
-夏普比率 Sharpe Ratio: 1.0079          
-索丁諾比率 Sortino Ratio: 2.1791 (MAR = 0%)      
-資訊比率 Information Ratio: 0.2509 (SPY), 0.4200 (HSI), 0.1724 (Golden Butterfly)    
-Jensen's Alpha: 0.0868 (SPY), 0.0931 (HSI), 0.1032 (Golden Butterfly)    
-Beta: 0.2814 (SPY), 0.2916 (HSI), 0.0231 (Golden Butterfly)     
-關聯系數 Correlation Coefficient: 0.3887 (SPY), 0.5705 (HSI), 0.0016 (Golden Butterfly)    
-預期損失 Expected Shortfall: 2.23% loss (0% Risk-free rate, 95% C.I.)       
+```{r echo=FALSE, keep.source = FALSE}
+library(knitr)
+df <-
+  data.frame(
+    c(
+      "年率化回報 Annualized Return",
+      "累積回報 Cumulative Return",
+      "年率化標準誤差 Annualized SD",
+      "夏普比率 Sharpe Ratio",
+      "索丁諾比率 Sortino Ratio",
+      "資訊比率 Information Ratio",
+      "Annualised Jensen's Alpha",
+      "Beta",
+      "關聯系數 Correlation Coeff.",
+      "預期損失 Expected Shortfall:"
+    ),
+    c(
+      "11.75%",
+      "748.92%",
+      "11.16%",
+      "1.0527",
+      "2.1578",
+      "-->",
+      "-->",
+      "-->",
+      "-->",
+      "5.72% loss"
+    ),
+    c(
+      "5.68%",
+      "/",
+      "14.72%",
+      "0.3859",
+      "/",
+      "0.4482",
+      "0.0976",
+      "0.3645",
+      "0.4807",
+      "/"
+    ),
+    c(
+      "2.21%",
+      "/",
+      "20.42%",
+      "0.1189",
+      "/",
+      "0.5735",
+      "0.1076",
+      "0.3326",
+      "0.6085",
+      "/"
+    ),
+    c(
+      "7.88%",
+      "/",
+      "7.26%",
+      "1.0856",
+      "/",
+      "0.3423",
+      "0.1359",
+      "-0.0524",
+      "-0.0344",
+      "/"
+    )
+  )
+
+kable(df, "pandoc",
+      col.names = c("指標 Indicator", "Tori @ HSBC", "SPY", "HSI", "Golden Butterfly"))
+```
 
 月供投資 Monthly MPF installment (或有誤差 maybe slightly differs):    
 每月供款 Monthly installment amount: 2301    
-總供款 Total contribution: 526929    
-最新結餘 Latest asset value: 1548815        
-算術年均回報 Mean annual return: 10.01%      
-內部回報率 Internal Rate of Return (IRR): 9.78%    
-年率化標準誤差 Annualized Standard Deviation: 10.39%    
-夏普比率 Sharpe Ratio: 0.9639          
-索丁諾比率 Sortino Ratio: 2.1743 (MAR = 0%)    
+總供款 Total contribution: 533832    
+最新結餘 Latest asset value: 2068281    
+算術年均回報 Mean annual return (arithmetric): 11.80%      
+內部回報率 Internal Rate of Return (IRR): 11.14%    
+年率化標準誤差 Annualized Standard Deviation: 11.14%    
+夏普比率 Sharpe Ratio: 0.9259          
+索丁諾比率 Sortino Ratio: 2.1560 (MAR = 0%)    
+
 
 
 ## 流程 Detailed Workflow
@@ -237,7 +303,7 @@ Sys.setlocale(category = "LC_ALL", locale = "English")
 MPF.Schroders <-
   as.xts(
     read.zoo(
-      "F:/OneDrive/MPF/Schroders/Schroders.csv",
+      paste(Sys.getenv("onedrive"),"/MPF/Schroders/Schroders.csv",sep=""),
       format = "%d/%m/%Y",
       header = TRUE,
       read = read.csv,
@@ -679,7 +745,7 @@ etf.dat <- c(etfs) %>%
         "stock.prices",
         from = "2001-01-01" %>%
           as.Date,
-        to = "2019-12-31" %>%
+        to = "2020-04-29" %>%
           as.Date
       )
   ) %>% group_by(symbol)  %>%
@@ -698,7 +764,7 @@ GoldBut.dat <- c(golden.butterfly) %>%
         "stock.prices",
         from = "2004-11-01" %>%
           as.Date,
-        to = "2019-12-31" %>%
+        to = "2020-04-29" %>%
           as.Date
       )
   ) %>% group_by(symbol)  %>%
@@ -754,15 +820,15 @@ portf.rebal.fm.dollar.cpy <- Return.portfolio(
 )
 
 portf.rebal.fm.dollar.gb <- Return.portfolio(
-  tail(MPF.Schroders.simple.returns,-48),
-  weight = tail(MPF.portf.weight,-48),
+  tail(MPF.Schroders.simple.returns,-46),
+  weight = tail(MPF.portf.weight,-46),
   geometric = TRUE,
   rebalance_on = "months"
 )
 
 portf.rebal.fm.dollar.gb.cpy <- Return.portfolio(
-  tail(MPF.Schroders.simple.returns, -48),
-  weight = tail(MPF.portf.weight, -48),
+  tail(MPF.Schroders.simple.returns, -46),
+  weight = tail(MPF.portf.weight, -46),
   geometric = TRUE,
   rebalance_on = "months",
   wealth.index = TRUE
@@ -790,7 +856,7 @@ RaSPY.multiple.portfolio <- left_join(portf.rebal.fm.dollar.tb,
 portf.rebal.fm.dollar.tb[, 1] <- QQQ.etf[, 1]
 RaQQQ.multiple.portfolio <- left_join(portf.rebal.fm.dollar.tb,
                                       QQQ.return.monthly, by = "date")
-portf.rebal.fm.dollar.gb.tb[, 1] <- GoldBut.dat[, 2]
+portf.rebal.fm.dollar.gb.tb[, 1] <- head(GoldBut.dat$date, length(GoldBut.dat$date) / 5)
 RaGoldBut.multiple.portfolio <-
   left_join(portf.rebal.fm.dollar.gb.tb,
             GoldBut.return.monthly, by = "date")
@@ -802,43 +868,70 @@ RaHSI.multiple.portfolio <- left_join(portf.rebal.fm.dollar.tb,
 print("Annualised return of SPY:")
 TORI.SPY <- RaSPY.multiple.portfolio %>%
   tq_performance(Rb.SPY, NULL, performance_fun = table.AnnualizedReturns)
+  SPY.annualized <- TORI.SPY$AnnualizedReturn
+  SPY.Sharpe <- TORI.SPY$`AnnualizedSharpe(Rf=0%)`
+  SPY.StdDev <- TORI.SPY$AnnualizedStdDev
 print(TORI.SPY)
 
 print("Annualised return of QQQ:")
 TORI.QQQ <- RaQQQ.multiple.portfolio %>%
   tq_performance(Rb.QQQ, NULL, performance_fun = table.AnnualizedReturns)
+  QQQ.annualized <- TORI.QQQ$AnnualizedReturn
+  QQQ.Sharpe <- TORI.QQQ$`AnnualizedSharpe(Rf=0%)`
+  QQQ.StdDev <- TORI.QQQ$AnnualizedStdDev
 print(TORI.QQQ)
 
 print("Annualised return of Golden Butterfly:")
 TORI.GoldBut <- RaGoldBut.multiple.portfolio %>%
   tq_performance(Rb.GoldBut, NULL, performance_fun = table.AnnualizedReturns)
+GB.annualized <- TORI.GoldBut$AnnualizedReturn
+GB.Sharpe <- TORI.GoldBut$`AnnualizedSharpe(Rf=0%)`
+GB.StdDev <- TORI.GoldBut$AnnualizedStdDev
 print(TORI.GoldBut)
 
 print("Annualised return of HSI:")
 TORI.HSI <- RaHSI.multiple.portfolio %>%
   tq_performance(Rb.HSI, NULL, performance_fun = table.AnnualizedReturns)
+HSI.annualized <- TORI.HSI$AnnualizedReturn
+HSI.Sharpe <- TORI.HSI$`AnnualizedSharpe(Rf=0%)`
+HSI.StdDev <- TORI.HSI$AnnualizedStdDev
 print(TORI.HSI)
 
 print("CAPM Information against SPY:")
 TORI.SPY <- RaSPY.multiple.portfolio %>%
   tq_performance(Ra, Rb.SPY, performance_fun = table.CAPM)
+SPY.alpha <- TORI.SPY$AnnualizedAlpha
+SPY.beta <- TORI.SPY$Beta
+SPY.corr <- TORI.SPY$Correlation
+SPY.info <- TORI.SPY$InformationRatio
 print(TORI.SPY)
 
 print("CAPM Information against QQQ:")
 TORI.QQQ <- RaQQQ.multiple.portfolio %>%
   tq_performance(Ra, Rb.QQQ, performance_fun = table.CAPM)
+QQQ.alpha <- TORI.QQQ$AnnualizedAlpha
+QQQ.beta <- TORI.QQQ$Beta
+QQQ.corr <- TORI.QQQ$Correlation
+QQQ.info <- TORI.QQQ$InformationRatio
 print(TORI.QQQ)
 
 print("CAPM Information against GoldBut:")
 TORI.GoldBut <- RaGoldBut.multiple.portfolio %>%
   tq_performance(Ra, Rb.GoldBut, performance_fun = table.CAPM)
+GB.alpha <- TORI.GoldBut$AnnualizedAlpha
+GB.beta <- TORI.GoldBut$Beta
+GB.corr <- TORI.GoldBut$Correlation
+GB.info <- TORI.GoldBut$InformationRatio
 print(TORI.GoldBut)
 
 print("CAPM Information against HSI:")
 TORI.HSI <- RaHSI.multiple.portfolio %>%
   tq_performance(Ra, Rb.HSI, performance_fun = table.CAPM)
+HSI.alpha <- TORI.HSI$AnnualizedAlpha
+HSI.beta <- TORI.HSI$Beta
+HSI.corr <- TORI.HSI$Correlation
+HSI.info <- TORI.HSI$InformationRatio
 print(TORI.HSI)
-
 
 print("Information Ratio against SPY:")
 TORI.SPY <- RaSPY.multiple.portfolio %>%
@@ -916,7 +1009,7 @@ portf.rebal.fm.dollar.gb.tb.cpy <-
 portf.rebal.fm.dollar.gb.tb.cpy <-
   portf.rebal.fm.dollar.gb.tb.cpy[, -2]
 colnames(portf.rebal.fm.dollar.gb.tb.cpy) <- c("date", "Ra")
-portf.rebal.fm.dollar.gb.tb.cpy[, 1] <- GoldBut.dat[, 2]
+portf.rebal.fm.dollar.gb.tb.cpy[, 1] <- head(GoldBut.dat$date, length(GoldBut.dat$date) / 5)
 portf.dollar.monthly.gb <- portf.rebal.fm.dollar.gb.tb.cpy %>%
   mutate(Ra = Ra * 2301)
 
@@ -1000,7 +1093,7 @@ cat(
   ES(portf.rebal.fm, method = "modified"),
   "\n"
 )
-tail(MPF.portf.weight, n = 6)
+tail(head(MPF.portf.weight, n=-1), n = 6)
 ```
 
 ### Monthly Installment
@@ -1078,3 +1171,86 @@ SortinoRatio(MPF.monthly.returns) * sqrt(12)
 ES(MPF.monthly.returns, method = "historical")
 
 ```
+
+# Tori in action: Walk-forwark validation results     
+# Tori 前移式回測結果 {#result}
+單一供款 One-off MPF Installment:    
+```{r echo=FALSE, keep.source = FALSE}
+library(knitr)
+df <-
+  data.frame(
+    c(
+      "年率化回報 Annualized Return",
+      "累積回報 Cumulative Return",
+      "年率化標準誤差 Annualized SD",
+      "夏普比率 Sharpe Ratio",
+      "索丁諾比率 Sortino Ratio",
+      "資訊比率 Information Ratio",
+      "Annualised Jensen's Alpha",
+      "Beta",
+      "關聯系數 Correlation Coeff.",
+      "預期損失 Expected Shortfall:"
+    ),
+    c(
+      round(Return.annualized(portf.rebal.fm, geometric = TRUE), 4),
+      round(Return.cumulative(portf.rebal.fm, geometric = TRUE), 4),
+      round(StdDev.annualized(portf.rebal.fm), 4),
+      round(SharpeRatio(portf.rebal.fm, annualize = TRUE, method = "modified", FUN="StdDev"),4),
+      round(SortinoRatio(portf.rebal.fm) * sqrt(12),4),
+      "-->",
+      "-->",
+      "-->",
+      "-->",
+      round(ES(MPF.monthly.returns, method = "historical"),4)
+    ),
+    c(
+      SPY.annualized,
+      "/",
+      SPY.StdDev,
+      SPY.Sharpe,
+      "/",
+      SPY.info,
+      SPY.alpha,
+      SPY.beta,
+      SPY.corr,
+      "/"
+    ),
+    c(
+      HSI.annualized,
+      "/",
+      HSI.StdDev,
+      HSI.Sharpe,
+      "/",
+      HSI.info,
+      HSI.alpha,
+      HSI.beta,
+      HSI.corr,
+      "/"
+    ),
+    c(
+      GB.annualized,
+      "/",
+      GB.StdDev,
+      GB.Sharpe,
+      "/",
+      GB.info,
+      GB.alpha,
+      GB.beta,
+      GB.corr,
+      "/"
+    )
+  )
+
+kable(df, "pandoc",
+      col.names = c("指標 Indicator", "Tori @ Schroders", "SPY", "HSI", "Golden Butterfly"))
+```
+
+月供投資 Monthly MPF installment (或有誤差 maybe slightly differs):    
+每月供款 Monthly installment amount: 2301    
+總供款 Total contribution: `r total.asset.value`   
+最新結餘 Latest asset value: `r total.contribution`     
+算術年均回報 Mean annual return (arithmetric): `r mean.monthly.annual.return`  
+內部回報率 Internal Rate of Return (IRR): `r IRR.root$root`    
+年率化標準誤差 Annualized Standard Deviation: `r StdDev.annualized(MPF.monthly.returns)`   
+夏普比率 Sharpe Ratio: `r monthly.installment.sharpe.ratio`         
+索丁諾比率 Sortino Ratio (MAR=0%): `r SortinoRatio(MPF.monthly.returns) * sqrt(12)`

@@ -1,5 +1,7 @@
 ---
 title: "TORI 於安聯強積金計劃的回測 -- Backtesting TORI in Allianz MPF Scheme"
+author: jchan-gi (Jimmy Chan)
+date: May 3rd, 2020
 output: 
   pdf_document:
     latex_engine: xelatex
@@ -41,9 +43,13 @@ header-includes:
 7. 本聲明如有歧義，將以英文版本作準。  
 
 
-## 最後更新日期 Last update: 2020/03/31.   
+## 最後更新日期 Last update: 2020/05/03.   
 ### Changelog    
 ### 更新記錄    
+
+2020-05-03 v2.1.3b    
+Release results accounted up to 2020/04/28.       
+公佈直至2020/04/28的結果。   
 
 2020-03-31 v2.1.2
 Version synchronize before uploading 2020Q1 results.   
@@ -139,31 +145,9 @@ In this example, MPF would have T+2 time delay for obtaining historical price, h
 在本示例中，強積金大部分均有T+2的時延，因此實際操作將有時延誤差。  
 
 
-### TORI in action: Walk-forwark validation results     
-### TORI 前移式回測結果     
-
-單一供款 One-off MPF Installment:    
-年率化回報 Annualized Return: ~11.39%     
-算術年均回報 Mean Annual Return: ~11.13%       
-累積回報 Cumulative Return: ~649.37%    
-年率化標準誤差 Annualized Standard Deviation: ~10.18% (StdDev(monthly return) * sqrt(12))    
-夏普比率 Sharpe Ratio: 1.1189          
-索丁諾比率 Sortino Ratio: 2.7182 (MAR = 0%)    
-資訊比率 Information Ratio: 0.2797 (SPY), 0.3726 (HSI), 0.2897 (Golden Butterfly)    
-Jensen's Alpha: 0.0923 (SPY), 0.1182 (HSI), 0.1213 (Golden Butterfly)    
-Beta: 0.0155 (SPY), 0.0153 (HSI), 0.0028 (Golden Butterfly)     
-關聯系數 Correlation Coefficient: 0.0220 (SPY), 0.0308 (HSI), 0.0019 (Golden Butterfly)    
-預期損失 Expected Shortfall: 3.78% loss (0% Risk-free rate, 95% C.I.)      
-
-月供投資 Monthly MPF installment (或有誤差 maybe slightly differs):    
-每月供款 Monthly installment amount: 2301    
-總供款 Total contribution: 517725    
-最新結餘 Latest asset value: 1637231        
-算術年均回報 Mean annual return: 11.18%      
-內部回報率 Internal Rate of Return (IRR): 10.55%    
-年率化標準誤差 Annualized Standard Deviation: 10.16%    
-夏普比率 Sharpe Ratio: 1.1006          
-索丁諾比率 Sortino Ratio: 2.7213 (MAR = 0%)    
+### Tori in action: Walk-forwark validation results     
+### Tori 前移式回測結果     
+[Click here 按此](#result)    
 
 
 ## 流程 Detailed Workflow
@@ -229,7 +213,7 @@ Min_NMMA <- 0.00002
 options("openxlsx.dateFormat" = "d/m/yyyy")
 
 
-MPF.Allianz.AE <- read.xlsx("F:/OneDrive/MPF/Allianz/202001/AE.xlsx")
+MPF.Allianz.AE <- read.xlsx(paste(Sys.getenv("onedrive"),"/MPF/Allianz/202004/AE.xlsx", sep=""))
 MPF.Allianz.AE[, 1] <- convertToDate(MPF.Allianz.AE[, 3])
 MPF.Allianz.AE <-
   na.omit(MPF.Allianz.AE[(9:length(MPF.Allianz.AE[, 1])), 3:4])
@@ -240,7 +224,7 @@ MPF.Allianz.AE <-
 MPF.Allianz.AE[, 1] <- as.numeric(MPF.Allianz.AE[, 1])
 storage.mode(MPF.Allianz.AE) <- "numeric"
 
-MPF.Allianz.B <- read.xlsx("F:/OneDrive/MPF/Allianz/202001/B.xlsx")
+MPF.Allianz.B <- read.xlsx(paste(Sys.getenv("onedrive"),"/MPF/Allianz/202004/B.xlsx", sep=""))
 MPF.Allianz.B[, 1] <- convertToDate(MPF.Allianz.B[, 3])
 MPF.Allianz.B <-
   na.omit(MPF.Allianz.B[(9:length(MPF.Allianz.B[, 1])), 3:4])
@@ -250,7 +234,7 @@ MPF.Allianz.B <- as.xts(read.zoo(MPF.Allianz.B, format = "%Y-%m-%d"))
 MPF.Allianz.B[, 1] <- as.numeric(MPF.Allianz.B[, 1])
 storage.mode(MPF.Allianz.B) <- "numeric"
 
-MPF.Allianz.CA <- read.xlsx("F:/OneDrive/MPF/Allianz/202001/CA.xlsx")
+MPF.Allianz.CA <- read.xlsx(paste(Sys.getenv("onedrive"),"/MPF/Allianz/202004/CA.xlsx", sep=""))
 MPF.Allianz.CA[, 1] <- convertToDate(MPF.Allianz.CA[, 3])
 MPF.Allianz.CA <-
   na.omit(MPF.Allianz.CA[(9:length(MPF.Allianz.CA[, 1])), 3:4])
@@ -262,7 +246,7 @@ MPF.Allianz.CA[, 1] <- as.numeric(MPF.Allianz.CA[, 1])
 storage.mode(MPF.Allianz.CA) <- "numeric"
 
 MPF.Allianz.FlexB <-
-  read.xlsx("F:/OneDrive/MPF/Allianz/202001/FlexB.xlsx")
+  read.xlsx(paste(Sys.getenv("onedrive"),"/MPF/Allianz/202004/FlexB.xlsx", sep=""))
 MPF.Allianz.FlexB[, 1] <- convertToDate(MPF.Allianz.FlexB[, 3])
 MPF.Allianz.FlexB <-
   na.omit(MPF.Allianz.FlexB[(9:length(MPF.Allianz.FlexB[, 1])), 3:4])
@@ -273,7 +257,7 @@ MPF.Allianz.FlexB <-
 MPF.Allianz.FlexB[, 1] <- as.numeric(MPF.Allianz.FlexB[, 1])
 storage.mode(MPF.Allianz.FlexB) <- "numeric"
 
-MPF.Allianz.G <- read.xlsx("F:/OneDrive/MPF/Allianz/202001/G.xlsx")
+MPF.Allianz.G <- read.xlsx(paste(Sys.getenv("onedrive"),"/MPF/Allianz/202004/G.xlsx", sep=""))
 MPF.Allianz.G[, 1] <- convertToDate(MPF.Allianz.G[, 3])
 MPF.Allianz.G <-
   na.omit(MPF.Allianz.G[(9:length(MPF.Allianz.G[, 1])), 3:4])
@@ -284,7 +268,7 @@ MPF.Allianz.G[, 1] <- as.numeric(MPF.Allianz.G[, 1])
 storage.mode(MPF.Allianz.G) <- "numeric"
 
 MPF.Allianz.GCE <-
-  read.xlsx("F:/OneDrive/MPF/Allianz/202001/GCE.xlsx")
+  read.xlsx(paste(Sys.getenv("onedrive"),"/MPF/Allianz/202004/GCE.xlsx", sep=""))
 MPF.Allianz.GCE[, 1] <- convertToDate(MPF.Allianz.GCE[, 3])
 MPF.Allianz.GCE <-
   na.omit(MPF.Allianz.GCE[(9:length(MPF.Allianz.GCE[, 1])), 3:4])
@@ -296,7 +280,7 @@ MPF.Allianz.GCE[, 1] <- as.numeric(MPF.Allianz.GCE[, 1])
 storage.mode(MPF.Allianz.GCE) <- "numeric"
 
 MPF.Allianz.HKE <-
-  read.xlsx("F:/OneDrive/MPF/Allianz/202001/HKE.xlsx")
+  read.xlsx(paste(Sys.getenv("onedrive"),"/MPF/Allianz/202004/HKE.xlsx", sep=""))
 MPF.Allianz.HKE[, 1] <- convertToDate(MPF.Allianz.HKE[, 3])
 MPF.Allianz.HKE <-
   na.omit(MPF.Allianz.HKE[(9:length(MPF.Allianz.HKE[, 1])), 3:4])
@@ -308,7 +292,7 @@ MPF.Allianz.HKE[, 1] <- as.numeric(MPF.Allianz.HKE[, 1])
 storage.mode(MPF.Allianz.HKE) <- "numeric"
 
 MPF.Allianz.MPFC <-
-  read.xlsx("F:/OneDrive/MPF/Allianz/202001/MPFC.xlsx")
+  read.xlsx(paste(Sys.getenv("onedrive"),"/MPF/Allianz/202004/MPFC.xlsx", sep=""))
 MPF.Allianz.MPFC[, 1] <- convertToDate(MPF.Allianz.MPFC[, 3])
 MPF.Allianz.MPFC <-
   na.omit(MPF.Allianz.MPFC[(9:length(MPF.Allianz.MPFC[, 1])), 3:4])
@@ -320,7 +304,7 @@ MPF.Allianz.MPFC[, 1] <- as.numeric(MPF.Allianz.MPFC[, 1])
 storage.mode(MPF.Allianz.MPFC) <- "numeric"
 
 MPF.Allianz.Pacific <-
-  read.xlsx("F:/OneDrive/MPF/Allianz/202001/Pacific.xlsx")
+  read.xlsx(paste(Sys.getenv("onedrive"),"/MPF/Allianz/202004/Pacific.xlsx", sep=""))
 MPF.Allianz.Pacific[, 1] <- convertToDate(MPF.Allianz.Pacific[, 3])
 MPF.Allianz.Pacific <-
   na.omit(MPF.Allianz.Pacific[(9:length(MPF.Allianz.Pacific[, 1])), 3:4])
@@ -332,7 +316,7 @@ MPF.Allianz.Pacific[, 1] <- as.numeric(MPF.Allianz.Pacific[, 1])
 storage.mode(MPF.Allianz.Pacific) <- "numeric"
 
 MPF.Allianz.RMB <-
-  read.xlsx("F:/OneDrive/MPF/Allianz/202001/RMB.xlsx")
+  read.xlsx(paste(Sys.getenv("onedrive"),"/MPF/Allianz/202004/RMB.xlsx", sep=""))
 MPF.Allianz.RMB[, 1] <- convertToDate(MPF.Allianz.RMB[, 3])
 MPF.Allianz.RMB <-
   na.omit(MPF.Allianz.RMB[(9:length(MPF.Allianz.RMB[, 1])), 3:4])
@@ -343,7 +327,7 @@ MPF.Allianz.RMB <-
 MPF.Allianz.RMB[, 1] <- as.numeric(MPF.Allianz.RMB[, 1])
 storage.mode(MPF.Allianz.RMB) <- "numeric"
 
-MPF.Allianz.S <- read.xlsx("F:/OneDrive/MPF/Allianz/202001/S.xlsx")
+MPF.Allianz.S <- read.xlsx(paste(Sys.getenv("onedrive"),"/MPF/Allianz/202004/S.xlsx", sep=""))
 MPF.Allianz.S[, 1] <- convertToDate(MPF.Allianz.S[, 3])
 MPF.Allianz.S <-
   na.omit(MPF.Allianz.S[(9:length(MPF.Allianz.S[, 1])), 3:4])
@@ -354,7 +338,7 @@ MPF.Allianz.S[, 1] <- as.numeric(MPF.Allianz.S[, 1])
 storage.mode(MPF.Allianz.S) <- "numeric"
 
 MPF.Allianz.SFP <-
-  read.xlsx("F:/OneDrive/MPF/Allianz/202001/SFP.xlsx")
+  read.xlsx(paste(Sys.getenv("onedrive"),"/MPF/Allianz/202004/SFP.xlsx", sep=""))
 MPF.Allianz.SFP[, 1] <- convertToDate(MPF.Allianz.SFP[, 3])
 MPF.Allianz.SFP <-
   na.omit(MPF.Allianz.SFP[(9:length(MPF.Allianz.SFP[, 1])), 3:4])
@@ -365,7 +349,7 @@ MPF.Allianz.SFP <-
 MPF.Allianz.SFP[, 1] <- as.numeric(MPF.Allianz.SFP[, 1])
 storage.mode(MPF.Allianz.SFP) <- "numeric"
 
-MPF.Allianz.SG <- read.xlsx("F:/OneDrive/MPF/Allianz/202001/SG.xlsx")
+MPF.Allianz.SG <- read.xlsx(paste(Sys.getenv("onedrive"),"/MPF/Allianz/202004/SG.xlsx", sep=""))
 MPF.Allianz.SG[, 1] <- convertToDate(MPF.Allianz.SG[, 3])
 MPF.Allianz.SG <-
   na.omit(MPF.Allianz.SG[(9:length(MPF.Allianz.SG[, 1])), 3:4])
@@ -721,9 +705,9 @@ etf.dat <- c(etfs) %>%
       i %>%
       tq_get(
         "stock.prices",
-        from = "2001-01-01" %>%
+        from = "2001-05-01" %>%
           as.Date,
-        to = "2019-12-31" %>%
+        to = "2020-04-01" %>%
           as.Date
       )
   ) %>% group_by(symbol)  %>%
@@ -742,7 +726,7 @@ GoldBut.dat <- c(golden.butterfly) %>%
         "stock.prices",
         from = "2004-11-01" %>%
           as.Date,
-        to = "2019-12-31" %>%
+        to = "2020-04-01" %>%
           as.Date
       )
   ) %>% group_by(symbol)  %>%
@@ -798,15 +782,15 @@ portf.rebal.fm.dollar.cpy <- Return.portfolio(
 )
 
 portf.rebal.fm.dollar.gb <- Return.portfolio(
-  tail(MPF.Allianz.simple.returns,-44),
-  weight = tail(MPF.portf.weight,-44),
+  tail(MPF.Allianz.simple.returns,-42),
+  weight = tail(MPF.portf.weight,-42),
   geometric = TRUE,
   rebalance_on = "months"
 )
 
 portf.rebal.fm.dollar.gb.cpy <- Return.portfolio(
-  tail(MPF.Allianz.simple.returns, -44),
-  weight = tail(MPF.portf.weight, -44),
+  tail(MPF.Allianz.simple.returns, -42),
+  weight = tail(MPF.portf.weight, -42),
   geometric = TRUE,
   rebalance_on = "months",
   wealth.index = TRUE
@@ -834,7 +818,7 @@ RaSPY.multiple.portfolio <- left_join(portf.rebal.fm.dollar.tb,
 portf.rebal.fm.dollar.tb[, 1] <- QQQ.etf[, 1]
 RaQQQ.multiple.portfolio <- left_join(portf.rebal.fm.dollar.tb,
                                       QQQ.return.monthly, by = "date")
-portf.rebal.fm.dollar.gb.tb[, 1] <- GoldBut.dat[, 2]
+portf.rebal.fm.dollar.gb.tb[, 1] <- head(GoldBut.dat$date, length(GoldBut.dat$date) / 5)
 RaGoldBut.multiple.portfolio <-
   left_join(portf.rebal.fm.dollar.gb.tb,
             GoldBut.return.monthly, by = "date")
@@ -846,41 +830,69 @@ RaHSI.multiple.portfolio <- left_join(portf.rebal.fm.dollar.tb,
 print("Annualised return of SPY:")
 TORI.SPY <- RaSPY.multiple.portfolio %>%
   tq_performance(Rb.SPY, NULL, performance_fun = table.AnnualizedReturns)
+  SPY.annualized <- TORI.SPY$AnnualizedReturn
+  SPY.Sharpe <- TORI.SPY$`AnnualizedSharpe(Rf=0%)`
+  SPY.StdDev <- TORI.SPY$AnnualizedStdDev
 print(TORI.SPY)
 
 print("Annualised return of QQQ:")
 TORI.QQQ <- RaQQQ.multiple.portfolio %>%
   tq_performance(Rb.QQQ, NULL, performance_fun = table.AnnualizedReturns)
+  QQQ.annualized <- TORI.QQQ$AnnualizedReturn
+  QQQ.Sharpe <- TORI.QQQ$`AnnualizedSharpe(Rf=0%)`
+  QQQ.StdDev <- TORI.QQQ$AnnualizedStdDev
 print(TORI.QQQ)
 
 print("Annualised return of Golden Butterfly:")
 TORI.GoldBut <- RaGoldBut.multiple.portfolio %>%
   tq_performance(Rb.GoldBut, NULL, performance_fun = table.AnnualizedReturns)
+GB.annualized <- TORI.GoldBut$AnnualizedReturn
+GB.Sharpe <- TORI.GoldBut$`AnnualizedSharpe(Rf=0%)`
+GB.StdDev <- TORI.GoldBut$AnnualizedStdDev
 print(TORI.GoldBut)
 
 print("Annualised return of HSI:")
 TORI.HSI <- RaHSI.multiple.portfolio %>%
   tq_performance(Rb.HSI, NULL, performance_fun = table.AnnualizedReturns)
+HSI.annualized <- TORI.HSI$AnnualizedReturn
+HSI.Sharpe <- TORI.HSI$`AnnualizedSharpe(Rf=0%)`
+HSI.StdDev <- TORI.HSI$AnnualizedStdDev
 print(TORI.HSI)
 
 print("CAPM Information against SPY:")
 TORI.SPY <- RaSPY.multiple.portfolio %>%
   tq_performance(Ra, Rb.SPY, performance_fun = table.CAPM)
+SPY.alpha <- TORI.SPY$AnnualizedAlpha
+SPY.beta <- TORI.SPY$Beta
+SPY.corr <- TORI.SPY$Correlation
+SPY.info <- TORI.SPY$InformationRatio
 print(TORI.SPY)
 
 print("CAPM Information against QQQ:")
 TORI.QQQ <- RaQQQ.multiple.portfolio %>%
   tq_performance(Ra, Rb.QQQ, performance_fun = table.CAPM)
+QQQ.alpha <- TORI.QQQ$AnnualizedAlpha
+QQQ.beta <- TORI.QQQ$Beta
+QQQ.corr <- TORI.QQQ$Correlation
+QQQ.info <- TORI.QQQ$InformationRatio
 print(TORI.QQQ)
 
 print("CAPM Information against GoldBut:")
 TORI.GoldBut <- RaGoldBut.multiple.portfolio %>%
   tq_performance(Ra, Rb.GoldBut, performance_fun = table.CAPM)
+GB.alpha <- TORI.GoldBut$AnnualizedAlpha
+GB.beta <- TORI.GoldBut$Beta
+GB.corr <- TORI.GoldBut$Correlation
+GB.info <- TORI.GoldBut$InformationRatio
 print(TORI.GoldBut)
 
 print("CAPM Information against HSI:")
 TORI.HSI <- RaHSI.multiple.portfolio %>%
   tq_performance(Ra, Rb.HSI, performance_fun = table.CAPM)
+HSI.alpha <- TORI.HSI$AnnualizedAlpha
+HSI.beta <- TORI.HSI$Beta
+HSI.corr <- TORI.HSI$Correlation
+HSI.info <- TORI.HSI$InformationRatio
 print(TORI.HSI)
 
 
@@ -960,7 +972,7 @@ portf.rebal.fm.dollar.gb.tb.cpy <-
 portf.rebal.fm.dollar.gb.tb.cpy <-
   portf.rebal.fm.dollar.gb.tb.cpy[, -2]
 colnames(portf.rebal.fm.dollar.gb.tb.cpy) <- c("date", "Ra")
-portf.rebal.fm.dollar.gb.tb.cpy[, 1] <- GoldBut.dat[, 2]
+portf.rebal.fm.dollar.gb.tb.cpy[, 1] <- head(GoldBut.dat$date, length(GoldBut.dat$date) / 5)
 portf.dollar.monthly.gb <- portf.rebal.fm.dollar.gb.tb.cpy %>%
   mutate(Ra = Ra * 2301)
 
@@ -1126,3 +1138,86 @@ SortinoRatio(MPF.monthly.returns) * sqrt(12)
 ES(MPF.monthly.returns, method = "historical")
 
 ```
+
+# Tori in action: Walk-forwark validation results     
+# Tori 前移式回測結果 {#result}
+單一供款 One-off MPF Installment:    
+```{r echo=FALSE, keep.source = FALSE}
+library(knitr)
+df <-
+  data.frame(
+    c(
+      "年率化回報 Annualized Return",
+      "累積回報 Cumulative Return",
+      "年率化標準誤差 Annualized SD",
+      "夏普比率 Sharpe Ratio",
+      "索丁諾比率 Sortino Ratio",
+      "資訊比率 Information Ratio",
+      "Annualised Jensen's Alpha",
+      "Beta",
+      "關聯系數 Correlation Coeff.",
+      "預期損失 Expected Shortfall:"
+    ),
+    c(
+      round(Return.annualized(portf.rebal.fm, geometric = TRUE), 4),
+      round(Return.cumulative(portf.rebal.fm, geometric = TRUE), 4),
+      round(StdDev.annualized(portf.rebal.fm), 4),
+      round(SharpeRatio(portf.rebal.fm, annualize = TRUE, method = "modified", FUN="StdDev"),4),
+      round(SortinoRatio(portf.rebal.fm) * sqrt(12),4),
+      "-->",
+      "-->",
+      "-->",
+      "-->",
+      round(ES(MPF.monthly.returns, method = "historical"),4)
+    ),
+    c(
+      SPY.annualized,
+      "/",
+      SPY.StdDev,
+      SPY.Sharpe,
+      "/",
+      SPY.info,
+      SPY.alpha,
+      SPY.beta,
+      SPY.corr,
+      "/"
+    ),
+    c(
+      HSI.annualized,
+      "/",
+      HSI.StdDev,
+      HSI.Sharpe,
+      "/",
+      HSI.info,
+      HSI.alpha,
+      HSI.beta,
+      HSI.corr,
+      "/"
+    ),
+    c(
+      GB.annualized,
+      "/",
+      GB.StdDev,
+      GB.Sharpe,
+      "/",
+      GB.info,
+      GB.alpha,
+      GB.beta,
+      GB.corr,
+      "/"
+    )
+  )
+
+kable(df, "pandoc",
+      col.names = c("指標 Indicator", "Tori @ Allianz", "SPY", "HSI", "Golden Butterfly"))
+```
+
+月供投資 Monthly MPF installment (或有誤差 maybe slightly differs):    
+每月供款 Monthly installment amount: 2301    
+總供款 Total contribution: `r total.asset.value`   
+最新結餘 Latest asset value: `r total.contribution`     
+算術年均回報 Mean annual return (arithmetric): `r mean.monthly.annual.return`  
+內部回報率 Internal Rate of Return (IRR): `r IRR.root$root`    
+年率化標準誤差 Annualized Standard Deviation: `r StdDev.annualized(MPF.monthly.returns)`   
+夏普比率 Sharpe Ratio: `r monthly.installment.sharpe.ratio`         
+索丁諾比率 Sortino Ratio (MAR=0%): `r SortinoRatio(MPF.monthly.returns) * sqrt(12)`
