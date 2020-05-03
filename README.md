@@ -7,8 +7,8 @@
 # Latest news
 # 最新消息   
 
-2020Q1 results of HSBC and three current MPF operator in Gov't have been released and add into walk-forward validation.    
-滙豐強積金智選計劃、銀聯積金之選強積金計劃、永明彩虹強積金計劃、中銀保誠簡易強積金計劃的2020第一季表現已列出並加入回測。    
+2020/04 results (except Fidelity MPF) have been released and add into walk-forward validation.    
+除富達外的強積金計劃直至2020年4月的表現已列出並加入回測。    
 
 Accelerating KAizen at Negative Environment(Akane,あかね) Module have been made public. It could improve return with slight increase of volality. Checkout now!   
 以輕微增加風險以提高回報的Accelerating KAizen at Negative Environment(Akane,あかね)模組現已公開！   

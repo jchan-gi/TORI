@@ -171,90 +171,9 @@ In this example, MPF would have T+2 time delay for obtaining historical price, h
 ### Tori 前移式回測結果     
 [Click here 按此](#result)    
 
-單一供款 One-off MPF Installment:    
-```{r echo=FALSE, keep.source = FALSE}
-library(knitr)
-df <-
-  data.frame(
-    c(
-      "年率化回報 Annualized Return",
-      "累積回報 Cumulative Return",
-      "年率化標準誤差 Annualized SD",
-      "夏普比率 Sharpe Ratio",
-      "索丁諾比率 Sortino Ratio",
-      "資訊比率 Information Ratio",
-      "Annualised Jensen's Alpha",
-      "Beta",
-      "關聯系數 Correlation Coeff.",
-      "預期損失 Expected Shortfall:"
-    ),
-    c(
-      "10.89%",
-      "632.40%",
-      "10.56%",
-      "1.0317",
-      "2.1481",
-      "-->",
-      "-->",
-      "-->",
-      "-->",
-      "5.44% loss"
-    ),
-    c(
-      "5.68%",
-      "/",
-      "14.72%",
-      "0.3859",
-      "/",
-      "0.3686",
-      "0.0935",
-      "0.2954",
-      "0.4118",
-      "/"
-    ),
-    c(
-      "2.21%",
-      "/",
-      "20.42%",
-      "0.1189",
-      "/",
-      "0.5086",
-      "0.1000",
-      "0.3015",
-      "0.5829",
-      "/"
-    ),
-    c(
-      "7.88%",
-      "/",
-      "7.26%",
-      "1.0856",
-      "/",
-      "0.4112",
-      "0.0834",
-      "0.4973",
-      "0.3427",
-      "/"
-    )
-  )
 
-kable(df, "pandoc",
-      col.names = c("指標 Indicator", "Tori @ HSBC", "SPY", "HSI", "Golden Butterfly"))
-```
-
-月供投資 Monthly MPF installment (或有誤差 maybe slightly differs):    
-每月供款 Monthly installment amount: 2301    
-總供款 Total contribution: 533832    
-最新結餘 Latest asset value: 1801822    
-算術年均回報 Mean annual return (arithmetric): 9.52%      
-內部回報率 Internal Rate of Return (IRR): 10.74%    
-年率化標準誤差 Annualized Standard Deviation: 10.54%    
-夏普比率 Sharpe Ratio: 0.9033          
-索丁諾比率 Sortino Ratio: 2.1465 (MAR = 0%)    
-
-
-## 流程 Detailed Workflow
-### Package Preparation
+## 流程 Detailed Workflow     
+### Package Preparation     
 1. Install necessary packages
 ```{r linewidth=40,  warning=FALSE, results=FALSE, eval=FALSE}
 r = getOption("repos")

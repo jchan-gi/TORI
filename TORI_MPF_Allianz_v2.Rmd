@@ -150,9 +150,8 @@ In this example, MPF would have T+2 time delay for obtaining historical price, h
 [Click here 按此](#result)    
 
 
-## 流程 Detailed Workflow
-
-### Package Preparation
+## 流程 Detailed Workflow     
+### Package Preparation     
 1. Install necessary packages
 ```{r warning=FALSE, results=FALSE, eval=FALSE}
 r = getOption("repos")
