@@ -7,6 +7,9 @@
 # Latest news
 # 最新消息   
 
+The source MPF NAV data in SQLite format is planned to release before the end of 2020 Q3. The release is planned to provide an dashboard showing timely MPF data from credible source. The updated do not include mutual funds/ETFs since their data are readily available.        
+以SQLite方式儲存的基金的資產淨值暫定於2020年第三季完結前公開。該更新預定將包括以儀表板方式展示每日更新的強積金數據。由於網路上及市場上取得共同基金或交易所買賣基金的資料較為容易，此更新將不包括‧該等基金。      
+
 2020/04 results (except Fidelity MPF) have been released and add into walk-forward validation.    
 除富達外的強積金計劃直至2020年4月的表現已列出並加入回測。    
 
@@ -92,9 +95,17 @@ As long as your system contain the following then you could execute the script.
 * The result of the following would be released before 2020/06.   
 1. A portfolio of retail mutual funds in Hong Kong; and    
 2. a portfolio of US ETFs would be assessed in Q2 2020. Please refer to the plain text file in root directory of repository (to be release soon) for the list of mutual funds and ETFs.   
-* The critical part would be rewritten in C++ before the end of 2020.
+* The following updates are planned and are scheduled for publication before 2020/09.   
+1. Store past MPF NAV in SQLite format    
+2. Show latest price information by dashboard format   
+3. Include HSBC FlexInvest Portfolio   
+* The critical part would be rewritten in C++ before the end of 2020.   
 
 * 以下評估Tori的結果將於2020年6月底前公佈:    
 1. 一個由零售共同基金組成的投資組合及     
 2. 一個由美國上市的交易所買賣基金所組成的投資組合。基金列表即將公佈！   
+* 現暫定於2020年9月底前作出以下更新：    
+1. 以SQLite方式記錄的強積金資產淨值(NAV)   
+2. 以儀表板方式(Dashboard)展示的最新基金價格資訊   
+3. 加入滙豐靈活智投(FlexInvest)的基金組合     
 * 為加快計算速度，現暫定於今年完結前將關鍵部份改以C++方式編寫。     
