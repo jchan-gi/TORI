@@ -2,54 +2,12 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
   <loc>https://jchan-gi.github.io/TORI/</loc>
-  <lastmod>2020-05-21T23:55:00+08:00</lastmod>
+  <lastmod>2020-07-25T15:55:00+08:00</lastmod>
   <priority>1.00</priority>
-</url>
-<url>
-  <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_SunLife_Rainbow_cs.pdf</loc>
-  <lastmod>2020-05-03T09:00:00+08:00</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.60</priority>
-</url>
-<url>
-  <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_SunLife_Rainbow.pdf</loc>
-  <lastmod>2020-05-03T09:00:00+08:00</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.60</priority>
-</url>
-<url>
-  <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_BCT_cs.pdf</loc>
-  <lastmod>2020-05-03T09:00:00+08:00</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.60</priority>
-</url>
-<url>
-  <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_BCT.pdf</loc>
-  <lastmod>2020-05-03T09:00:00+08:00</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.60</priority>
-</url>
-<url>
-  <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_BOCPT_cs.pdf</loc>
-  <lastmod>2020-05-03T09:00:00+08:00</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.60</priority>
-</url>
-<url>
-  <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_BOCPT.pdf</loc>
-  <lastmod>2020-04-02T16:30:00+08:00</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.60</priority>
 </url>
 <url>
   <loc>https://jchan-gi.github.io/TORI/Results/AKANE_TORI_MPF_HSBC.pdf</loc>
   <lastmod>2020-05-03T09:00:00+08:00</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.60</priority>
-</url>
-<url>
-  <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_HSBC.pdf</loc>
-  <lastmod>2020-04-02T16:30:00+08:00</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.60</priority>
 </url>
@@ -60,11 +18,6 @@
   <priority>0.60</priority>
 </url>
 <url>
-  <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_Schroders.pdf</loc>
-  <lastmod>2020-05-03T09:00:00+08:00</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.60</priority>
-</url>
 <url>
   <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_Invesco.pdf</loc>
   <lastmod>2020-05-03T09:00:00+08:00</lastmod>

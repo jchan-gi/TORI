@@ -4,20 +4,20 @@
  [Tori](https://jchan-gi.github.io/TORI/) (Trend- & Oversell-based Rebalance Instruction) is a n-m Moving Average BIAS (NMMA BIAS) based tools to improve portfolio performance by monthly rebalance    
  [Tori](https://jchan-gi.github.io/TORI/)是一個利用時差平均值乖離率(n-m MA BIAS, NMMA BIAS)進行每月再配置以提升投資組合的程式    
 
-# Latest news of 2020/06/02   
-# 最新消息 2020/06/02   
+# Latest news of 2020/07/26   
+# 最新消息 2020/07/26   
 
-The source MPF NAV data in SQLite format is planned to release before the end of 2020/07. After that, upcoming release is planned to provide an dashboard showing timely MPF data from credible source. The updated do not include mutual funds/ETFs since their data are readily available.        
-以SQLite方式儲存的基金的資產淨值暫定於2020年7月完結前公開。其後預定將包括以儀表板方式展示每日更新的強積金數據。由於網路上及市場上取得共同基金或交易所買賣基金的資料較為容易，此更新將不包括‧該等基金。      
+Python is now used in the critical part of the HSBC, BCT, BOCPT, Sun Life Rainbow Scheme and Schroders MPF schemes demonstration in v3 given the performance issues of R language. The performance is now satisfactory, and C++ implementation of the critical part will be upheld.    
+關鍵計算部分已改由Python進行，以改善R運算較慢的特點。滙豐、銀聯、中銀、永明（彩虹）及施羅德強積金已率先實施此改動，並以v3升版作區分。因Python的效能理想，該等關鍵部分將不會以C++程式計算。   
 
-I am busying on my work, hence evaluation report for ETFs and mutual funds would NOT be released until 2020Q3.      
-因正職公務繁忙，交易所買賣基金及共同基金的評估將不會早於2020年第三季前公開。   
+HSBC, BCT, BOCPT, Sun Life Rainbow Scheme and Schroders MPF scheme loaded with price data dated before 2020/06/30 inclusive.    
+滙豐、銀聯、中銀、永明（彩虹）及施羅德強積金已載入至2020/06/30或之前的價格。    
 
-2020/04 results (except Fidelity MPF) have been released and add into walk-forward validation.    
-除富達外的強積金計劃直至2020年4月的表現已列出並加入回測。    
+The update of the AIA MPF scheme will be indefinitely suspended. The remaining MPF scheme will receive v3 updates at any unscheduled time before 2020/12/31.    
+友邦計畫的更新將無限期押後。而餘下強積金計畫將於2020/12/31前不定期更新並升版至v3。   
 
-Accelerating KAizen at Negative Environment(Akane,あかね) Module have been made public. It could improve return with slight increase of volality. Checkout now!   
-以輕微增加風險以提高回報的Accelerating KAizen at Negative Environment(Akane,あかね)模組現已公開！   
+Due to an unprecedented event, the MPF dashboard and related packages would not be *publicized* earlier than 2020/12/31 despite preparation works finished. The SQLite database would be made available in this repository as initially scheduled.    
+受到一個從未發生而不可估計的事件所影響，儘管相關準備工作已大致完成，顯示強積金及Tori策略的儀表版將不會早於2020/12/31公開。以SQLite數據庫形式公開基金資訊將按原訂計畫公開。   
 
 # Disclaimer    
 1. The author (jchan-gi) expressly stated that nothing my repositories and webpages constitutes any advices or recommendation on investing or allocating assets on any stock or financial products.    
@@ -60,30 +60,35 @@ Tori would further intensify the n-m MA BIAS by considering overbuy/oversell usi
 # System requirement     
 # 系統要求     
 As long as your system contain the following then you could execute the script.
-只要有以下的軟件及互聯網即可使用。    
+只要有以下的軟件及互聯網即可使用。  
+
+Version 2 升版v2:  
 1. R    
 2. RStudio    
 
+Version 3 升版v3:  
+1. Python with Jupyter Notebook / Jupyter Lab.    
+2. R    
 
 # Testing of Tori     
 # 測試結果      
 [Tori](https://jchan-gi.github.io/TORI/) was tested against the following funds (Order by convenient only):   
-1. [HSBC SuperTrust Plus MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_HSBC.pdf)   
-2. [BOCPT Easy Choice MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_BOCPT.pdf)    
-3. [Sun Life Rainbow MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_SunLife_Rainbow.pdf)    
-4. [BCT ProChoice MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_BCT.pdf)      
+1. [V3: HSBC SuperTrust Plus MPF](https://github.com/jchan-gi/TORI/blob/master/Tori_MPF_HSBC_v3.ipynb)   
+2. [V3: BOCPT Easy Choice MPF](https://github.com/jchan-gi/TORI/blob/master/Tori_MPF_BOCPT_v3.ipynb)   
+3. [V3: Sun Life Rainbow MPF](https://github.com/jchan-gi/TORI/blob/master/Tori_MPF_SunLife_v3.ipynb)    
+4. [V3: BCT ProChoice MPF](https://github.com/jchan-gi/TORI/blob/master/Tori_MPF_BCT_v3.ipynb)    
 5. [AIA Prime Value Choice](https://jchan-gi.github.io/TORI/Results/TORI_MPF_AIA.pdf)    
-6. [Sun Life MPF Master Trust (Ex. Schroders MPF Master Trust)](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Schroders.pdf)   
+6. [V3: Sun Life MPF Master Trust (Ex. Schroders MPF Master Trust)](https://github.com/jchan-gi/TORI/blob/master/Tori_MPF_Schroders_v3.ipynb)        
 7. [Invesco MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Invesco.pdf)    
 8. [Allianz MPF](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Invesco.pdf)       
 
 [Tori](https://jchan-gi.github.io/TORI/)再配置指引經過以下的基金作出測試（排名不分先後）：   
-1. [滙豐強積金智選計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_HSBC.pdf)   
-2. [中銀保誠簡易強積金計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_BOCPT.pdf)   
-3. [永明彩虹強積金計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_SunLife_Rainbow.pdf)    
-4. [銀聯積金之選強積金計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_BCT.pdf)    
+1. [V3: 滙豐強積金智選計劃](https://github.com/jchan-gi/TORI/blob/master/Tori_MPF_HSBC_v3.ipynb)   
+2. [V3: 中銀保誠簡易強積金計劃](https://github.com/jchan-gi/TORI/blob/master/Tori_MPF_BOCPT_v3.ipynb)   
+3. [V3: 永明彩虹強積金計劃](https://github.com/jchan-gi/TORI/blob/master/Tori_MPF_SunLife_v3.ipynb)    
+4. [V3: 銀聯積金之選強積金計劃](https://github.com/jchan-gi/TORI/blob/master/Tori_MPF_BCT_v3.ipynb)    
 5. [友邦強積金優選計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_AIA.pdf)    
-6. [永明強積金集成信託計劃(前施羅德強積金集成信託計劃)](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Schroders.pdf)        
+6. [V3: 永明強積金集成信託計劃(前施羅德強積金集成信託計劃)](https://github.com/jchan-gi/TORI/blob/master/Tori_MPF_Schroders_v3.ipynb)        
 7. [景順強積金](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Invesco.pdf)   
 8. [安聯強積金](https://jchan-gi.github.io/TORI/Results/TORI_MPF_Allianz.pdf)   
 
@@ -97,28 +102,26 @@ As long as your system contain the following then you could execute the script.
 # 更新預告   
 * The following updates are planned before 2020/07:   
 1. Store past MPF NAV in SQLite format    
-2. Show latest price information by dashboard format   
 
 * The following updates are planned before 2020/08:   
-1. Code refactoring for better readibility.    
 2. Include HSBC FlexInvest Portfolio     
 
-* The following updates are planned after 2020/09:   
+* The following updates are planned before 2020/11:   
 1. A portfolio of retail mutual funds in Hong Kong; and    
 2. a portfolio of US ETFs would be assessed in Q2 2020. Please refer to the plain text file in root directory of repository (to be release soon) for the list of mutual funds and ETFs.   
 
-* The critical part would be rewritten in C++ before the end of 2020.   
+* Due to an unprecedented event, the following upgrade would not be *publicized before 2020/12/31*     
+1. A dashboard showing latest MPF price and related information.       
 
 * 現暫定於2020年7月底前作出以下更新：       
 1. 以SQLite方式記錄的強積金資產淨值(NAV)   
-2. 以儀表板方式(Dashboard)展示的最新基金價格資訊   
 
-* 現暫定於2020年8月底前作出以下更新：     
-1. 重整結果PDF及計算代碼，以便閱讀及準備年底以C++改寫關鍵部分。        
-2. 加入滙豐靈活智投(FlexInvest)的基金組合     
+* 現暫定於2020年8月底前作出以下更新：        
+1. 加入滙豐靈活智投(FlexInvest)的基金組合     
 
-* 現暫定於2020年9月底後作出以下更新：     
+* 現暫定於2020年11月底前作出以下更新：     
 1. 一個由零售共同基金組成的投資組合及     
 2. 一個由美國上市的交易所買賣基金所組成的投資組合。基金列表即將公佈！   
 
-* 為加快計算速度，現暫定於今年完結前將關鍵部份改以C++方式編寫。     
+* 由於發生未能預見的事件，以下更新將*不會於2020/12/31前公開*。    
+1. 以儀表板方式(Dashboard)展示的最新基金價格資訊   
