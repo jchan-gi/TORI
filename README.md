@@ -102,21 +102,16 @@ Version 3 升版v3:
 
 # Future update    
 # 更新預告   
-* The following updates are planned before 2020/07:   
-1. Store past MPF NAV in SQLite format    
 
 * The following updates are planned before 2020/08:   
-2. Include HSBC FlexInvest Portfolio     
+1. Include HSBC FlexInvest Portfolio     
 
 * The following updates are planned before 2020/11:   
 1. A portfolio of retail mutual funds in Hong Kong; and    
-2. a portfolio of US ETFs would be assessed in Q2 2020. Please refer to the plain text file in root directory of repository (to be release soon) for the list of mutual funds and ETFs.   
+2. a portfolio of US ETFs would be assessed in Q3 2020. Please refer to the plain text file in root directory of repository (to be release soon) for the list of mutual funds and ETFs.   
 
 * Due to an unprecedented event, the following upgrade would not be *publicized before 2020/12/31*     
 1. A dashboard showing latest MPF price and related information.       
-
-* 現暫定於2020年7月底前作出以下更新：       
-1. 以SQLite方式記錄的強積金資產淨值(NAV)   
 
 * 現暫定於2020年8月底前作出以下更新：        
 1. 加入滙豐靈活智投(FlexInvest)的基金組合     
