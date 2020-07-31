@@ -15,42 +15,48 @@
   <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_BCT.html</loc>
   <lastmod>2020-07-30T23:30:00+08:00</lastmod>
   <changefreq>monthly</changefreq>
-  <priority>0.60</priority>
+  <priority>0.40</priority>
 </url>
 <url>
   <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_BCT_cs.html</loc>
   <lastmod>2020-07-30T23:30:00+08:00</lastmod>
   <changefreq>monthly</changefreq>
-  <priority>0.60</priority>
+  <priority>0.40</priority>
 </url>
 <url>
   <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_BOCPT.html</loc>
   <lastmod>2020-07-30T23:30:00+08:00</lastmod>
   <changefreq>monthly</changefreq>
-  <priority>0.60</priority>
+  <priority>0.40</priority>
 </url>
 <url>
   <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_BOCPT_cs.html</loc>
   <lastmod>2020-07-30T23:30:00+08:00</lastmod>
   <changefreq>monthly</changefreq>
-  <priority>0.60</priority>
+  <priority>0.40</priority>
 </url>
 <url>
   <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_HSBC.html</loc>
   <lastmod>2020-07-30T23:30:00+08:00</lastmod>
   <changefreq>monthly</changefreq>
-  <priority>0.60</priority>
+  <priority>0.40</priority>
 </url>
 <url>
   <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_SunLife.html</loc>
   <lastmod>2020-07-30T23:30:00+08:00</lastmod>
   <changefreq>monthly</changefreq>
-  <priority>0.60</priority>
+  <priority>0.40</priority>
 </url>
 <url>
   <loc>https://jchan-gi.github.io/TORI/Results/TORI_MPF_SunLife_cs.html</loc>
   <lastmod>2020-07-30T23:30:00+08:00</lastmod>
   <changefreq>monthly</changefreq>
-  <priority>0.60</priority>
+  <priority>0.40</priority>
+</url>
+<url>
+  <loc>https://jchan-gi.github.io/TORI/assets/Tori_SQLite_MPF_Name_Scheme.pdf</loc>
+  <lastmod>2020-07-31T00:30:00+08:00</lastmod>
+  <changefreq>yearly</changefreq>
+  <priority>0.08</priority>
 </url>
 </urlset>

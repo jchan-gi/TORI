@@ -5,8 +5,11 @@
  [Tori](https://jchan-gi.github.io/TORI/) (Trend- & Oversell-based Rebalance Instruction) is a n-m Moving Average BIAS (NMMA BIAS) based tools to improve portfolio performance by monthly rebalance    
  [Tori](https://jchan-gi.github.io/TORI/)是一個利用時差平均值乖離率(n-m MA BIAS, NMMA BIAS)進行每月再配置以提升投資組合的程式    
 
-# Latest news of 2020/07/26   
-# 最新消息 2020/07/26   
+# Latest news of 2020/07/31   
+# 最新消息 2020/07/31   
+ 
+HSBC, Sun Life Rainbow, BCT and BOCPT scheme have adopted and uploaded in SQLite format for enabling real-time data crawling and update.    
+滙豐、銀聯、中銀、永明（彩虹）現已改用SQLite數據庫形式儲存並公開。   
 
 Python is now used in the critical part of the HSBC, BCT, BOCPT, Sun Life Rainbow Scheme and Schroders MPF schemes demonstration in v3 given the performance issues of R language. The performance is now satisfactory, and C++ implementation of the critical part will be upheld.    
 關鍵計算部分已改由Python進行，以改善R運算較慢的特點。滙豐、銀聯、中銀、永明（彩虹）及施羅德強積金已率先實施此改動，並以v3升版作區分。因Python的效能理想，該等關鍵部分將不會以C++程式計算。   
@@ -18,7 +21,7 @@ The update of the AIA MPF scheme will be indefinitely suspended. The remaining M
 友邦計畫的更新將無限期押後。而餘下強積金計畫將於2020/12/31前不定期更新並升版至v3。   
 
 Due to an unprecedented event, the MPF dashboard and related packages would not be *publicized* earlier than 2020/12/31 despite preparation works finished. The SQLite database would be made available in this repository as initially scheduled.    
-受到一個從未發生而不可估計的事件所影響，儘管相關準備工作已大致完成，顯示強積金及Tori策略的儀表版將不會早於2020/12/31公開。以SQLite數據庫形式公開基金資訊將按原訂計畫公開。   
+受到一個從未發生而不可估計的事件所影響，儘管相關準備工作已大致完成，顯示強積金及Tori策略的儀表版將不會早於2020/12/31公開。
 
 # Disclaimer    
 1. The author (jchan-gi) expressly stated that nothing my repositories and webpages constitutes any advices or recommendation on investing or allocating assets on any stock or financial products.    
@@ -71,6 +74,7 @@ Version 3 升版v3:
 1. Python with Jupyter Notebook / Jupyter Lab.    
 2. R    
 
+
 # Testing of Tori     
 # 測試結果      
 [Tori](https://jchan-gi.github.io/TORI/) was tested against the following funds (Order by convenient only):   
@@ -87,6 +91,9 @@ Version 3 升版v3:
 4. [V3: 中銀保誠簡易強積金計劃](https://jchan-gi.github.io/TORI/Results/TORI_MPF_BOCPT.html)   
 5. [V3: 永明強積金集成信託計劃(前施羅德強積金集成信託計劃)](https://github.com/jchan-gi/TORI/blob/master/Tori_MPF_Schroders_v3.ipynb)        
 
+## Fund naming in SQLite database
+## 基金命名方式
+[Link 連結](https://jchan-gi.github.io/TORI/assets/Tori_SQLite_MPF_Name_Scheme.pdf)
 
 # License of the source code and repositories
 # 程序庫及程式源始碼的許可證
