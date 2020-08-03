@@ -22,7 +22,7 @@ INSERT INTO slrName ('code', 'tickerB', 'fullName', 'oldCode', 'assetMgmr') VALU
 ), (
     'SRFIGBZ','SFSMGBA:HK','Sun Life MPF Global Bond Fund','GB','First State: 42%; Invesco: 30%; Templeton: 25%'
 ), (
-    'SRFIHKD','CMGRFIA:HK','Sun Life MPF Hong Kong Dollar Bond Fund','HKB','First State: 56%; Principal: 21%; 景順 Invesco: 20%'
+    'SRFIHKD','CMGRFIA:HK','Sun Life MPF Hong Kong Dollar Bond Fund','HKB','First State: 56%; Principal: 21%; Invesco: 20%'
 ), (
     'SRDISF2','SLRBAGP:HK','Sun Life MPF Age 65 Plus Fund','SFP','Schroders'
 ), (
