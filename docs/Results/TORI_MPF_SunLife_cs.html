@@ -13100,7 +13100,10 @@ Risk-tolerating investor might consider a SAA portfolio using SREPHKZ for better
 <li>在作出任何投資決定前，你不應單靠此程序作出決定。當你作出任何與本程序算法有關的投資決定時，你已完全知悉並願意接受本程序或算法所帶來的風險。    </li>
 <li>本聲明如有歧義，將以英文版本作準。    </li>
 </ol>
-<h2 id="&#26368;&#24460;&#26356;&#26032;&#26085;&#26399;-Last-update:-2020/08/03.">&#26368;&#24460;&#26356;&#26032;&#26085;&#26399; Last update: 2020/08/03.<a class="anchor-link" href="#&#26368;&#24460;&#26356;&#26032;&#26085;&#26399;-Last-update:-2020/08/03.">&#182;</a></h2><h3 id="Changelog">Changelog<a class="anchor-link" href="#Changelog">&#182;</a></h3><h3 id="&#26356;&#26032;&#35352;&#37636;">&#26356;&#26032;&#35352;&#37636;<a class="anchor-link" href="#&#26356;&#26032;&#35352;&#37636;">&#182;</a></h3><p>2020-08-03 v3.0.1b<br>
+<h2 id="&#26368;&#24460;&#26356;&#26032;&#26085;&#26399;-Last-update:-2020/08/11.">&#26368;&#24460;&#26356;&#26032;&#26085;&#26399; Last update: 2020/08/11.<a class="anchor-link" href="#&#26368;&#24460;&#26356;&#26032;&#26085;&#26399;-Last-update:-2020/08/11.">&#182;</a></h2><h3 id="Changelog">Changelog<a class="anchor-link" href="#Changelog">&#182;</a></h3><h3 id="&#26356;&#26032;&#35352;&#37636;">&#26356;&#26032;&#35352;&#37636;<a class="anchor-link" href="#&#26356;&#26032;&#35352;&#37636;">&#182;</a></h3><p>2020-08-11 v3.0.1bII<br>
+Update project dependencies (Python part).<br>
+更新所需Python程式庫。</p>
+<p>2020-08-03 v3.0.1b<br>
 Release results accounted up to 2020/07/30.<br>
 公佈直至2020/07/30的結果。</p>
 <p>2020-07-29 v3.0.1a<br>
@@ -13229,9 +13232,7 @@ In this example, MPF would have T+2 time delay for obtaining historical price, h
 
 <span class="c1"># Computation packages</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">scipy</span> <span class="k">as</span> <span class="nn">sp</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">pandas_datareader</span> <span class="k">as</span> <span class="nn">pdr</span>
 <span class="kn">from</span> <span class="nn">pyarrow</span> <span class="kn">import</span> <span class="n">feather</span> <span class="k">as</span> <span class="n">f</span>
 <span class="kn">import</span> <span class="nn">sqlite3</span> <span class="k">as</span> <span class="nn">sql3</span>
 
@@ -13334,7 +13335,7 @@ In this example, MPF would have T+2 time delay for obtaining historical price, h
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="n">capture</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%capture</span>
 <span class="c1"># Function declaration</span>
 <span class="k">def</span> <span class="nf">ecdf</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="n">last_value</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -13603,6 +13604,7 @@ In this example, MPF would have T+2 time delay for obtaining historical price, h
 
     <span class="n">hedge</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">r_hedge_down</span><span class="p">(</span><span class="n">mpf_sunlife_portf_return</span><span class="p">,</span> <span class="n">monthly_str</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.065</span><span class="p">,</span> <span class="n">up</span><span class="p">,</span> <span class="n">hedge</span><span class="p">))</span>
     <span class="c1">#print(hedge)</span>
+    
 </pre></div>
 
     </div>
@@ -13645,7 +13647,7 @@ R[write to console]: The following object is masked from ‘package:graphics’:
 <span class="n">f</span><span class="o">.</span><span class="n">write_feather</span><span class="p">(</span><span class="n">mpf_portf_weight</span><span class="p">,</span> <span class="s2">&quot;./feather/w_mpf_sunlife&quot;</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s1">&#39;uncompressed&#39;</span><span class="p">)</span>
 <span class="n">f</span><span class="o">.</span><span class="n">write_feather</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;monthly&quot;</span><span class="p">:</span> <span class="n">monthly_str</span><span class="p">}),</span> <span class="s2">&quot;./feather/m_mpf_sunlife&quot;</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s1">&#39;uncompressed&#39;</span><span class="p">)</span>
 <span class="n">f</span><span class="o">.</span><span class="n">write_feather</span><span class="p">(</span><span class="n">mpf_sunlife_monthly</span><span class="p">,</span> <span class="s2">&quot;./feather/p_mpf_sunlife&quot;</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s1">&#39;uncompressed&#39;</span><span class="p">)</span>
-<span class="o">%</span><span class="n">load_ext</span> <span class="n">rpy2</span><span class="o">.</span><span class="n">ipython</span>
+<span class="o">%</span><span class="k">load_ext</span> rpy2.ipython
 </pre></div>
 
     </div>
@@ -13658,7 +13660,7 @@ R[write to console]: The following object is masked from ‘package:graphics’:
 <div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="n">capture</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%capture</span>
 <span class="o">%%</span><span class="n">R</span> <span class="o">-</span><span class="n">o</span> <span class="n">output1</span><span class="p">,</span><span class="n">output2</span><span class="p">,</span><span class="n">output3</span><span class="p">,</span><span class="n">fig1</span><span class="p">,</span><span class="n">fig2</span> <span class="o">-</span><span class="n">w</span> <span class="mi">8</span> <span class="o">-</span><span class="n">h</span> <span class="mf">4.25</span> <span class="o">--</span><span class="n">units</span> <span class="ow">in</span> <span class="o">-</span><span class="n">r</span> <span class="mi">96</span>
 
 <span class="n">library</span><span class="p">(</span><span class="n">zoo</span><span class="p">)</span>
