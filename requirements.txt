@@ -1,0 +1,8 @@
+ipython==7.17.0
+jupyterlab==2.2.2
+numpy==1.19.1
+pandas==1.1.0
+pyarrow==1.0.0
+rpy2==3.3.5
+statsmodels=0.11.1
+TA-lib=0.4.18
