@@ -13,7 +13,7 @@ CREATE TABLE "slrMpfNav" (
     "navDate"    VARCHAR(10) NOT NULL,
     "code"    VARCHAR(10),
     "nav"    DECIMAL(12,4),
-    FOREIGN KEY("code") REFERENCES "bocptName"("code") ON UPDATE CASCADE,
+    FOREIGN KEY("code") REFERENCES "slrName"("code") ON UPDATE CASCADE,
     PRIMARY KEY("id" AUTOINCREMENT)
 );
 
