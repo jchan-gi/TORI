@@ -5,17 +5,17 @@
  [Tori](https://jchan-gi.github.io/TORI/) (Trend- & Oversell-based Rebalance Instruction) is a n-m Moving Average BIAS (NMMA BIAS) based tools to improve portfolio performance by monthly rebalance    
  [Tori](https://jchan-gi.github.io/TORI/)是一個利用時差平均值乖離率(n-m MA BIAS, NMMA BIAS)進行每月再配置以提升投資組合的程式    
 
-# Latest news of 2020/07/31   
-# 最新消息 2020/07/31   
+# Latest news of 2020/09/02   
+# 最新消息 2020/09/02   
  
-HSBC, Sun Life Rainbow, BCT and BOCPT scheme have adopted and uploaded in SQLite format for enabling real-time data crawling and update.    
-滙豐、銀聯、中銀、永明（彩虹）現已改用SQLite數據庫形式儲存並公開。   
+Due to the operational changes in Sun Life Rainbow MPF Scheme, their price record updating would be done in ad-hoc manner after 2020/08/27. Delay for their update is expected until further notice.    
+由於永明(彩虹)計畫在營運上作出更改，其成份基金價格更新將至2020/08/27。後續更新將於有需要時進行至另行通知，因此預計該等更新將會受到阻擾。   
 
-Python is now used in the critical part of the HSBC, BCT, BOCPT, Sun Life Rainbow Scheme and Schroders MPF schemes demonstration in v3 given the performance issues of R language. The performance is now satisfactory, and C++ implementation of the critical part will be upheld.    
-關鍵計算部分已改由Python進行，以改善R運算較慢的特點。滙豐、銀聯、中銀、永明（彩虹）及施羅德強積金已率先實施此改動，並以v3升版作區分。因Python的效能理想，該等關鍵部分將不會以C++程式計算。   
+Database record of HSBC FlexInvest fund prices have been uploaded.    
+靈活智投基金數據庫(SQLite格式)現已公開。   
 
-HSBC, BCT, BOCPT, Sun Life Rainbow Scheme and Schroders MPF scheme loaded with price data dated before 2020/06/30 inclusive.    
-滙豐、銀聯、中銀、永明（彩虹）及施羅德強積金已載入至2020/06/30或之前的價格。    
+Tentative update date and list have been updated. Akane Tori might be updated to version 3 before end of 2020/09 tentatively.    
+更新預告內容現已修改。預計2020年9月將Akane Tori升版為v3。   
 
 The update of the AIA MPF scheme will be indefinitely suspended. The remaining MPF scheme will receive v3 updates at any unscheduled time before 2020/12/31.    
 友邦計畫的更新將無限期押後。而餘下強積金計畫將於2020/12/31前不定期更新並升版至v3。   
@@ -103,22 +103,30 @@ Version 3 升版v3:
 # Future update    
 # 更新預告   
 
-* The following updates are planned before 2020/08:   
-1. Include HSBC FlexInvest Portfolio     
+* The following updates are planned before 2020/09:   
+1. Rewrite introduction in each evaluation file.   
+2. Upgrade Akane Tori version to v3    
 
-* The following updates are planned before 2020/11:   
-1. A portfolio of retail mutual funds in Hong Kong; and    
-2. a portfolio of US ETFs would be assessed in Q3 2020. Please refer to the plain text file in root directory of repository (to be release soon) for the list of mutual funds and ETFs.   
+* The following updates are planned before 2020/10:     
+1. Refactor of code. Discrete modules are expected.    
+
+* The following updates are planned before 2021/01:   
+1. Irregular rebalance instructions using HSBC FlexInvest Portfolio; retail mutual funds in Hong Kong; and portfolio of US ETFs    
+2. Regular rebalance of portfolio of US ETFs         
 
 * Due to an unprecedented event, the following upgrade would not be *publicized before 2020/12/31*     
 1. A dashboard showing latest MPF price and related information.       
 
-* 現暫定於2020年8月底前作出以下更新：        
-1. 加入滙豐靈活智投(FlexInvest)的基金組合     
+* 現暫定於2020年9月底前作出以下更新：        
+1. 重新編寫內文介紹   
+2. 將Akane Tori更新為升版v3
 
-* 現暫定於2020年11月底前作出以下更新：     
-1. 一個由零售共同基金組成的投資組合及     
-2. 一個由美國上市的交易所買賣基金所組成的投資組合。基金列表即將公佈！   
+* 現暫定於2020年10月底前作出以下更新：        
+1. 重整程式碼。預計將重整為多個模組     
+
+* 現暫定於2021年1月底前作出以下更新：     
+1. 不定期再配置方式執行以下基金組合：滙豐靈活智投(FlexInvest)的基金組合，一個由零售共同基金組成的投資組合及一個由美國上市的交易所買賣基金    
+2. 以定期再配置方式執行一個由美國上市的交易所買賣基金    
 
 * 由於發生未能預見的事件，以下更新將*不會於2020/12/31前公開*。    
 1. 以儀表板方式(Dashboard)展示的最新基金價格資訊   
